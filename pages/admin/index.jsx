@@ -1,12 +1,11 @@
 // Import navbar
 import Image from "next/image";
-import Navbar from "../components/Navbar";
-import MenuTopLeft from "../components/MenuTopLeft";
-import MenuBotLeftMhs from "../components/MenuBotLeftMahasiswa";
-import anya from "../public/anya.jpeg";
-import robin from "../public/robin.jpg";
+import Navbar from "../../components/Navbar";
+import MenuTopLeft from "../../components/MenuTopLeft";
+import MenuBotLeftAdmin from "../../components/MenuBotLeftAdmin";
+import anya from "../../public/anya.jpeg";
 
-export default function Home() {
+export default function HomeDosen() {
   return (
     <div>
       <Navbar />
@@ -14,7 +13,7 @@ export default function Home() {
         <div className="flex justify-center gap-5 py-10 w-3/4">
           <div className="w-1/4">
             <MenuTopLeft />
-            <MenuBotLeftMhs />
+            <MenuBotLeftAdmin />
           </div>
           <div className="w-3/4 pb-3 bg-white rounded-lg shadow-lg">
             <div className="flex justify-between">
