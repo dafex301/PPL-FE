@@ -21,7 +21,7 @@ export default function PklMahasiswa() {
             <form>
               <div className="flex">
                 <h2 className="text-left font-bold text-2xl pl-5 pt-4">
-                  Data IRS
+                  Data PKL
                 </h2>
               </div>
               <div className="flex justify-start ml-16 mt-5">

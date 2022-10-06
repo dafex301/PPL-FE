@@ -83,23 +83,27 @@ export default function HomeMahasiswa({ provData }) {
             <div className="flex gap-20 my-8 items-start mx-12">
               <h2 className="text-left font-bold text-2xl">Basic Info</h2>
               <div className="w-8/12">
-                <label className="block" htmlFor="first">
+                <label className="block" htmlFor="nama">
                   Nama Lengkap
                 </label>
                 <input
-                  className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full"
+                  className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
                   type="text"
-                  id="first"
-                  name="first"
+                  id="nama"
+                  name="nama"
+                  value="Anya Forger"
+                  disabled
                 />
                 <label htmlFor="nim" className="block">
                   NIM
                 </label>
                 <input
-                  className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full"
+                  className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
                   type="number"
                   id="nim"
                   name="nim"
+                  value="24060120110001"
+                  disabled
                 />
                 <label htmlFor="angkatan" className="block">
                   Angkatan
