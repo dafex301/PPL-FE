@@ -31,6 +31,8 @@ export default function SkripsiMahasiswa() {
                             {/* dropdown menu */}
                             <div className="flex justify-start mx-16 mt-2">
                                 <select
+                                    id="status"
+                                    name="status"
                                     className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
                                     placeholder="Semester"
                                 >
@@ -48,6 +50,8 @@ export default function SkripsiMahasiswa() {
                             {/* dropdown menu */}
                             <div className="flex justify-start mx-16 mt-2">
                                 <select
+                                    id="nilai"
+                                    name="nilai"
                                     className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
                                     placeholder="Semester"
                                 >
@@ -67,11 +71,13 @@ export default function SkripsiMahasiswa() {
                             {/* dropdown menu */}
                             <div className="flex justify-start mx-16 mt-2">
                                 <select
+                                    id="semester"
+                                    name="semester"
                                     className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
                                     placeholder="Semester"
                                 >
                                     <option value="" selected disabled>
-                                        Pilih Nilai
+                                        Pilih Semester
                                     </option>
                                     {Array.from(Array(14).keys()).map((i) => (
                                         <option key={i + 1} value={i + 1}>
@@ -82,19 +88,19 @@ export default function SkripsiMahasiswa() {
                             </div>
 
                             <div className="flex justify-start ml-16 mt-5">
-                                <label for="irs">Jumlah SKS</label>
+                                <label for="irs">Tanggal Sidang</label>
                             </div>
                             <div className="flex justify-start mx-16 mt-2">
                                 <input
-                                    id="irs"
-                                    name="irs"
-                                    type="number"
+                                    id="tgl_sidang"
+                                    name="tgl_sidang"
+                                    type="date"
                                     max={24}
                                     className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
                                 />
                             </div>
                             <div className="flex justify-start ml-16 mt-5">
-                                <p>Scan IRS</p>
+                                <p>Scan Berita Acara</p>
                             </div>
                             <div className="flex justify-start mx-16 mt-2">
                                 {/* dropzone file */}
