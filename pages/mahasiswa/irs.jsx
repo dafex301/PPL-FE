@@ -96,7 +96,7 @@ export default function IrsMahasiswa() {
               <div className="flex justify-center mt-5">
                 <button
                   type="submit"
-                  className="mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
+                  className="mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-700"
                 >
                   Simpan
                 </button>
