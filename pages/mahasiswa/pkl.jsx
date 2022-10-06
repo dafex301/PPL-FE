@@ -25,39 +25,45 @@ export default function PklMahasiswa() {
                 </h2>
               </div>
               <div className="flex justify-start ml-16 mt-5">
-                <p>Semester Aktif</p>
+                <label htmlFor="kelulusan">Status Kelulusan</label>
               </div>
               {/* dropdown menu */}
               <div className="flex justify-start mx-16 mt-2">
                 <select
                   className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
                   placeholder="Semester"
+                  id="kelulusan"
+                  name="kelulusan"
                 >
-                  {/* Loop from index 1 to 14 */}
                   <option value="" selected disabled>
-                    Pilih Semester
+                    Pilih Status Kelulusan
                   </option>
-                  {Array.from(Array(14).keys()).map((i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
+                  <option value="">Lulus</option>
+                  <option value="">Belum Lulus</option>
                 </select>
               </div>
               <div className="flex justify-start ml-16 mt-5">
-                <label for="irs">Jumlah SKS</label>
+                <label for="pkl">Nilai PKL</label>
               </div>
               <div className="flex justify-start mx-16 mt-2">
-                <input
-                  id="irs"
-                  name="irs"
-                  type="number"
-                  max={24}
-                  className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
-                />
+              <select
+                  className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
+                  placeholder="Semester"
+                  id="pkl"
+                  name="pkl"
+                >
+                  <option value="" selected disabled>
+                    Pilih Nilai PKL
+                  </option>
+                  <option value="">A</option>
+                  <option value="">B</option>
+                  <option value="">C</option>
+                  <option value="">D</option>
+                  <option value="">E</option>
+              </select>
               </div>
               <div className="flex justify-start ml-16 mt-5">
-                <p>Scan IRS</p>
+                <label htmlFor="dropzone-file">Scan Berita Acara</label>
               </div>
               <div className="flex justify-start mx-16 mt-2">
                 {/* dropzone file */}
