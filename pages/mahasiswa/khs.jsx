@@ -28,6 +28,7 @@ export default function KhsMahasiswa() {
                 <p>Semester Aktif</p>
               </div>
               {/* dropdown menu */}
+
               <div className="flex justify-start mx-16 mt-2">
                 <select
                   className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
@@ -44,9 +45,11 @@ export default function KhsMahasiswa() {
                   ))}
                 </select>
               </div>
+
               <div className="flex justify-start ml-16 mt-5">
-                <label for="irs">Jumlah SKS</label>
+                <label>SKS Semester</label>
               </div>
+
               <div className="flex justify-start mx-16 mt-2">
                 <input
                   id="irs"
@@ -56,8 +59,61 @@ export default function KhsMahasiswa() {
                   className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
                 />
               </div>
+
               <div className="flex justify-start ml-16 mt-5">
-                <p>Scan IRS</p>
+                <label for="irs">Jumlah SKS</label>
+              </div>
+              <div className="flex justify-start mx-16 mt-2">
+                <input
+                  id="sks"
+                  name="sks"
+                  type="number"
+                  max={24}
+                  className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+                />
+              </div>
+              
+              <div className="flex justify-start ml-16 mt-5">
+                <label for="irs">SKS Kumulatif</label>
+              </div>
+              <div className="flex justify-start mx-16 mt-2">
+                <input
+                  id="sks_kumulatif"
+                  name="sks_kumulatif"
+                  type="number"
+                  max={24}
+                  className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+                />
+              </div>
+
+              <div className="flex justify-start ml-16 mt-5">
+                <label for="ip_semester">IP Semester</label>
+              </div>
+              <div className="flex justify-start mx-16 mt-2">
+                <input
+                  id="ip_semester"
+                  name="ip_semester"
+                  type="number"
+                  max={24}
+                  className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+                />
+              </div>
+
+              <div className="flex justify-start ml-16 mt-5">
+                <label for="ip_kumulatif">IP Kumulatif</label>
+              </div>
+              <div className="flex justify-start mx-16 mt-2">
+                <input
+                  id="ip_kumulatif"
+                  name="ip_kumulatif"
+                  type="number"
+                  max={24}
+                  className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+                />
+              </div>
+
+              <div className="flex justify-start ml-16 mt-5">
+                <label for="dropzone-file">Scan KHS</label>
               </div>
               <div className="flex justify-start mx-16 mt-2">
                 {/* dropzone file */}
