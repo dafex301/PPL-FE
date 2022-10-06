@@ -4,7 +4,7 @@ import MenuTopLeft from "../../components/MenuTopLeft";
 import MenuBotLeftMhs from "../../components/MenuBotLeftMahasiswa";
 import Head from "next/head";
 
-export default function HomeMahasiswa() {
+export default function KhsMahasiswa() {
   return (
     <>
       <Head>
