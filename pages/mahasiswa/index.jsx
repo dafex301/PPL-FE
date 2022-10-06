@@ -1,15 +1,16 @@
-// Import navbar
+// next/ components
 import Image from "next/image";
-import Navbar from "../../components/Navbar";
-import MenuTopLeft from "../../components/MenuTopLeft";
-import MenuBotLeftMhs from "../../components/MenuBotLeftMahasiswa";
-import anya from "../../public/anya.jpeg";
 import Head from "next/head";
 import useSWR from "swr";
 import { useState } from "react";
 
-// Import titlecase
-import titleCase from "../../utils/functions/titlecase";
+// Components
+import Navbar from "../../components/Navbar";
+import MenuTopLeft from "../../components/MenuTopLeft";
+import MenuBotLeftMhs from "../../components/MenuBotLeftMahasiswa";
+
+// Image
+import anya from "../../public/anya.jpeg";
 
 // Fetching Provinsi
 export async function getStaticProps() {
@@ -48,7 +49,7 @@ export default function HomeMahasiswa({ provData }) {
       <div className="flex justify-center">
         <div className="flex justify-center gap-5 py-10 w-3/4">
           <div className="w-1/4">
-            <MenuTopLeft />
+            <MenuTopLeft role="Mahasiswa" />
             <MenuBotLeftMhs />
           </div>
           <div className="w-3/4 pb-3 bg-white rounded-lg shadow-lg">
@@ -109,10 +110,12 @@ export default function HomeMahasiswa({ provData }) {
                   Angkatan
                 </label>
                 <input
-                  className="border-b-2 p-1 focus:outline-none focus:border-gray-500 w-full"
+                  className="border-b-2 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
                   type="number"
                   id="angkatan"
                   name="angkatan"
+                  value={2020}
+                  disabled
                 />
               </div>
             </div>

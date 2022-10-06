@@ -12,7 +12,7 @@ export default function HomeDosen() {
       <div className="flex justify-center">
         <div className="flex justify-center gap-5 py-10 w-3/4">
           <div className="w-1/4">
-            <MenuTopLeft />
+            <MenuTopLeft role="Dosen" />
             <MenuBotLeftDosen />
           </div>
           <div className="w-3/4 pb-3 bg-white rounded-lg shadow-lg">

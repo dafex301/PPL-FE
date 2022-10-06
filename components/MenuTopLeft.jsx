@@ -1,7 +1,7 @@
 import anya from "../public/anya.jpeg";
 import Image from "next/image";
 
-export default function MenuTopLeft() {
+export default function MenuTopLeft(props) {
   return (
     <div className="bg-white rounded-lg shadow-lg">
       <div className="flex justify-start ml-3 py-3 gap-3">
@@ -10,7 +10,7 @@ export default function MenuTopLeft() {
         </div>
         <div className="text-left">
           <p className="font-bold">Anya Forger</p>
-          <p className="text-sm">Admin</p>
+          <p className="text-sm">{props.role}</p>
           <p className="text-sm">Informatika</p>
         </div>
       </div>
