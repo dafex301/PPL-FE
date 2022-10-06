@@ -4,10 +4,46 @@ import Navbar from "../../components/Navbar";
 import MenuTopLeft from "../../components/MenuTopLeft";
 import MenuBotLeftMhs from "../../components/MenuBotLeftMahasiswa";
 import anya from "../../public/anya.jpeg";
+import Head from "next/head";
+import useSWR from "swr";
+import { useState } from "react";
 
-export default function HomeMahasiswa() {
+// Import titlecase
+import titleCase from "../../utils/functions/titlecase";
+
+// Fetching Provinsi
+export async function getStaticProps() {
+  const prov = await fetch(
+    "http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
+  );
+  const provData = await prov.json();
+
+  return {
+    props: {
+      provData,
+    },
+  };
+}
+
+// Fetching Kabupaten
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+export default function HomeMahasiswa({ provData }) {
+  const [provinsi, setProvinsi] = useState("");
+
+  // Fetch kabupaten data when provinsi is not empty
+  const { data: kabData, error } = useSWR(
+    provinsi
+      ? `http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinsi}.json`
+      : null,
+    fetcher
+  );
+
   return (
-    <div>
+    <>
+      <Head>
+        <title>Profile Mahasiswa</title>
+      </Head>
       <Navbar />
       <div className="flex justify-center">
         <div className="flex justify-center gap-5 py-10 w-3/4">
@@ -47,7 +83,7 @@ export default function HomeMahasiswa() {
             <div className="flex gap-20 my-8 items-start mx-12">
               <h2 className="text-left font-bold text-2xl">Basic Info</h2>
               <div className="w-8/12">
-                <label className="block" for="first">
+                <label className="block" htmlFor="first">
                   Nama Lengkap
                 </label>
                 <input
@@ -56,7 +92,7 @@ export default function HomeMahasiswa() {
                   id="first"
                   name="first"
                 />
-                <label for="nim" className="block">
+                <label htmlFor="nim" className="block">
                   NIM
                 </label>
                 <input
@@ -65,7 +101,7 @@ export default function HomeMahasiswa() {
                   id="nim"
                   name="nim"
                 />
-                <label for="angkatan" className="block">
+                <label htmlFor="angkatan" className="block">
                   Angkatan
                 </label>
                 <input
@@ -79,31 +115,32 @@ export default function HomeMahasiswa() {
             <div className="flex gap-20 my-8 items-start mx-12">
               <h2 className="text-left font-bold text-2xl">Address</h2>
               <div className="w-8/12 ml-5">
-                <label className="block mb-1" for="alamat">
+                <label className="block mb-1" htmlFor="alamat">
                   Alamat
                 </label>
                 <textarea
                   id="alamat"
                   className="border-2 mb-5 w-full rounded-xl focus:outline-none focus:border-gray-500 p-2"
                 ></textarea>
-                <label for="provinsi" className="block">
+                <label htmlFor="provinsi" className="block">
                   Provinsi
                 </label>
                 <select
+                  onChange={(e) => setProvinsi(e.target.value)}
                   id="provinsi"
-                  name="kabupaten"
+                  name="provinsi"
                   className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                  <option>6</option>
-                  <option>7</option>
-                  <option>8</option>
+                  <option selected value="" disabled>
+                    Pilih Provinsi
+                  </option>
+                  {provData.map((prov) => (
+                    <option key={prov.id} value={prov.id}>
+                      {prov.name}
+                    </option>
+                  ))}
                 </select>
-                <label for="kabupaten" className="block">
+                <label htmlFor="kabupaten" className="block">
                   Kabupaten
                 </label>
                 <select
@@ -111,21 +148,22 @@ export default function HomeMahasiswa() {
                   name="kabupaten"
                   className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                  <option>6</option>
-                  <option>7</option>
-                  <option>8</option>
+                  <option value="" selected disabled>
+                    Pilih Kabupaten
+                  </option>
+                  {kabData &&
+                    kabData.map((kab) => (
+                      <option key={kab.id} value={kab.id}>
+                        {kab.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
             <div className="flex gap-20 my-8 items-start mx-12">
               <h2 className="text-left font-bold text-2xl">Contact</h2>
               <div className="w-8/12 ml-5">
-                <label className="block" for="email">
+                <label className="block" htmlFor="email">
                   Email
                 </label>
                 <input
@@ -134,7 +172,7 @@ export default function HomeMahasiswa() {
                   id="email"
                   name="email"
                 />
-                <label className="block" for="phone">
+                <label className="block" htmlFor="phone">
                   No. HP
                 </label>
                 <input
@@ -153,6 +191,6 @@ export default function HomeMahasiswa() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

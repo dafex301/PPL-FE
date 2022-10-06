@@ -8,7 +8,7 @@ export default function HomeMahasiswa() {
   return (
     <>
       <Head>
-        <title>IRS Mahasiswa</title>
+        <title>KHS Mahasiswa</title>
       </Head>
       <Navbar />
       <div className="flex justify-center">
