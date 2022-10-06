@@ -26,7 +26,7 @@ export default function SkripsiMahasiswa() {
                             </div>
 
                             <div className="flex justify-start ml-16 mt-5">
-                                <p>Status Skripsi</p>
+                                <label htmlFor="status">Status Skripsi</label>
                             </div>
                             {/* dropdown menu */}
                             <div className="flex justify-start mx-16 mt-2">
@@ -45,7 +45,7 @@ export default function SkripsiMahasiswa() {
                             </div>
 
                             <div className="flex justify-start ml-16 mt-5">
-                                <p>Nilai Skripsi</p>
+                                <label htmlFor="nilai">Nilai Skripsi</label>
                             </div>
                             {/* dropdown menu */}
                             <div className="flex justify-start mx-16 mt-2">
@@ -66,7 +66,7 @@ export default function SkripsiMahasiswa() {
                             </div>
 
                             <div className="flex justify-start ml-16 mt-5">
-                                <p>Lama Studi (Semester)</p>
+                                <label htmlFor="semester">Lama Studi (Semester)</label>
                             </div>
                             {/* dropdown menu */}
                             <div className="flex justify-start mx-16 mt-2">
@@ -88,7 +88,7 @@ export default function SkripsiMahasiswa() {
                             </div>
 
                             <div className="flex justify-start ml-16 mt-5">
-                                <label for="irs">Tanggal Sidang</label>
+                                <label for="tgl_sidang">Tanggal Sidang</label>
                             </div>
                             <div className="flex justify-start mx-16 mt-2">
                                 <input
@@ -100,7 +100,7 @@ export default function SkripsiMahasiswa() {
                                 />
                             </div>
                             <div className="flex justify-start ml-16 mt-5">
-                                <p>Scan Berita Acara</p>
+                                <label htmlFor="dropzone-file">Scan Berita Acara</label>
                             </div>
                             <div className="flex justify-start mx-16 mt-2">
                                 {/* dropzone file */}
