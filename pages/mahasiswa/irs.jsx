@@ -14,7 +14,7 @@ export default function IrsMahasiswa() {
       <div className="flex justify-center">
         <div className="flex justify-center gap-5 py-10 w-3/4">
           <div className="w-1/4">
-            <MenuTopLeft />
+            <MenuTopLeft role="Mahasiswa" />
             <MenuBotLeftMhs />
           </div>
           <div className="w-3/4 pb-3 bg-white rounded-lg shadow-lg">
@@ -25,11 +25,13 @@ export default function IrsMahasiswa() {
                 </h2>
               </div>
               <div className="flex justify-start ml-16 mt-5">
-                <p>Semester Aktif</p>
+                <label htmlFor="semester">Semester Aktif</label>
               </div>
               {/* dropdown menu */}
               <div className="flex justify-start mx-16 mt-2">
                 <select
+                  id="semester"
+                  name="semester"
                   className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
                   placeholder="Semester"
                 >
