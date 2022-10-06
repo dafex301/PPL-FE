@@ -9,6 +9,7 @@ import { useState } from "react";
 export default function Navbar() {
   // Use state profilePopUp
   const [profilePopUp, setProfilePopUp] = useState(false);
+
   return (
     <div>
       <div className="bg-zinc-900 justify-between items-center flex px-12 py-4 shadow-md">
