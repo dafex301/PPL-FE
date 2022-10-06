@@ -25,11 +25,13 @@ export default function IrsMahasiswa() {
                 </h2>
               </div>
               <div className="flex justify-start ml-16 mt-5">
-                <p>Semester Aktif</p>
+                <label htmlFor="semester">Semester Aktif</label>
               </div>
               {/* dropdown menu */}
               <div className="flex justify-start mx-16 mt-2">
                 <select
+                  id="semester"
+                  name="semester"
                   className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
                   placeholder="Semester"
                 >
