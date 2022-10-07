@@ -3,7 +3,7 @@ import DashboardDosen from "../../components/dosen/DashboardDosen";
 export default function HomeDosen() {
   return (
     <>
-      <DashboardDosen title="Home"></DashboardDosen>
+      <DashboardDosen title="Data PKL"></DashboardDosen>
     </>
   );
 }

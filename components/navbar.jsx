@@ -31,6 +31,7 @@ export default function Navbar() {
         className={`bg-white shadow-lg rounded-xl w-36 absolute top-16 right-4 flex-row ${
           profilePopUp ? "block" : "hidden"
         }`}
+        onMouseLeave={() => setProfilePopUp(false)}
       >
         <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800 rounded-t-xl">
           Profile

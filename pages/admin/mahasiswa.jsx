@@ -1,9 +1,9 @@
 import DashboardAdmin from "../../components/admin/DashboardDosen";
 
-export default function HomeAdmin() {
+export default function MahasiswaAdmin() {
   return (
     <>
-      <DashboardAdmin title="Home" />
+      <DashboardAdmin title="Data Mahasiswa" />
     </>
   );
 }
