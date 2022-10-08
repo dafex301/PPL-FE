@@ -1,9 +1,12 @@
-import DashboardAdmin from "../../components/admin/DashboardDosen";
+import Head from "next/head";
 
 export default function HomeAdmin() {
   return (
     <>
-      <DashboardAdmin title="Home" />
+      <Head>
+        <title>Home Admin</title>
+      </Head>
+      Selamat datang, Admin
     </>
   );
 }

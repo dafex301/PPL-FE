@@ -1,9 +1,12 @@
-import DashboardAdmin from "../../components/admin/DashboardDosen";
+import Head from "next/head";
 
 export default function AccountAdmin() {
   return (
     <>
-      <DashboardAdmin title="Manajemen Akun"></DashboardAdmin>
+      <Head>
+        <title>Manajemen Akun</title>
+      </Head>
+      Manajemen Akun
     </>
   );
 }

@@ -8,9 +8,6 @@ import MenuBotLeftMhs from "../MenuBotLeftMahasiswa";
 export default function DashboardMahasiswa(props) {
   return (
     <>
-      <Head>
-        <title>{props.title}</title>
-      </Head>
       <div className="flex justify-center">
         <div className="flex justify-center gap-5 py-10 w-3/4">
           <div className="w-1/4">

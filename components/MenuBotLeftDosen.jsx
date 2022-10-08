@@ -45,10 +45,10 @@ export default function MenuBotLeftDosen(params) {
             </div>
           </a>
         </Link>
-        <Link href="/dosen/mahasiswa">
+        <Link href="/dosen/mhs">
           <a>
             <div className="flex items-center flex-row py-3 pl-3 hover:bg-gray-100">
-              {useRouter().pathname === "/dosen/mahasiswa" ? (
+              {useRouter().pathname === "/dosen/mhs" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -80,9 +80,7 @@ export default function MenuBotLeftDosen(params) {
               )}
               <p
                 className={
-                  useRouter().pathname === "/dosen/mahasiswa"
-                    ? ""
-                    : "text-gray-500"
+                  useRouter().pathname === "/dosen/mhs" ? "" : "text-gray-500"
                 }
               >
                 Data Mahasiswa

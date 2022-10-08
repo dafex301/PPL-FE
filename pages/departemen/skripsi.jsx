@@ -1,9 +1,11 @@
-import DashboardDepartemen from "../../components/departemen/DashboardDepartemen";
+import Head from "next/head";
 
 export default function HomeDosen() {
   return (
     <>
-      <DashboardDepartemen title="Data Skripsi"></DashboardDepartemen>
+      <Head>
+        <title>Data Skripsi</title>
+      </Head>
     </>
   );
 }

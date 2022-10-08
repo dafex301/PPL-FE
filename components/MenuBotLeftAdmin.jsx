@@ -131,10 +131,10 @@ export default function MenuBotLeftAdmin(params) {
             </div>
           </a>
         </Link>
-        <Link href="/admin/mahasiswa">
+        <Link href="/admin/mhs">
           <a>
             <div className="flex items-center flex-row py-3 pl-3 hover:bg-gray-100">
-              {useRouter().pathname === "/admin/mahasiswa" ? (
+              {useRouter().pathname === "/admin/mhs" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -167,9 +167,7 @@ export default function MenuBotLeftAdmin(params) {
 
               <p
                 className={
-                  useRouter().pathname === "/admin/mahasiswa"
-                    ? ""
-                    : "text-gray-500"
+                  useRouter().pathname === "/admin/mhs" ? "" : "text-gray-500"
                 }
               >
                 Data Mahasiswa

@@ -1,9 +1,11 @@
-import DashboardDosen from "../../components/dosen/DashboardDosen";
+import Head from "next/head";
 
-export default function HomeDosen() {
+export default function Verifikasi() {
   return (
     <>
-      <DashboardDosen title="Verifikasi Berkas" />
+      <Head>
+        <title>Verifikasi Berkas</title>
+      </Head>
     </>
   );
 }

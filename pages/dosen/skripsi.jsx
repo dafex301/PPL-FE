@@ -1,9 +1,11 @@
-import DashboardDosen from "../../components/dosen/DashboardDosen";
+import Head from "next/head";
 
-export default function HomeDosen() {
+export default function SkripsiDosen() {
   return (
     <>
-      <DashboardDosen title="Data Skripsi" />
+      <Head>
+        <title>Data Skripsi</title>
+      </Head>
     </>
   );
 }

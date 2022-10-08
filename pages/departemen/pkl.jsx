@@ -1,9 +1,11 @@
-import DashboardDepartemen from "../../components/departemen/DashboardDepartemen";
+import Head from "next/head";
 
-export default function HomeDosen() {
+export default function DataPKL() {
   return (
     <>
-      <DashboardDepartemen title="Data PKL"></DashboardDepartemen>
+      <Head>
+        <title>Data PKL</title>
+      </Head>
     </>
   );
 }

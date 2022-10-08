@@ -45,10 +45,10 @@ export default function MenuBotLeftDepartemen(params) {
             </div>
           </a>
         </Link>
-        <Link href="/departemen/mahasiswa">
+        <Link href="/departemen/mhs">
           <a>
             <div className="flex items-center flex-row py-3 pl-3 hover:bg-gray-100">
-              {useRouter().pathname === "/departemen/mahasiswa" ? (
+              {useRouter().pathname === "/departemen/mhs" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -80,7 +80,7 @@ export default function MenuBotLeftDepartemen(params) {
               )}
               <p
                 className={
-                  useRouter().pathname === "/departemen/mahasiswa"
+                  useRouter().pathname === "/departemen/mhs"
                     ? ""
                     : "text-gray-500"
                 }
@@ -126,7 +126,9 @@ export default function MenuBotLeftDepartemen(params) {
               )}
               <p
                 className={
-                  useRouter().pathname === "/departemen/pkl" ? "" : "text-gray-500"
+                  useRouter().pathname === "/departemen/pkl"
+                    ? ""
+                    : "text-gray-500"
                 }
               >
                 Data PKL

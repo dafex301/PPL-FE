@@ -1,9 +1,11 @@
-import DashboardDosen from "../../components/dosen/DashboardDosen";
+import Head from "next/head";
 
 export default function HomeDosen() {
   return (
     <>
-      <DashboardDosen title="Home"></DashboardDosen>
+      <Head>
+        <title>Home Dosen</title>
+      </Head>
     </>
   );
 }

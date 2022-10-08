@@ -1,10 +1,10 @@
 import Head from "next/head";
 
-export default function PKLDosen() {
+export default function MhsDosen() {
   return (
     <>
       <Head>
-        <title>Data PKL</title>
+        <title>Data Mahasiswa</title>
       </Head>
     </>
   );
