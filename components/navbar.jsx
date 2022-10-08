@@ -3,8 +3,12 @@ import Image from "next/image";
 // Import image
 import undip from "../public/undip.png";
 import anya from "../public/anya.jpeg";
+
 // Import state react
 import { useState } from "react";
+
+// Import logout from utils/function
+import { logout } from "../utils/functions/logout";
 
 export default function Navbar() {
   // Use state profilePopUp
@@ -40,9 +44,7 @@ export default function Navbar() {
           Settings
         </div>
         <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800 rounded-b-xl">
-          <form action="/logout" method="POST" className="m-0">
-            Logout
-          </form>
+          <button onClick={logout}>Logout</button>
         </div>
       </div>
     </div>

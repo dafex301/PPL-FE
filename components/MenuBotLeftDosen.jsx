@@ -1,5 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import logout from "../utils/functions/logout";
+
+// logout function
+const logOut = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
+};
 
 export default function MenuBotLeftDosen(params) {
   return (
@@ -48,7 +55,7 @@ export default function MenuBotLeftDosen(params) {
         <Link href="/dosen/mhs">
           <a>
             <div className="flex items-center flex-row py-3 pl-3 hover:bg-gray-100">
-              {useRouter().pathname === "/dosen/mhs" ? (
+              {useRouter().pathname.includes("/dosen/mhs") ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -80,7 +87,9 @@ export default function MenuBotLeftDosen(params) {
               )}
               <p
                 className={
-                  useRouter().pathname === "/dosen/mhs" ? "" : "text-gray-500"
+                  useRouter().pathname.includes("/dosen/mhs")
+                    ? ""
+                    : "text-gray-500"
                 }
               >
                 Data Mahasiswa
@@ -220,7 +229,10 @@ export default function MenuBotLeftDosen(params) {
             </div>
           </a>
         </Link>
-        <div className="flex items-center flex-row py-3 pl-3 text-gray-500 hover:bg-gray-100">
+        <button
+          onClick={logOut}
+          className="flex items-center flex-row py-3 pl-3 text-gray-500 hover:bg-gray-100"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -236,7 +248,7 @@ export default function MenuBotLeftDosen(params) {
             />
           </svg>
           <p>Keluar</p>
-        </div>
+        </button>
       </div>
     </div>
   );

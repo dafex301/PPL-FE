@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 export default function MhsDosen() {
   return (
@@ -6,6 +7,9 @@ export default function MhsDosen() {
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
+      <Link href="/dosen/mhs/1">
+        <a>Detail Mahasiswa</a>
+      </Link>
     </>
   );
 }
