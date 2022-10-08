@@ -7,8 +7,8 @@ import anya from "../public/anya.jpeg";
 // Import state react
 import { useState } from "react";
 
-// Import logout from utils/function
-import { logout } from "../utils/functions/logout";
+// Import logout function
+import logout from "../utils/functions/logout";
 
 export default function Navbar() {
   // Use state profilePopUp
@@ -43,9 +43,11 @@ export default function Navbar() {
         <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800">
           Settings
         </div>
-        <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800 rounded-b-xl">
-          <button onClick={logout}>Logout</button>
-        </div>
+        <button onClick={logout} className="w-full">
+          <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-left text-gray-800 rounded-b-xl">
+            Logout
+          </div>
+        </button>
       </div>
     </div>
   );

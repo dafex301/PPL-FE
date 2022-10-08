@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { logout } from "../utils/functions/logout";
+import logout from "../utils/functions/logout";
 
 export default function MenuBotLeftMhs(params) {
   return (

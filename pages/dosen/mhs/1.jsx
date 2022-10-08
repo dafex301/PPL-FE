@@ -27,7 +27,7 @@ export default function DetailMhs() {
             Nama Lengkap
           </label>
           <input
-            className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
+            className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white "
             type="text"
             id="nama"
             name="nama"
@@ -38,7 +38,7 @@ export default function DetailMhs() {
             NIM
           </label>
           <input
-            className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
+            className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white "
             type="number"
             id="nim"
             name="nim"
@@ -49,7 +49,7 @@ export default function DetailMhs() {
             Angkatan
           </label>
           <input
-            className="border-b-2 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
+            className="border-b-2 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white "
             type="number"
             id="angkatan"
             name="angkatan"
