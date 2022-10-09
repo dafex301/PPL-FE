@@ -22,11 +22,11 @@ export default function Navbar() {
         </a>
         <div className="">
           <button
-            className="bg-zinc-800 text-white rounded-full mr-4 w-12 flex items-center"
+            className="bg-zinc-800 border-white text-white rounded-full mr-4 w-12 flex items-center"
             id="profile"
             onClick={() => setProfilePopUp(!profilePopUp)}
           >
-            <Image className="h-12 rounded-full" src={anya} alt="Robin" />
+            <Image className="h-12 rounded-full " src={anya} alt="Robin" />
           </button>
         </div>
       </div>

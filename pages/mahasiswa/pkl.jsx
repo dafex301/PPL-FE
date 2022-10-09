@@ -20,8 +20,9 @@ export default function PklMahasiswa() {
             placeholder="Semester"
             id="kelulusan"
             name="kelulusan"
+            defaultValue={""}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Pilih Status Kelulusan
             </option>
             <option value="">Lulus</option>
@@ -29,7 +30,7 @@ export default function PklMahasiswa() {
           </select>
         </div>
         <div className="flex justify-start ml-16 mt-5">
-          <label for="pkl">Nilai PKL</label>
+          <label htmlFor="pkl">Nilai PKL</label>
         </div>
         <div className="flex justify-start mx-16 mt-2">
           <select
@@ -37,8 +38,9 @@ export default function PklMahasiswa() {
             placeholder="Semester"
             id="pkl"
             name="pkl"
+            defaultValue={""}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Pilih Nilai PKL
             </option>
             <option value="">A</option>
@@ -54,33 +56,33 @@ export default function PklMahasiswa() {
         <div className="flex justify-start mx-16 mt-2">
           {/* dropzone file */}
           <label
-            for="dropzone-file"
-            class="flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 "
+            htmlFor="dropzone-file"
+            className="flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 "
           >
-            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg
-                class="w-10 h-10 mb-3 text-gray-400"
+                className="w-10 h-10 mb-3 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
                 ></path>
               </svg>
-              <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span class="font-semibold">Click to upload</span> or drag and
-                drop
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span> or drag
+                and drop
               </p>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-gray-400">
                 PDF, PNG, or JPG up to 10MB
               </p>
             </div>
-            <input id="dropzone-file" type="file" class="hidden" />
+            <input id="dropzone-file" type="file" className="hidden" />
           </label>
         </div>
         <div className="flex justify-center mt-5">
