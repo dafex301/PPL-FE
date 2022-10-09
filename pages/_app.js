@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar";
+// import Navbar from "../components/Navbar";
 import DashboardMahasiswa from "../components/mahasiswa/DashboardMahasiswa";
 import DashboardAdmin from "../components/admin/DashboardAdmin";
 import DashboardDosen from "../components/dosen/DashboardDosen";
@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      {Component.name !== "Login" && Component.name !== "Error" && <Navbar />}
+      {/* {Component.name !== "Login" && Component.name !== "Error" && <Navbar />} */}
 
       {route.pathname.includes("/mahasiswa") ? (
         <DashboardMahasiswa>
