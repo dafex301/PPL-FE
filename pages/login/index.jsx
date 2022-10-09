@@ -1,38 +1,32 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { setCookie, getCookie } from "cookies-next";
 
 export default function Login(params) {
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      window.location.href = `/admin`;
-    }
-  }, []);
+  const axios = require("axios").default;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     // Fetch login API to http://localhost:8080/signin
     // If success, redirect to /admin
     // If failed, show error message
-    // console.log(username, password);
-    fetch("http://localhost:8080/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.accessToken) {
-          localStorage.setItem("accessToken", data.accessToken);
-          window.location.href = `/admin`;
-        } else {
-          setError(data.message);
-        }
+    e.preventDefault();
+    axios
+      .post(`${process.env.BACKEND_API}/signin`, {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        setCookie("accessToken", response.data.accessToken, {
+          maxAge: 60 * 60,
+        });
+        window.location.href = `/${response.data.roles}`;
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -75,52 +69,50 @@ export default function Login(params) {
           <div className="md:flex md:items-center md:justify-center  sm:w-auto md:h-full w-2/5 xl:w-2/5 p-8  md:p-10 lg:p-14 sm:rounded-lg md:rounded-none bg-white">
             <div className="max-w-md w-full space-y-8">
               <h1 className="text-3xl font-semibold">Login Page</h1>
-              <form className="mt-8 space-y-6" action="#" method="POST">
-                <div className="relative">
-                  <div className="absolute right-3 mt-4"></div>
-                  <label
-                    htmlFor="username"
-                    className="ml-3 text-sm font-bold text-gray-700 tracking-wide"
-                  >
-                    Username
-                  </label>
-                  <input
-                    className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
-                    type="text"
-                    name="username"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="mt-8 content-center">
-                  <label
-                    htmlFor="password"
-                    className="ml-3 text-sm font-bold text-gray-700 tracking-wide"
-                  >
-                    Password
-                  </label>
-                  <input
-                    className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center justify-between"></div>
-                <div>
-                  <button
-                    type="button"
-                    className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
-                    onClick={handleSubmit}
-                  >
-                    Masuk
-                  </button>
-                </div>
-              </form>
+              <div className="relative">
+                <div className="absolute right-3 mt-4"></div>
+                <label
+                  htmlFor="username"
+                  className="ml-3 text-sm font-bold text-gray-700 tracking-wide"
+                >
+                  Username
+                </label>
+                <input
+                  className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
+                  type="text"
+                  name="username"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+              <div className="mt-8 content-center">
+                <label
+                  htmlFor="password"
+                  className="ml-3 text-sm font-bold text-gray-700 tracking-wide"
+                >
+                  Password
+                </label>
+                <input
+                  className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="flex items-center justify-between"></div>
+              <div>
+                <button
+                  type="button"
+                  className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
+                  onClick={handleSubmit}
+                >
+                  Masuk
+                </button>
+              </div>
             </div>
           </div>
         </div>

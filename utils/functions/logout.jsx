@@ -1,6 +1,9 @@
+import { deleteCookie } from "cookies-next";
+
 export default function logout() {
-  // Remove access token from localStorage
-  localStorage.removeItem("accessToken");
+  // Remove accessToken from cookie
+  deleteCookie("accessToken");
+
   // Redirect to login page
-  window.location.href = "/login";
+  window.location.href = "/";
 }
