@@ -1,11 +1,10 @@
-// Next Components
-import Head from "next/head";
-
 // Components
 import MenuTopLeft from "../MenuTopLeft";
 import MenuBotLeftMhs from "../MenuBotLeftMahasiswa";
+import { useState } from "react";
 
 export default function DashboardMahasiswa(props) {
+  const [namaa, setNamaa] = useState("Fahrel");
   return (
     <>
       <div className="flex justify-center">

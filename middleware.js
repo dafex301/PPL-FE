@@ -6,7 +6,7 @@ export async function middleware(req) {
   let res = NextResponse.next();
   const token = req.cookies.get("accessToken");
 
-  // If route is /login
+  // If route is /
   if (req.nextUrl.pathname === "/") {
     // If token is not null
     if (token !== null) {

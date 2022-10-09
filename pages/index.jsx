@@ -7,7 +7,7 @@ export default function Login(params) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSubmit = (e) => {
     // Fetch login API to http://localhost:8080/signin
@@ -27,6 +27,7 @@ export default function Login(params) {
       })
       .catch((error) => {
         console.log(error);
+        setError(true);
       });
   };
 
@@ -45,12 +46,7 @@ export default function Login(params) {
                 Selamat Datang
               </div>
               <div className="sm:text-sm xl:text-md text-gray-200 font-normal">
-                {" "}
-                Silakan masuk untuk lorem ipsum dolor, sit amet consectetur
-                adipisicing elit. Excepturi harum autem ad sapiente qui
-                blanditiis doloremque laborum, consequatur doloribus facere
-                laudantium eveniet repudiandae expedita, sunt ipsam repellendus
-                architecto dignissimos? Ratione!
+                Silakan login untuk melanjutkan aktivitas
               </div>
             </div>
             <ul className="circles">
@@ -68,6 +64,18 @@ export default function Login(params) {
           </div>
           <div className="md:flex md:items-center md:justify-center  sm:w-auto md:h-full w-2/5 xl:w-2/5 p-8  md:p-10 lg:p-14 sm:rounded-lg md:rounded-none bg-white">
             <div className="max-w-md w-full space-y-8">
+              {/* If error is true, show error message */}
+              {error && (
+                <div
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                  role="alert"
+                >
+                  <strong className="font-bold">Login gagal. </strong>
+                  <span className="block sm:inline">
+                    Username atau password salah.
+                  </span>
+                </div>
+              )}
               <h1 className="text-3xl font-semibold">Login Page</h1>
               <div className="relative">
                 <div className="absolute right-3 mt-4"></div>
@@ -84,6 +92,11 @@ export default function Login(params) {
                   id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmit(e);
+                    }
+                  }}
                 />
               </div>
               <div className="mt-8 content-center">
@@ -115,7 +128,7 @@ export default function Login(params) {
                   className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
                   onClick={handleSubmit}
                 >
-                  Masuk
+                  Login
                 </button>
               </div>
             </div>

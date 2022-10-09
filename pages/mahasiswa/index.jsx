@@ -48,9 +48,9 @@ export default function HomeMahasiswa({ provData }) {
       <Head>
         <title>Home Mahasiswa</title>
       </Head>
-      <div className="flex my-8 items-start mx-12">
+      <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold w-1/4 text-2xl">Profil</h2>
-        <div className="w-32 h-32 relative">
+        <div className="w-32 h-32 relative col-span-3">
           <Image
             layout="fill"
             className="rounded-full"
@@ -79,9 +79,9 @@ export default function HomeMahasiswa({ provData }) {
           </label>
         </div>
       </div>
-      <div className="flex gap-20 my-8 items-start mx-12">
+      <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold text-2xl">Basic Info</h2>
-        <div className="w-8/12">
+        <div className="col-span-3">
           <label className="block" htmlFor="nama">
             Nama Lengkap
           </label>
@@ -117,9 +117,9 @@ export default function HomeMahasiswa({ provData }) {
           />
         </div>
       </div>
-      <div className="flex gap-20 my-8 items-start mx-12">
+      <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold text-2xl">Address</h2>
-        <div className="w-8/12 ml-5">
+        <div className="col-span-3">
           <label className="block mb-1" htmlFor="alamat">
             Alamat
           </label>
@@ -135,8 +135,9 @@ export default function HomeMahasiswa({ provData }) {
             id="provinsi"
             name="provinsi"
             className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
+            defaultValue={""}
           >
-            <option selected value="" disabled>
+            <option value="" disabled>
               Pilih Provinsi
             </option>
             {provData.map((prov) => (
@@ -152,8 +153,9 @@ export default function HomeMahasiswa({ provData }) {
             id="kabupaten"
             name="kabupaten"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
+            defaultValue={""}
           >
-            <option value="" selected disabled>
+            <option value="" disabled>
               Pilih Kabupaten
             </option>
             {kabData &&
@@ -165,9 +167,9 @@ export default function HomeMahasiswa({ provData }) {
           </select>
         </div>
       </div>
-      <div className="flex gap-20 my-8 items-start mx-12">
+      <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold text-2xl">Contact</h2>
-        <div className="w-8/12 ml-5">
+        <div className="col-span-3">
           <label className="block" htmlFor="email">
             Email
           </label>
