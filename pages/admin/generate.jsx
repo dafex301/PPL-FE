@@ -1,14 +1,23 @@
 // Import navbar
 import Head from "next/head";
 import Image from "next/image";
+import { useState } from "react";
 import anya from "../../public/anya.jpeg";
 
 export default function GenerateAdmin() {
+  const [nama, setNama] = useState("");
+  const [nim, setNim] = useState("");
+  const [angkatan, setAngkatan] = useState("");
+  const [status, setStatus] = useState("aktif");
+
+  const handleGenerate = () => {};
+
   return (
     <>
       <Head>
         <title>Generate Akun</title>
       </Head>
+      <h2 className="text-left font-bold text-2xl pl-5 pt-4">Generate Akun</h2>
       <form>
         <div className="flex ml-16 mt-5 items-start gap-12">
           <div className="flex-col gap-3 flex items-center justify-center">
@@ -45,6 +54,8 @@ export default function GenerateAdmin() {
               type="text"
               id="nama"
               name="nama"
+              value={nama}
+              onChange={(e) => setNama(e.target.value)}
             />
             <label htmlFor="nim" className="block text-sm text-gray-700">
               NIM
@@ -54,6 +65,8 @@ export default function GenerateAdmin() {
               type="number"
               id="nim"
               name="nim"
+              value={nim}
+              onChange={(e) => setNim(e.target.value)}
             />
             <label htmlFor="angkatan" className="block text-sm text-gray-700">
               Angkatan
@@ -63,6 +76,8 @@ export default function GenerateAdmin() {
               type="number"
               id="angkatan"
               name="angkatan"
+              value={angkatan}
+              onChange={(e) => setAngkatan(e.target.value)}
             />
             <label htmlFor="status" className="block text-sm text-gray-700">
               Status
@@ -71,6 +86,8 @@ export default function GenerateAdmin() {
               name="status"
               id="status"
               className="border-b-2 py-1 focus:outline-none focus:border-gray-500 w-full "
+              defaultValue={status}
+              onChange={(e) => setStatus(e.target.value)}
             >
               <option value="aktif">Aktif</option>
               <option value="cuti">Cuti</option>
@@ -81,8 +98,14 @@ export default function GenerateAdmin() {
               <option value="meninggal_dunia">Meninggal Dunia</option>
             </select>
             <div className="flex justify-center mt-5">
-              <button className="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full">
-                Simpan
+              <button
+                type="button"
+                className="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={() => {
+                  console.log(nama, nim, angkatan, status);
+                }}
+              >
+                Generate
               </button>
             </div>
           </div>

@@ -11,7 +11,7 @@ import Head from "next/head";
 // Fetching Provinsi
 export async function getStaticProps() {
   const prov = await fetch(
-    "http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
+    "https://sipedas.pertanian.go.id/api/wilayah/list_pro?thn=2022"
   );
   const provData = await prov.json();
 
@@ -140,9 +140,10 @@ export default function HomeMahasiswa({ provData }) {
             <option value="" disabled>
               Pilih Provinsi
             </option>
-            {provData.map((prov) => (
-              <option key={prov.id} value={prov.id}>
-                {prov.name}
+            {/* for every key-value provData, set as select */}
+            {Object.keys(provData).map((key) => (
+              <option key={key} value={key}>
+                {provData[key]}
               </option>
             ))}
           </select>

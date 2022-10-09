@@ -32,9 +32,9 @@ export async function middleware(req) {
   }
 
   //   If route is /mahasiswa
-  // if (req.nextUrl.pathname.startsWith("/mahasiswa")) {
-  //   return await verifyRole(token, "mahasiswa", req);
-  // }
+  if (req.nextUrl.pathname.startsWith("/mahasiswa")) {
+    return await verifyRole(token, "mahasiswa", req);
+  }
 
   //   If route is /departemen
   if (req.nextUrl.pathname.startsWith("/departemen")) {
