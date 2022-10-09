@@ -231,7 +231,7 @@ export default function MenuBotLeftDosen(params) {
         </Link>
         <button
           onClick={logout}
-          className="flex items-center flex-row py-3 pl-3 text-gray-500 hover:bg-gray-100"
+          className="flex items-center w-full flex-row py-3 pl-3 text-gray-500 hover:bg-gray-100"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

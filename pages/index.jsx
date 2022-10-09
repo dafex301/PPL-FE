@@ -101,6 +101,11 @@ export default function Login(params) {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmit(e);
+                    }
+                  }}
                 />
               </div>
               <div className="flex items-center justify-between"></div>
