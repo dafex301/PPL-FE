@@ -10,9 +10,7 @@ import Head from "next/head";
 
 // Fetching Provinsi
 export async function getStaticProps() {
-  const prov = await fetch(
-    "https://sipedas.pertanian.go.id/api/wilayah/list_pro?thn=2022"
-  );
+  const prov = await fetch("http://localhost:8080/api/provinsi");
   const provData = await prov.json();
 
   return {
@@ -32,9 +30,7 @@ export default function HomeMahasiswa({ provData }) {
 
   // Fetch kabupaten data when provinsi is not empty
   const { data: kabData, error } = useSWR(
-    provinsi
-      ? `http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinsi}.json`
-      : null,
+    provinsi ? `http://localhost:8080/api/kabupaten/${provinsi}` : null,
     fetcher
   );
 
@@ -137,13 +133,11 @@ export default function HomeMahasiswa({ provData }) {
             className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
             defaultValue={""}
           >
-            <option value="" disabled>
-              Pilih Provinsi
-            </option>
-            {/* for every key-value provData, set as select */}
-            {Object.keys(provData).map((key) => (
-              <option key={key} value={key}>
-                {provData[key]}
+            <option value="">Pilih Provinsi</option>
+            {/* For every array, show provinsi */}
+            {provData.map((prov) => (
+              <option key={prov.id} value={prov.id}>
+                {prov.nama}
               </option>
             ))}
           </select>
@@ -156,15 +150,15 @@ export default function HomeMahasiswa({ provData }) {
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
             defaultValue={""}
           >
-            <option value="" disabled>
+            <option value="" selected>
               Pilih Kabupaten
             </option>
-            {kabData &&
-              kabData.map((kab) => (
-                <option key={kab.id} value={kab.id}>
-                  {kab.name}
-                </option>
-              ))}
+            {/* For every array, show kabupaten */}
+            {kabData?.map((kab) => (
+              <option key={kab.id} value={kab.id}>
+                {kab.nama}
+              </option>
+            ))}
           </select>
         </div>
       </div>
