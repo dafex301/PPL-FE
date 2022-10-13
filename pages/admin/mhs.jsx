@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getCookie } from 'cookies-next';
 import useSWR from 'swr';
 
@@ -14,19 +14,12 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function MahasiswaAdmin() {
-  const [user, setUser] = useState([]);
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
-  const [pages, setPages] = useState(0);
-
-  const Mhs = () => {
-    const { data: mahasiswa, error } = useSWR(
-      `${process.env.BACKEND_API}/list-mahasiswa?page=${pageIndex}`,
-      fetcher
-    );
-  };
-
-
+  const [pageIndex, setPageIndex] = useState(0);
+  
+  const { data: mahasiswa, error } = useSWR(
+    `${process.env.BACKEND_API}/list-mahasiswa`,
+    fetcher
+  );
 
   return (
     <>
@@ -102,8 +95,6 @@ export default function MahasiswaAdmin() {
                     </tr>
                   ))}
               </tbody>
-              <button onClick={() => setPageIndex(pageIndex - 1)}>Previous</button>
-              <button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
             </table>
           </div>
         </div>
