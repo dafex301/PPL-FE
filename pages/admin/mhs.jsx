@@ -1,7 +1,9 @@
 import Head from 'next/head';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getCookie } from 'cookies-next';
 import useSWR from 'swr';
+import Pagination from '../../components/pagination';
+import { paginate } from "../../utils/functions/paginate";
 
 
 const token = getCookie('accessToken');
@@ -14,12 +16,30 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function MahasiswaAdmin() {
-  const [pageIndex, setPageIndex] = useState(0);
-  
+  const [posts, setposts] = useState([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const pageSize = 8;
+
+
   const { data: mahasiswa, error } = useSWR(
     `${process.env.BACKEND_API}/list-mahasiswa`,
     fetcher
   );
+
+  // useEffect for setposts
+  useEffect(() => {
+    if (mahasiswa) {
+      setposts(mahasiswa);
+    }
+  }, [mahasiswa]);
+
+  const handlePageChange = (page) => {
+    setcurrentPage(page);
+  };
+
+  const mahasiswaPosts = paginate(posts, currentPage, pageSize);
+
+
 
   return (
     <>
@@ -50,10 +70,9 @@ export default function MahasiswaAdmin() {
                 </tr>
               </thead>
               {/* show data in table body with access to status.name */}
-
               <tbody class="bg-white">
-                {mahasiswa &&
-                  mahasiswa.map((mhs) => (
+                {mahasiswaPosts &&
+                  mahasiswaPosts.map((mhs) => (
                     <tr tr key={mhs._id} >
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div class="flex items-center">
@@ -97,6 +116,9 @@ export default function MahasiswaAdmin() {
               </tbody>
             </table>
           </div>
+          <br />
+          <br />
+          <Pagination items={posts.length} currentPage={currentPage} pageSize={pageSize} onPageChange={handlePageChange} />
         </div>
       </div>
     </>

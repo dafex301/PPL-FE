@@ -1,6 +1,9 @@
 import Head from 'next/head';
+import { useState, useEffect } from "react";
 import { getCookie } from 'cookies-next';
 import useSWR from 'swr';
+import Pagination from '../../components/pagination';
+import { paginate } from "../../utils/functions/paginate";
 
 const token = getCookie('accessToken');
 // Fetcher and set header x-access-token with token
@@ -12,10 +15,27 @@ const fetcher = (...args) =>
     }).then((res) => res.json());
 
 export default function AccountAdmin() {
+    const [posts, setposts] = useState([]);
+    const [currentPage, setcurrentPage] = useState(1);
+    const pageSize = 8;
+
     const { data: user, error } = useSWR(
         `${process.env.BACKEND_API}/list-user`,
         fetcher
     );
+
+    // useEffect for setposts
+    useEffect(() => {
+        if (user) {
+            setposts(user);
+        }
+    }, [user]);
+
+    const handlePageChange = (page) => {
+        setcurrentPage(page);
+    };
+
+    const userPosts = paginate(posts, currentPage, pageSize);
 
     return (
         <>
@@ -44,8 +64,8 @@ export default function AccountAdmin() {
                             </thead>
                             {/* show data in table body */}
                             <tbody class="bg-white">
-                                {user &&
-                                    user.map((u) => (
+                                {userPosts &&
+                                    userPosts.map((u) => (
                                         <tr key={u._id}>
                                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <div class="flex items-center">
@@ -79,6 +99,9 @@ export default function AccountAdmin() {
                             </tbody>
                         </table>
                     </div>
+                    <br />
+                    <br />
+                    <Pagination items={posts.length} currentPage={currentPage} pageSize={pageSize} onPageChange={handlePageChange} />
                 </div>
             </div>
         </>
