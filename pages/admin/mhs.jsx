@@ -1,6 +1,8 @@
 import Head from 'next/head';
+import { useState, useEffect } from "react";
 import { getCookie } from 'cookies-next';
 import useSWR from 'swr';
+
 
 const token = getCookie('accessToken');
 // Fetcher and set header x-access-token with token
@@ -12,10 +14,19 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function MahasiswaAdmin() {
-  const { data: mahasiswa, error } = useSWR(
-    `${process.env.BACKEND_API}/list-mahasiswa`,
-    fetcher
-  );
+  const [user, setUser] = useState([]);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [pages, setPages] = useState(0);
+
+  const Mhs = () => {
+    const { data: mahasiswa, error } = useSWR(
+      `${process.env.BACKEND_API}/list-mahasiswa?page=${pageIndex}`,
+      fetcher
+    );
+  };
+
+
 
   return (
     <>
@@ -45,11 +56,12 @@ export default function MahasiswaAdmin() {
                   </th>
                 </tr>
               </thead>
-              {/* show data in table body */}
+              {/* show data in table body with access to status.name */}
+
               <tbody class="bg-white">
                 {mahasiswa &&
                   mahasiswa.map((mhs) => (
-                    <tr key={mhs._id}>
+                    <tr tr key={mhs._id} >
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div class="flex items-center">
                           <div class="ml-4">
@@ -71,13 +83,12 @@ export default function MahasiswaAdmin() {
                       </td>
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <span
-                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            mhs.status === 'Aktif'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
+                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${mhs.status.name === 'Aktif' || mhs.status.name === 'Lulus'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
                         >
-                          {mhs.status}
+                          {mhs.status.name}
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
@@ -91,6 +102,8 @@ export default function MahasiswaAdmin() {
                     </tr>
                   ))}
               </tbody>
+              <button onClick={() => setPageIndex(pageIndex - 1)}>Previous</button>
+              <button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
             </table>
           </div>
         </div>
