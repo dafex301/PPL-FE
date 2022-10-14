@@ -47,7 +47,7 @@ export default function GenerateAdmin() {
         setNama("");
         setNim("");
         setAngkatan("");
-        setStatus("aktif");
+        setStatus("Aktif");
       })
       .catch((error) => {
         setError("Gagal generate akun!");
@@ -149,13 +149,13 @@ export default function GenerateAdmin() {
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="aktif">Aktif</option>
-              <option value="cuti">Cuti</option>
-              <option value="mangkir">Mangkir</option>
-              <option value="do">DO</option>
-              <option value="undur_diri">Undur Diri</option>
-              <option value="lulus">Lulus</option>
-              <option value="meninggal_dunia">Meninggal Dunia</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Cuti">Cuti</option>
+              <option value="Mangkir">Mangkir</option>
+              <option value="DO">DO</option>
+              <option value="Undur Diri">Undur Diri</option>
+              <option value="Lulus">Lulus</option>
+              <option value="Meninggal Dunia">Meninggal Dunia</option>
             </select>
             <div className="flex justify-center mt-5">
               <button

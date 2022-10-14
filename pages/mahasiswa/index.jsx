@@ -2,17 +2,21 @@
 import Image from "next/image";
 import useSWR from "swr";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import Head from "next/head";
 
 // Image
 import anya from "../../public/anya.jpeg";
-import Head from "next/head";
+
+// Import another library
+import { getCookie } from "cookies-next";
+import { data } from "autoprefixer";
+
+// Get token from cookies
+const token = getCookie("accessToken");
 
 // Fetching Provinsi
 export async function getStaticProps() {
-  const prov = await fetch(
-    "https://sipedas.pertanian.go.id/api/wilayah/list_pro?thn=2022"
-  );
+  const prov = await fetch("http://localhost:8080/api/provinsi");
   const provData = await prov.json();
 
   return {
@@ -25,17 +29,28 @@ export async function getStaticProps() {
 // Fetching Kabupaten
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
+// Fetcher with header x-access-token
+const fetcherWithToken = (...args) =>
+  fetch(...args, {
+    headers: {
+      "x-access-token": token,
+    },
+  }).then((res) => res.json());
+
 export default function HomeMahasiswa({ provData }) {
-  const router = useRouter();
   const [img, setImg] = useState(anya);
   const [provinsi, setProvinsi] = useState("");
 
   // Fetch kabupaten data when provinsi is not empty
-  const { data: kabData, error } = useSWR(
-    provinsi
-      ? `http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provinsi}.json`
-      : null,
+  const { data: kabData, errorKab } = useSWR(
+    provinsi ? `${process.env.BACKEND_API}/api/kabupaten/${provinsi}` : null,
     fetcher
+  );
+
+  // Fetch mahasiswa data
+  const { data: dataMhs, error: errorMhs } = useSWR(
+    `${process.env.BACKEND_API}/profil`,
+    fetcherWithToken
   );
 
   // Handle change image when uploaded file
@@ -82,15 +97,15 @@ export default function HomeMahasiswa({ provData }) {
       <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold text-2xl">Basic Info</h2>
         <div className="col-span-3">
-          <label className="block" htmlFor="nama">
+          <label className="block" htmlFor="name">
             Nama Lengkap
           </label>
           <input
             className="border-b-2 mb-5 p-1 focus:outline-none focus:border-gray-500 w-full disabled:text-gray-500 disabled:bg-white cursor-not-allowed"
             type="text"
-            id="nama"
-            name="nama"
-            value="Anya Forger"
+            id="name"
+            name="name"
+            value={dataMhs ? dataMhs.name : ""}
             disabled
           />
           <label htmlFor="nim" className="block">
@@ -101,7 +116,7 @@ export default function HomeMahasiswa({ provData }) {
             type="number"
             id="nim"
             name="nim"
-            value="24060120110001"
+            value={dataMhs ? dataMhs.nim : ""}
             disabled
           />
           <label htmlFor="angkatan" className="block">
@@ -112,7 +127,7 @@ export default function HomeMahasiswa({ provData }) {
             type="number"
             id="angkatan"
             name="angkatan"
-            value={2020}
+            value={dataMhs ? dataMhs.angkatan : ""}
             disabled
           />
         </div>
@@ -137,13 +152,11 @@ export default function HomeMahasiswa({ provData }) {
             className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
             defaultValue={""}
           >
-            <option value="" disabled>
-              Pilih Provinsi
-            </option>
-            {/* for every key-value provData, set as select */}
-            {Object.keys(provData).map((key) => (
-              <option key={key} value={key}>
-                {provData[key]}
+            <option value="">Pilih Provinsi</option>
+            {/* For every array, show provinsi */}
+            {provData.map((prov) => (
+              <option key={prov.id} value={prov.id}>
+                {prov.nama}
               </option>
             ))}
           </select>
@@ -156,15 +169,13 @@ export default function HomeMahasiswa({ provData }) {
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
             defaultValue={""}
           >
-            <option value="" disabled>
-              Pilih Kabupaten
-            </option>
-            {kabData &&
-              kabData.map((kab) => (
-                <option key={kab.id} value={kab.id}>
-                  {kab.name}
-                </option>
-              ))}
+            <option value="">Pilih Kabupaten</option>
+            {/* For every array, show kabupaten */}
+            {kabData?.map((kab) => (
+              <option key={kab.id} value={kab.id}>
+                {kab.nama}
+              </option>
+            ))}
           </select>
         </div>
       </div>

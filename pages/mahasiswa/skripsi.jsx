@@ -58,7 +58,6 @@ export default function SkripsiMahasiswa() {
         <div className="flex justify-start ml-16 mt-5">
           <label htmlFor="semester">Lama Studi (Semester)</label>
         </div>
-        {/* dropdown menu */}
         <div className="flex justify-start mx-16 mt-2">
           <select
             id="semester"
