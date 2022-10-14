@@ -4,6 +4,7 @@ import { getCookie } from "cookies-next";
 import useSWR from "swr";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
+import Search from "../../components/Search";
 
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
@@ -15,21 +16,46 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function AccountAdmin() {
-  const [posts, setposts] = useState([]);
-  const [currentPage, setcurrentPage] = useState(1);
-  const pageSize = 8;
-
+  // Data Fetching
   const { data: user, error } = useSWR(
     `${process.env.BACKEND_API}/list-user`,
     fetcher
   );
 
+  // Pagination
+  const [posts, setposts] = useState([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const pageSize = 8;
+
+  //  Search
+  const [search, setSearch] = useState("");
+  const [kategori, setKategori] = useState("username");
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+  const handleKategori = (e) => {
+    setKategori(e.target.value);
+  };
+
   // useEffect for setposts
   useEffect(() => {
     if (user) {
-      setposts(user);
+      if (search) {
+        setcurrentPage(1);
+        if (kategori === "username") {
+          setposts(
+            user.filter((user) =>
+              user.username.toLowerCase().includes(search.toLowerCase())
+            )
+          );
+        } else {
+          // TODO: Kalo udah bener rolenya
+        }
+      } else {
+        setposts(user);
+      }
     }
-  }, [user]);
+  }, [kategori, search, user]);
 
   const handlePageChange = (page) => {
     setcurrentPage(page);
@@ -44,6 +70,12 @@ export default function AccountAdmin() {
       </Head>
       <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Akun</h2>
       <div class="flex flex-col items-center mt-4">
+        <Search
+          setSearch={handleSearch}
+          setKategori={handleKategori}
+          kategori={kategori}
+          listKategori={["Username", "Role"]}
+        />
         <div class="py-2 my-2 overflow-x-auto w-full px-6">
           <div class="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
             <table class="min-w-full">
