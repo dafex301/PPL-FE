@@ -40,7 +40,7 @@ export default function Login(params) {
       <div className="relative min-h-screen flex ">
         <div className="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto min-w-0 bg-white">
           <div className="sm:w-1/2 xl:w-3/5 h-full hidden md:flex flex-auto items-center justify-center p-10 overflow-hidden bg-purple-900 text-white bg-no-repeat bg-cover relative">
-            <div className="absolute bg-gradient-to-b from-indigo-600 to-blue-500 opacity-75 inset-0 z-0"></div>
+            <div className="absolute bg-gradient-to-b from-violet-600 to-purple-500 opacity-75 inset-0 z-0"></div>
             <div className="w-full  max-w-md z-10">
               <div className="sm:text-4xl xl:text-5xl font-bold leading-tight mb-6">
                 Selamat Datang
@@ -86,7 +86,7 @@ export default function Login(params) {
                   Username
                 </label>
                 <input
-                  className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-indigo-500"
+                  className=" w-full text-base px-4 py-2 border-b border-gray-300 focus:outline-none rounded-2xl focus:border-violet-500"
                   type="text"
                   name="username"
                   id="username"
@@ -107,7 +107,7 @@ export default function Login(params) {
                   Password
                 </label>
                 <input
-                  className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-indigo-500"
+                  className="w-full content-center text-base px-4 py-2 border-b rounded-2xl border-gray-300 focus:outline-none focus:border-violet-500"
                   type="password"
                   name="password"
                   placeholder="Enter your password"
@@ -125,7 +125,7 @@ export default function Login(params) {
               <div>
                 <button
                   type="button"
-                  className="w-full flex justify-center bg-gradient-to-r from-indigo-500 to-blue-600  hover:bg-gradient-to-l hover:from-blue-500 hover:to-indigo-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
+                  className="w-full flex justify-center bg-gradient-to-r from-violet-500 to-purple-600  hover:bg-gradient-to-l hover:from-purple-500 hover:to-violet-600 text-gray-100 p-4  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500"
                   onClick={handleSubmit}
                 >
                   Login

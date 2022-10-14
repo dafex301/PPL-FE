@@ -1,17 +1,16 @@
-import Head from 'next/head';
+import Head from "next/head";
 import { useState, useEffect } from "react";
-import { getCookie } from 'cookies-next';
-import useSWR from 'swr';
-import Pagination from '../../components/pagination';
+import { getCookie } from "cookies-next";
+import useSWR from "swr";
+import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 
-
-const token = getCookie('accessToken');
+const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
 const fetcher = (...args) =>
   fetch(...args, {
     headers: {
-      'x-access-token': token,
+      "x-access-token": token,
     },
   }).then((res) => res.json());
 
@@ -19,7 +18,6 @@ export default function MahasiswaAdmin() {
   const [posts, setposts] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const pageSize = 8;
-
 
   const { data: mahasiswa, error } = useSWR(
     `${process.env.BACKEND_API}/list-mahasiswa`,
@@ -39,13 +37,14 @@ export default function MahasiswaAdmin() {
 
   const mahasiswaPosts = paginate(posts, currentPage, pageSize);
 
-
-
   return (
     <>
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
+      <h2 className="text-left font-bold text-2xl pl-5 pt-4">
+        Data Mahasiswa
+      </h2>
       <div class="flex flex-col items-center mt-4">
         <div class="py-2 my-2 overflow-x-auto w-full px-6">
           <div class="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
@@ -73,7 +72,7 @@ export default function MahasiswaAdmin() {
               <tbody class="bg-white">
                 {mahasiswaPosts &&
                   mahasiswaPosts.map((mhs) => (
-                    <tr tr key={mhs._id} >
+                    <tr tr key={mhs._id}>
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div class="flex items-center">
                           <div class="ml-4">
@@ -95,10 +94,12 @@ export default function MahasiswaAdmin() {
                       </td>
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <span
-                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${mhs.status.name === 'Aktif' || mhs.status.name === 'Lulus'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                            }`}
+                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            mhs.status.name === "Aktif" ||
+                            mhs.status.name === "Lulus"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
                         >
                           {mhs.status.name}
                         </span>
@@ -118,7 +119,12 @@ export default function MahasiswaAdmin() {
           </div>
           <br />
           <br />
-          <Pagination items={posts.length} currentPage={currentPage} pageSize={pageSize} onPageChange={handlePageChange} />
+          <Pagination
+            items={posts.length}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </>

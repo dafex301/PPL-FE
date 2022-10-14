@@ -1,7 +1,7 @@
 // next/ components
 import Image from "next/image";
 import useSWR from "swr";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 // Image
@@ -9,7 +9,7 @@ import anya from "../../public/anya.jpeg";
 
 // Import another library
 import { getCookie } from "cookies-next";
-import { data } from "autoprefixer";
+import axios from "axios";
 
 // Get token from cookies
 const token = getCookie("accessToken");
@@ -19,9 +19,20 @@ export async function getStaticProps() {
   const prov = await fetch("http://localhost:8080/api/provinsi");
   const provData = await prov.json();
 
+  // Sort provData by name
+  const sortedProvData = provData.sort((a, b) => {
+    if (a.nama < b.nama) {
+      return -1;
+    }
+    if (a.nama > b.nama) {
+      return 1;
+    }
+    return 0;
+  });
+
   return {
     props: {
-      provData,
+      provData: sortedProvData,
     },
   };
 }
@@ -39,7 +50,12 @@ const fetcherWithToken = (...args) =>
 
 export default function HomeMahasiswa({ provData }) {
   const [img, setImg] = useState(anya);
+  const [alamat, setAlamat] = useState("");
   const [provinsi, setProvinsi] = useState("");
+  const [kabupaten, setKabupaten] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [success, setSuccess] = useState(null);
 
   // Fetch kabupaten data when provinsi is not empty
   const { data: kabData, errorKab } = useSWR(
@@ -58,11 +74,69 @@ export default function HomeMahasiswa({ provData }) {
     setImg(URL.createObjectURL(e.target.files[0]));
   };
 
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    // PUT data to /profil with header x-access-token with axios
+    const res = await axios.put(
+      `${process.env.BACKEND_API}/profil`,
+      {
+        alamat,
+        kodeKab: kabupaten,
+        email,
+        phone,
+      },
+      {
+        headers: {
+          "x-access-token": token,
+        },
+      }
+    );
+    // If success, set success to true, else false
+    if (res.status === 200) {
+      setSuccess(true);
+    } else {
+      setSuccess(false);
+    }
+  };
+
+  useEffect(() => {
+    if (dataMhs) {
+      if (dataMhs.kodeKab) {
+        const provCode = dataMhs.kodeKab.substring(0, 2);
+        setProvinsi(provCode);
+        setKabupaten(dataMhs.kodeKab);
+      }
+      setAlamat(dataMhs.alamat);
+      setEmail(dataMhs.email);
+      setPhone(dataMhs.phone);
+    }
+  }, [dataMhs]);
+
   return (
     <>
       <Head>
         <title>Home Mahasiswa</title>
       </Head>
+
+      {/* Success Messsage */}
+      {success && (
+        <div
+          class="mx-12 p-4 mt-5 mb-7 border border-green-500 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+          role="alert"
+        >
+          <span class="font-medium">Berhasil</span> mengupdate profil
+        </div>
+      )}
+
+      {/* Error Message */}
+      {!success && success !== null && (
+        <div
+          class="mx-12 p-4 mt-5 mb-7 border border-red-500 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+          role="alert"
+        >
+          <span class="font-medium">Gagal</span> mengupdate profil
+        </div>
+      )}
       <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold w-1/4 text-2xl">Profil</h2>
         <div className="w-32 h-32 relative col-span-3">
@@ -141,6 +215,9 @@ export default function HomeMahasiswa({ provData }) {
           <textarea
             id="alamat"
             className="border-2 mb-5 w-full rounded-xl focus:outline-none focus:border-gray-500 p-2"
+            name="alamat"
+            value={alamat}
+            onChange={(e) => setAlamat(e.target.value)}
           ></textarea>
           <label htmlFor="provinsi" className="block">
             Provinsi
@@ -151,6 +228,7 @@ export default function HomeMahasiswa({ provData }) {
             name="provinsi"
             className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
             defaultValue={""}
+            value={provinsi}
           >
             <option value="">Pilih Provinsi</option>
             {/* For every array, show provinsi */}
@@ -168,6 +246,8 @@ export default function HomeMahasiswa({ provData }) {
             name="kabupaten"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
             defaultValue={""}
+            value={kabupaten}
+            onChange={(e) => setKabupaten(e.target.value)}
           >
             <option value="">Pilih Kabupaten</option>
             {/* For every array, show kabupaten */}
@@ -190,6 +270,8 @@ export default function HomeMahasiswa({ provData }) {
             type="email"
             id="email"
             name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <label className="block" htmlFor="phone">
             No. HP
@@ -199,6 +281,8 @@ export default function HomeMahasiswa({ provData }) {
             type="tel"
             id="phone"
             name="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
           <input
             type="file"
@@ -209,7 +293,10 @@ export default function HomeMahasiswa({ provData }) {
             onChange={(e) => handleChangeImage(e)}
           />
           <div className="flex justify-end">
-            <button className="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full">
+            <button
+              onClick={handleUpdateProfile}
+              className="bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full"
+            >
               Simpan
             </button>
           </div>

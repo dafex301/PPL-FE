@@ -152,7 +152,7 @@ export default function GenerateAdmin() {
               <option value="Aktif">Aktif</option>
               <option value="Cuti">Cuti</option>
               <option value="Mangkir">Mangkir</option>
-              <option value="DO">DO</option>
+              <option value="Drop Out">Drop Out</option>
               <option value="Undur Diri">Undur Diri</option>
               <option value="Lulus">Lulus</option>
               <option value="Meninggal Dunia">Meninggal Dunia</option>
