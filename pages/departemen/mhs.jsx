@@ -1,6 +1,10 @@
-import Head from "next/head";
+import Head from 'next/head';
+import { useState, useEffect } from "react";
 import { getCookie } from 'cookies-next';
 import useSWR from 'swr';
+import Pagination from '../../components/pagination';
+import { paginate } from "../../utils/functions/paginate";
+
 
 const token = getCookie('accessToken');
 // Fetcher and set header x-access-token with token
@@ -12,12 +16,31 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function DataMahasiswa() {
+  const [posts, setposts] = useState([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const pageSize = 8;
+
+
   const { data: mahasiswa, error } = useSWR(
     `${process.env.BACKEND_API}/list-mahasiswa`,
     fetcher
   );
 
-  console.log(mahasiswa);
+  // useEffect for setposts
+  useEffect(() => {
+    if (mahasiswa) {
+      setposts(mahasiswa);
+    }
+  }, [mahasiswa]);
+
+  const handlePageChange = (page) => {
+    setcurrentPage(page);
+  };
+
+  const mahasiswaPosts = paginate(posts, currentPage, pageSize);
+
+
+
   return (
     <>
       <Head>
@@ -46,11 +69,11 @@ export default function DataMahasiswa() {
                   </th>
                 </tr>
               </thead>
-              {/* show data in table body */}
+              {/* show data in table body with access to status.name */}
               <tbody class="bg-white">
-                {mahasiswa &&
-                  mahasiswa.map((mhs) => (
-                    <tr key={mhs._id}>
+                {mahasiswaPosts &&
+                  mahasiswaPosts.map((mhs) => (
+                    <tr tr key={mhs._id} >
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div class="flex items-center">
                           <div class="ml-4">
@@ -72,13 +95,12 @@ export default function DataMahasiswa() {
                       </td>
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <span
-                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            mhs.status === 'Aktif'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
+                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${mhs.status.name === 'Aktif' || mhs.status.name === 'Lulus'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                            }`}
                         >
-                          {mhs.status}
+                          {mhs.status.name}
                         </span>
                       </td>
                       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
@@ -94,6 +116,9 @@ export default function DataMahasiswa() {
               </tbody>
             </table>
           </div>
+          <br />
+          <br />
+          <Pagination items={posts.length} currentPage={currentPage} pageSize={pageSize} onPageChange={handlePageChange} />
         </div>
       </div>
     </>
