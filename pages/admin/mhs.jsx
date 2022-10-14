@@ -42,9 +42,7 @@ export default function MahasiswaAdmin() {
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
-      <h2 className="text-left font-bold text-2xl pl-5 pt-4">
-        Data Mahasiswa
-      </h2>
+      <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Mahasiswa</h2>
       <div class="flex flex-col items-center mt-4">
         <div class="py-2 my-2 overflow-x-auto w-full px-6">
           <div class="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
