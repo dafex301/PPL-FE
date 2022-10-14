@@ -1,9 +1,15 @@
+// Next
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
+// Asset
 import anya from "../../../public/anya.jpeg";
 
 export default function DetailMhs() {
+  const router = useRouter();
+  const { nim } = router.query;
+
   return (
     <>
       <Head>

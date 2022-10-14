@@ -214,7 +214,7 @@ export default function HomeMahasiswa({ provData }) {
           </label>
           <textarea
             id="alamat"
-            className="border-2 mb-5 w-full rounded-xl focus:outline-none focus:border-gray-500 p-2"
+            className="border-2 mb-5 w-full rounded-xl focus:outline-none focus:border-gray-500 p-2 px-3"
             name="alamat"
             value={alamat}
             onChange={(e) => setAlamat(e.target.value)}
