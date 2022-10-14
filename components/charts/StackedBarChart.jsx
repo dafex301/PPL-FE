@@ -25,7 +25,7 @@ const data = [
   {
     name: "2020",
     belum: 136,
-    sudah: 2,
+    sudah: 10,
   },
   {
     name: "2021",

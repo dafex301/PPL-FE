@@ -14,7 +14,7 @@ export default function DashboardAdmin(props) {
       <div className="flex justify-center">
         <div className="flex justify-center gap-5 py-10 w-3/4">
           <div className="w-1/4">
-            <MenuTopLeft role="Admin" />
+            <MenuTopLeft role="Admin" name="Operator" />
             <MenuBotLeftAdmin />
           </div>
           <div className="w-3/4 pb-3 bg-white rounded-lg shadow-lg">
