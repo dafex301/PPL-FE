@@ -11,24 +11,29 @@ export default function PklMahasiswa() {
           <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data PKL</h2>
         </div>
         <div className="flex justify-start ml-16 mt-5">
-          <label htmlFor="kelulusan">Status Kelulusan</label>
+          <label htmlFor="semester_aktif">Semester Aktif</label>
         </div>
-        {/* dropdown menu */}
+
         <div className="flex justify-start mx-16 mt-2">
           <select
+            id="semester_aktif"
+            name="semester_aktif"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
-            id="kelulusan"
-            name="kelulusan"
             defaultValue={""}
           >
+            {/* Loop from index 1 to 14 */}
             <option value="" disabled>
-              Pilih Status Kelulusan
+              Pilih Semester
             </option>
-            <option value="">Lulus</option>
-            <option value="">Belum Lulus</option>
+            {Array.from(Array(14).keys()).map((i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
           </select>
         </div>
+
         <div className="flex justify-start ml-16 mt-5">
           <label htmlFor="pkl">Nilai PKL</label>
         </div>

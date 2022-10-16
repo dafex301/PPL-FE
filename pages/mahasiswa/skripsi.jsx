@@ -14,22 +14,24 @@ export default function SkripsiMahasiswa() {
         </div>
 
         <div className="flex justify-start ml-16 mt-5">
-          <label htmlFor="status">Status Skripsi</label>
+          <label htmlFor="semester">Lama Studi (Semester)</label>
         </div>
-        {/* dropdown menu */}
         <div className="flex justify-start mx-16 mt-2">
           <select
-            id="status"
-            name="status"
+            id="semester"
+            name="semester"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
             defaultValue={""}
           >
             <option value="" disabled>
-              Pilih Status
+              Pilih Semester
             </option>
-            <option value="lulus">Lulus</option>
-            <option value="belum-lulus">Belum Lulus</option>
+            {Array.from(Array(14).keys()).map((i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -52,28 +54,6 @@ export default function SkripsiMahasiswa() {
             <option value="B">B</option>
             <option value="C">C</option>
             <option value="D">D</option>
-          </select>
-        </div>
-
-        <div className="flex justify-start ml-16 mt-5">
-          <label htmlFor="semester">Lama Studi (Semester)</label>
-        </div>
-        <div className="flex justify-start mx-16 mt-2">
-          <select
-            id="semester"
-            name="semester"
-            className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
-            placeholder="Semester"
-            defaultValue={""}
-          >
-            <option value="" disabled>
-              Pilih Semester
-            </option>
-            {Array.from(Array(14).keys()).map((i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
           </select>
         </div>
 

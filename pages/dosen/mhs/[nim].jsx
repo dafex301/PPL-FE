@@ -6,15 +6,25 @@ import { useRouter } from "next/router";
 // Asset
 import anya from "../../../public/anya.jpeg";
 
+// Component
+import Modal from "../../../components/Modal";
+import { useState } from "react";
+
 export default function DetailMhs() {
+  let [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const { nim } = router.query;
+
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
       <Head>
         <title>Detail Mahasiswa</title>
       </Head>
+      <Modal open={isOpen} handleModal={handleModal} />
       <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold w-1/4 text-2xl">Profil</h2>
         <div className="w-32 h-32 relative col-span-3">
@@ -67,7 +77,10 @@ export default function DetailMhs() {
       <div className="grid grid-cols-4 mx-12 my-5">
         <h2 className="text-left font-bold text-2xl">Semester</h2>
         <div className="col-span-3 grid grid-cols-4 gap-y-3">
-          <div className="py-4 w-10/12 rounded-xl hover:bg-violet-700 cursor-pointer shadow-lg bg-violet-500 text-white text-center text-2xl">
+          <div
+            onClick={handleModal}
+            className="py-4 w-10/12 rounded-xl hover:bg-violet-700 cursor-pointer shadow-lg bg-violet-500 text-white text-center text-2xl"
+          >
             1
           </div>
           <div className="py-4 w-10/12 rounded-xl hover:bg-violet-700 cursor-pointer shadow-lg bg-violet-500 text-white text-center text-2xl">

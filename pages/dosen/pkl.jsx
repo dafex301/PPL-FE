@@ -57,9 +57,7 @@ export default function PKLDosen() {
             id="angkatan"
             className="cursor-pointer ml-1"
           >
-            <option value="" selected>
-              Semua
-            </option>
+            <option value="">Semua</option>
             {[...Array(5)].map((_, i) => (
               <option key={currentYear - i} value={currentYear - i}>
                 {currentYear - i}
