@@ -3,19 +3,41 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { getCookie } from "cookies-next";
+import useSWR from "swr";
 import anya from "../../public/anya.jpeg";
 
+
+const token = getCookie("accessToken");
+
 export default function GenerateAdmin() {
-  const token = getCookie("accessToken");
+  const fetcher = async (url, headers) => await fetch(url, { 'method': 'GET', headers }).then((res) => res.json());
+
+
+  const dosen_url = `${process.env.BACKEND_API}/list-dosen`;
+  const headers = {
+    "x-access-token": token,
+  }
+
+  const { data: dosen } = useSWR([dosen_url, headers], fetcher);
+
+
 
   const axios = require("axios").default;
 
   const [name, setNama] = useState("");
   const [nim, setNim] = useState("");
   const [angkatan, setAngkatan] = useState("");
+  const [kodeWali, setKodeWali] = useState("");
   const [status, setStatus] = useState("aktif");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  if (!dosen) {
+    return (<h1>Loading...</h1>);
+  }
+
+  console.log(dosen);
+
 
   const handleGenerate = (e) => {
     // Generate account to BACKEND_API/generate
@@ -34,6 +56,7 @@ export default function GenerateAdmin() {
           nim: nim,
           angkatan: angkatan,
           status: status,
+          kodeWali: kodeWali,
         },
         {
           headers: {
@@ -47,6 +70,7 @@ export default function GenerateAdmin() {
         setNama("");
         setNim("");
         setAngkatan("");
+        setKodeWali("");
         setStatus("Aktif");
       })
       .catch((error) => {
@@ -145,7 +169,7 @@ export default function GenerateAdmin() {
             <select
               name="status"
               id="status"
-              className="border-b-2 py-1 focus:outline-none focus:border-gray-500 w-full "
+              className="border-b-2 mb-5 py-1 focus:outline-none focus:border-gray-500 w-full "
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -156,6 +180,22 @@ export default function GenerateAdmin() {
               <option value="Undur Diri">Undur Diri</option>
               <option value="Lulus">Lulus</option>
               <option value="Meninggal Dunia">Meninggal Dunia</option>
+            </select>
+            <label htmlFor="status" className="block text-sm text-gray-700">
+              Kode Wali
+            </label>
+            {/* make select option with value of id kode wali */}
+            <select
+              name="kodeWali"
+              id="kodeWali"
+              className="border-b-2 mb-5 py-1 focus:outline-none focus:border-gray-500 w-full "
+              value={kodeWali}
+              onChange={(e) => setKodeWali(e.target.value)}
+            >
+              {/* show dosen  */}
+              {dosen.map((dosen) => (
+                <option key={dosen._id} value={dosen._id}>{dosen.kodeWali} - {dosen.name}</option>
+              ))}
             </select>
             <div className="flex justify-center mt-5">
               <button
