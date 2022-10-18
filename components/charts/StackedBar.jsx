@@ -8,26 +8,19 @@ export default class ApexChart extends React.Component {
     this.state = {
       series: [
         {
-          name: "PRODUCT A",
-          data: [44, 55, 41, 67, 22, 43],
+          name: "Sudah",
+          data: [90, 100, 20, 0, 0],
         },
         {
-          name: "PRODUCT B",
-          data: [13, 23, 20, 8, 13, 27],
-        },
-        {
-          name: "PRODUCT C",
-          data: [11, 17, 15, 15, 21, 14],
-        },
-        {
-          name: "PRODUCT D",
-          data: [21, 7, 25, 13, 22, 8],
+          name: "Belum",
+          data: [13, 23, 80, 100, 100],
         },
       ],
       options: {
+        colors: ["#22c461", "#ea4648"],
         chart: {
           type: "bar",
-          height: 350,
+          height: 450,
           stacked: true,
           toolbar: {
             show: true,
@@ -64,19 +57,11 @@ export default class ApexChart extends React.Component {
           },
         },
         xaxis: {
-          type: "datetime",
-          categories: [
-            "01/01/2011 GMT",
-            "01/02/2011 GMT",
-            "01/03/2011 GMT",
-            "01/04/2011 GMT",
-            "01/05/2011 GMT",
-            "01/06/2011 GMT",
-          ],
+          type: "year",
+          categories: ["2022", "2021", "2020", "2019", "2018"],
         },
         legend: {
-          position: "right",
-          offsetY: 40,
+          position: "bottom",
         },
         fill: {
           opacity: 1,
