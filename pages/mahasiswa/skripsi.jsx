@@ -1,6 +1,12 @@
 import Head from "next/head";
+import { useState } from "react";
 
 export default function SkripsiMahasiswa() {
+  const [semester, setSemester] = useState("");
+  const [nilai, setNilai] = useState("");
+  const [tanggal, setTanggal] = useState("");
+  const [file, setFile] = useState("");
+
   return (
     <>
       <Head>

@@ -1,6 +1,43 @@
+// Next and React Component
 import Head from "next/head";
+import { useEffect, useState } from "react";
+
+// Import another library
+import { getCookie } from "cookies-next";
+import useSWR from "swr";
+import axios from "axios";
+
+// Get token from cookies
+const token = getCookie("accessToken");
+
+// Fetcher with header x-access-token
+const fetcherWithToken = (...args) =>
+  fetch(...args, {
+    headers: {
+      "x-access-token": token,
+    },
+  }).then((res) => res.json());
 
 export default function PklMahasiswa() {
+  const { data, error } = useSWR(
+    `${process.env.BACKEND_API}/pkl`,
+    fetcherWithToken
+  );
+
+  const [semester, setSemester] = useState("");
+  const [nilai, setNilai] = useState("");
+  const [status, setStatus] = useState("belum");
+  const [filename, setFileName] = useState("");
+
+  useEffect(() => {
+    if (data) {
+      setSemester(data.semester);
+      setNilai(data.nilai);
+      setStatus(data.status_konfirmasi);
+      setFileName(data.file);
+    }
+  }, [data]);
+
   return (
     <>
       <Head>
@@ -18,9 +55,11 @@ export default function PklMahasiswa() {
           <select
             id="semester_aktif"
             name="semester_aktif"
+            disabled={status === "sudah"}
+            value={semester}
+            onChange={(e) => setSemester(e.target.value)}
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
-            defaultValue={""}
           >
             {/* Loop from index 1 to 14 */}
             <option value="" disabled>
@@ -39,20 +78,22 @@ export default function PklMahasiswa() {
         </div>
         <div className="flex justify-start mx-16 mt-2">
           <select
+            disabled={status === "sudah"}
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
             id="pkl"
             name="pkl"
-            defaultValue={""}
+            value={nilai}
+            onChange={(e) => setNilai(e.target.value)}
           >
             <option value="" disabled>
               Pilih Nilai PKL
             </option>
-            <option value="">A</option>
-            <option value="">B</option>
-            <option value="">C</option>
-            <option value="">D</option>
-            <option value="">E</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
           </select>
         </div>
         <div className="flex justify-start ml-16 mt-5">
@@ -62,7 +103,11 @@ export default function PklMahasiswa() {
           {/* dropzone file */}
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 "
+            className={
+              status === "sudah"
+                ? "flex flex-col items-center justify-center w-full h-64 border rounded-xl hover:bg-gray-100 "
+                : "flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 hover:border-blue-500"
+            }
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg
@@ -80,24 +125,36 @@ export default function PklMahasiswa() {
                 ></path>
               </svg>
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
+                <span className="font-semibold">
+                  {filename ? filename : "Upload file"}
+                </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                PDF, PNG, or JPG up to 10MB
+                {filename ? "" : "PDF, PNG, or JPG up to 10MB"}
               </p>
             </div>
-            <input id="dropzone-file" type="file" className="hidden" />
+            <input
+              disabled={status == "sudah"}
+              id="dropzone-file"
+              type="file"
+              className="hidden"
+            />
           </label>
         </div>
         <div className="flex justify-center mt-5">
           <button
+            disabled={status === "sudah"}
             type="submit"
-            className="mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
+            className="disabled:bg-violet-300 disabled:cursor-not-allowed mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
           >
             Simpan
           </button>
         </div>
+        {status === "sudah" && (
+          <p className="text-green-600 ml-2 text-center">
+            *Data sudah diverifikasi, tidak dapat diubah
+          </p>
+        )}
       </form>
     </>
   );
