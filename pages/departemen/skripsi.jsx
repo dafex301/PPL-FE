@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 
+const data = [100, 200, 5, 2, 1];
+
 const StackedBar = dynamic(() => import("../../components/charts/StackedBar"), {
   ssr: false,
 });
@@ -53,7 +55,7 @@ export default function SkripsiDosen() {
       {/* End of Header */}
 
       {/* Bar */}
-      <StackedBar />
+      <StackedBar dataLulus={data} />
       {/* End of Bar */}
 
       {/* Boxes */}
