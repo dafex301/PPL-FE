@@ -3,10 +3,13 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
+// import StackedBar from "../../components/charts/StackedBar";
 
 const StackedBar = dynamic(() => import("../../components/charts/StackedBar"), {
   ssr: false,
 });
+
+const data = [100, 200, 5, 2, 1];
 
 export default function SkripsiDosen() {
   const [selected, setSelected] = useState(true);
@@ -53,7 +56,7 @@ export default function SkripsiDosen() {
       {/* End of Header */}
 
       {/* Bar */}
-      <StackedBar />
+      <StackedBar dataLulus={data} />
       {/* End of Bar */}
 
       {/* Boxes */}

@@ -9,7 +9,7 @@ export default class ApexChart extends React.Component {
       series: [
         {
           name: "Sudah",
-          data: [90, 100, 20, 0, 0],
+          data: this.props.dataLulus,
         },
         {
           name: "Belum",

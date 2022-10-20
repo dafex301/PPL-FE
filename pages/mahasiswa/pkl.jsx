@@ -130,7 +130,7 @@ export default function PklMahasiswa() {
                 </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                {filename ? "" : "PDF, PNG, or JPG up to 10MB"}
+                {filename ? "" : "PDF up to 10MB"}
               </p>
             </div>
             <input

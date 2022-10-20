@@ -1,7 +1,58 @@
+// Next and React Component
 import Head from "next/head";
-import DashboardMahasiswa from "../../components/mahasiswa/DashboardMahasiswa";
+import { useEffect, useState } from "react";
+
+// Import another library
+import { getCookie } from "cookies-next";
+import useSWR from "swr";
+import axios from "axios";
+
+// Get token from cookies
+const token = getCookie("accessToken");
+
+// Fetcher with header x-access-token
+const fetcherWithToken = (...args) =>
+  fetch(...args, {
+    headers: {
+      "x-access-token": token,
+    },
+  }).then((res) => res.json());
 
 export default function KhsMahasiswa() {
+  const { data, error } = useSWR(
+    `${process.env.BACKEND_API}/khs`,
+    fetcherWithToken
+  );
+
+  const [semester, setSemester] = useState("");
+  const [sksSemester, setSksSemester] = useState("");
+  const [sksKumulatif, setSksKumulatif] = useState("");
+  const [ipSemester, setIpSemester] = useState("");
+  const [ipKumulatif, setIpKumulatif] = useState("");
+  const [filename, setFileName] = useState("");
+  const [status, setStatus] = useState("belum");
+
+  useEffect(() => {
+    if (data) {
+      const khs = data.find((item) => item.semester_aktif == semester);
+      if (khs) {
+        setSksSemester(khs.sks);
+        setSksKumulatif(khs.sks_kumulatif);
+        setIpSemester(khs.ip);
+        setIpKumulatif(khs.ip_kumulatif);
+        setFileName(khs.file);
+        setStatus(khs.status_konfirmasi);
+      } else {
+        setSksSemester("");
+        setSksKumulatif("");
+        setIpSemester("");
+        setIpKumulatif("");
+        setFileName("");
+        setStatus("belum");
+      }
+    }
+  }, [data, semester]);
+
   return (
     <>
       <Head>
@@ -21,7 +72,8 @@ export default function KhsMahasiswa() {
             name="semester_aktif"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
-            defaultValue={""}
+            value={semester}
+            onChange={(e) => setSemester(e.target.value)}
           >
             {/* Loop from index 1 to 14 */}
             <option value="" disabled>
@@ -45,7 +97,10 @@ export default function KhsMahasiswa() {
             name="sks_semester"
             type="number"
             max={24}
-            className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            value={sksSemester}
+            disabled={status === "sudah"}
+            onChange={(e) => setSksSemester(e.target.value)}
           />
         </div>
 
@@ -58,7 +113,10 @@ export default function KhsMahasiswa() {
             name="sks"
             type="number"
             max={24}
-            className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            value={sksSemester}
+            disabled={status === "sudah"}
+            onChange={(e) => setSksKumulatif(e.target.value)}
           />
         </div>
 
@@ -71,7 +129,10 @@ export default function KhsMahasiswa() {
             name="sks_kumulatif"
             type="number"
             max={24}
-            className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            value={sksKumulatif}
+            disabled={status === "sudah"}
+            onChange={(e) => setSksKumulatif(e.target.value)}
           />
         </div>
 
@@ -83,8 +144,10 @@ export default function KhsMahasiswa() {
             id="ip_semester"
             name="ip_semester"
             type="number"
-            max={24}
-            className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            value={ipSemester}
+            disabled={status === "sudah"}
+            onChange={(e) => setIpSemester(e.target.value)}
           />
         </div>
 
@@ -96,8 +159,10 @@ export default function KhsMahasiswa() {
             id="ip_kumulatif"
             name="ip_kumulatif"
             type="number"
-            max={24}
-            className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            value={ipKumulatif}
+            disabled={status === "sudah"}
+            onChange={(e) => setIpKumulatif(e.target.value)}
           />
         </div>
 
@@ -108,7 +173,11 @@ export default function KhsMahasiswa() {
           {/* dropzone file */}
           <label
             htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 "
+            className={
+              status === "sudah"
+                ? "flex flex-col items-center justify-center w-full h-64 border rounded-xl hover:bg-gray-100 "
+                : "flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 hover:border-blue-500"
+            }
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg
@@ -126,24 +195,36 @@ export default function KhsMahasiswa() {
                 ></path>
               </svg>
               <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
+                <span className="font-semibold">
+                  {filename ? filename : "Upload file"}
+                </span>
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                PDF, PNG, or JPG up to 10MB
+                {filename ? "" : "PDF up to 10MB"}
               </p>
             </div>
-            <input id="dropzone-file" type="file" className="hidden" />
+            <input
+              disabled={status == "sudah"}
+              id="dropzone-file"
+              type="file"
+              className="hidden"
+            />
           </label>
         </div>
         <div className="flex justify-center mt-5">
           <button
+            disabled={status === "sudah"}
             type="submit"
-            className="mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
+            className="disabled:bg-violet-300 disabled:cursor-not-allowed mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
           >
             Simpan
           </button>
         </div>
+        {status === "sudah" && (
+          <p className="text-green-600 ml-2 text-center">
+            *Data sudah diverifikasi, tidak dapat diubah
+          </p>
+        )}
       </form>
     </>
   );
