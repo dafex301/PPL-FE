@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 // Import another library
 import { getCookie } from "cookies-next";
 import useSWR from "swr";
-import axios from "axios";
+import FileUpload from "../../components/FileUpload";
+import SubmitMessage from "../../components/SubmitMessage";
+import SaveFormButton from "../../components/SaveFormButton";
 
 // Get token from cookies
 const token = getCookie("accessToken");
@@ -24,10 +26,51 @@ export default function PklMahasiswa() {
     fetcherWithToken
   );
 
+  // Input State
   const [semester, setSemester] = useState("");
   const [nilai, setNilai] = useState("");
   const [status, setStatus] = useState("belum");
+
+  // File state
   const [filename, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+
+  // Success message state
+  const [success, setSuccess] = useState(null);
+  const [validFile, setValidFile] = useState(true);
+
+  // Handle Submit POST type of multipart/form-data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if all input is filled
+    if (semester && nilai && filename) {
+      let formData = new FormData();
+      formData.append("semester", semester);
+      formData.append("nilai", nilai);
+
+      if (file) {
+        formData.append("file", file);
+      }
+
+      try {
+        const res = await fetch(`${process.env.BACKEND_API}/pkl`, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "x-access-token": token,
+          },
+        });
+        const data = await res.json();
+        setSuccess(data.message);
+      } catch (err) {
+        console.log(err);
+        setSuccess(false);
+      }
+    } else {
+      setSuccess(false);
+    }
+  };
 
   useEffect(() => {
     if (data) {
@@ -38,11 +81,26 @@ export default function PklMahasiswa() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (file) {
+      // Check if the file.name ended with .pdf
+      if (file.name.split(".").pop() !== "pdf") {
+        setFile(null);
+        setValidFile(false);
+      } else {
+        setFileName(file.name);
+        setValidFile(true);
+      }
+    }
+  }, [file]);
+
   return (
     <>
       <Head>
         <title>PKL Mahasiswa</title>
       </Head>
+
+      <SubmitMessage success={success} name={"pkl"} />
       <form>
         <div className="flex">
           <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data PKL</h2>
@@ -99,57 +157,13 @@ export default function PklMahasiswa() {
         <div className="flex justify-start ml-16 mt-5">
           <label htmlFor="dropzone-file">Scan Berita Acara</label>
         </div>
-        <div className="flex justify-start mx-16 mt-2">
-          {/* dropzone file */}
-          <label
-            htmlFor="dropzone-file"
-            className={
-              status === "sudah"
-                ? "flex flex-col items-center justify-center w-full h-64 border rounded-xl hover:bg-gray-100 "
-                : "flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 hover:border-blue-500"
-            }
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg
-                className="w-10 h-10 mb-3 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                ></path>
-              </svg>
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">
-                  {filename ? filename : "Upload file"}
-                </span>
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {filename ? "" : "PDF up to 10MB"}
-              </p>
-            </div>
-            <input
-              disabled={status == "sudah"}
-              id="dropzone-file"
-              type="file"
-              className="hidden"
-            />
-          </label>
-        </div>
-        <div className="flex justify-center mt-5">
-          <button
-            disabled={status === "sudah"}
-            type="submit"
-            className="disabled:bg-violet-300 disabled:cursor-not-allowed mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
-          >
-            Simpan
-          </button>
-        </div>
+        <FileUpload
+          status={status}
+          filename={filename}
+          setFile={setFile}
+          validFile={validFile}
+        />
+        <SaveFormButton status={status} handleSubmit={handleSubmit} />
         {status === "sudah" && (
           <p className="text-green-600 ml-2 text-center">
             *Data sudah diverifikasi, tidak dapat diubah
