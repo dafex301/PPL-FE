@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 // Import another library
 import { getCookie } from "cookies-next";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import FileUpload from "../../components/FileUpload";
 import SubmitMessage from "../../components/SubmitMessage";
 import SaveFormButton from "../../components/SaveFormButton";
@@ -25,6 +25,7 @@ export default function PklMahasiswa() {
     `${process.env.BACKEND_API}/pkl`,
     fetcherWithToken
   );
+  const { mutate } = useSWRConfig();
 
   // Input State
   const [semester, setSemester] = useState("");
@@ -63,8 +64,13 @@ export default function PklMahasiswa() {
         });
         const data = await res.json();
         setSuccess(data.message);
+        // Run SWR optimistic update
+        mutate(`${process.env.BACKEND_API}/pkl`, {
+          semester: semester,
+          nilai: nilai,
+          file: filename,
+        });
       } catch (err) {
-        console.log(err);
         setSuccess(false);
       }
     } else {

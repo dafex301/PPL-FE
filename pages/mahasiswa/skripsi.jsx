@@ -66,7 +66,7 @@ export default function SkripsiMahasiswa() {
 
         if (res.status === 200) {
           setSuccess(true);
-          
+
           // Run SWR optimistic update
           mutate(`${process.env.BACKEND_API}/skripsi`, {
             semester: semester,
@@ -90,7 +90,11 @@ export default function SkripsiMahasiswa() {
       setSemester(data.semester);
       setNilai(data.nilai);
       setStatus(data.status_konfirmasi);
-      setTanggal(new Date(data.tanggal).toISOString().split("T")[0]);
+      if (data.tanggal) {
+        let tgl = new Date(data.tanggal);
+        tgl = tgl.toISOString().split("T")[0];
+        setTanggal(tgl);
+      }
       setFileName(data.file);
     }
   }, [data]);
