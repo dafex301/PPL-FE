@@ -227,7 +227,6 @@ export default function HomeMahasiswa({ provData }) {
             id="provinsi"
             name="provinsi"
             className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
-            defaultValue={""}
             value={provinsi}
           >
             <option value="">Pilih Provinsi</option>
@@ -245,7 +244,6 @@ export default function HomeMahasiswa({ provData }) {
             id="kabupaten"
             name="kabupaten"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
-            defaultValue={""}
             value={kabupaten}
             onChange={(e) => setKabupaten(e.target.value)}
           >

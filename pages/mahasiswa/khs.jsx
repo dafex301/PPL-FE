@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 
 // Import another library
 import { getCookie } from "cookies-next";
-import useSWR from "swr";
-import axios from "axios";
+import useSWR, { useSWRConfig } from "swr";
+
+// Components
+import FileUpload from "../../components/FileUpload";
+import SubmitMessage from "../../components/SubmitMessage";
+import SaveFormButton from "../../components/SaveFormButton";
 
 // Get token from cookies
 const token = getCookie("accessToken");
@@ -24,16 +28,71 @@ export default function KhsMahasiswa() {
     fetcherWithToken
   );
 
+  // Input State
   const [semester, setSemester] = useState("");
   const [sksSemester, setSksSemester] = useState("");
   const [sksKumulatif, setSksKumulatif] = useState("");
   const [ipSemester, setIpSemester] = useState("");
   const [ipKumulatif, setIpKumulatif] = useState("");
-  const [filename, setFileName] = useState("");
   const [status, setStatus] = useState("belum");
+
+  // File State
+  const [filename, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+
+  // Success message state
+  const [success, setSuccess] = useState(null);
+  const [validFile, setValidFile] = useState(true);
+
+  // Handle Submit POST type of multipart/form-data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if all input is filled
+    if (
+      semester &&
+      sksSemester &&
+      sksKumulatif &&
+      ipSemester &&
+      ipKumulatif &&
+      filename
+    ) {
+      let formData = new FormData();
+      formData.append("semester", semester);
+      formData.append("sks_semester", sksSemester);
+      formData.append("sks_kumulatif", sksKumulatif);
+      formData.append("ip_semester", ipSemester);
+      formData.append("ip_kumulatif", ipKumulatif);
+
+      if (file) {
+        formData.append("file", file);
+      }
+
+      try {
+        const res = await fetch(`${process.env.BACKEND_API}/khs`, {
+          method: "POST",
+          headers: {
+            "x-access-token": token,
+          },
+          body: formData,
+        });
+
+        const json = await res.json();
+
+        if (json.success) {
+          setSuccess(json.message);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      setSuccess(false);
+    }
+  };
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       const khs = data.find((item) => item.semester_aktif == semester);
       if (khs) {
         setSksSemester(khs.sks);
@@ -99,7 +158,7 @@ export default function KhsMahasiswa() {
             max={24}
             className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={sksSemester}
-            disabled={status === "sudah"}
+            disabled={status === "sudah" || semester == "" || semester == ""}
             onChange={(e) => setSksSemester(e.target.value)}
           />
         </div>
@@ -115,7 +174,7 @@ export default function KhsMahasiswa() {
             max={24}
             className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={sksSemester}
-            disabled={status === "sudah"}
+            disabled={status === "sudah" || semester == ""}
             onChange={(e) => setSksKumulatif(e.target.value)}
           />
         </div>
@@ -131,7 +190,7 @@ export default function KhsMahasiswa() {
             max={24}
             className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={sksKumulatif}
-            disabled={status === "sudah"}
+            disabled={status === "sudah" || semester == ""}
             onChange={(e) => setSksKumulatif(e.target.value)}
           />
         </div>
@@ -146,7 +205,7 @@ export default function KhsMahasiswa() {
             type="number"
             className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={ipSemester}
-            disabled={status === "sudah"}
+            disabled={status === "sudah" || semester == ""}
             onChange={(e) => setIpSemester(e.target.value)}
           />
         </div>
@@ -161,7 +220,7 @@ export default function KhsMahasiswa() {
             type="number"
             className="w-full p-1 disabled:bg-white text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={ipKumulatif}
-            disabled={status === "sudah"}
+            disabled={status === "sudah" || semester == ""}
             onChange={(e) => setIpKumulatif(e.target.value)}
           />
         </div>
@@ -204,7 +263,7 @@ export default function KhsMahasiswa() {
               </p>
             </div>
             <input
-              disabled={status == "sudah"}
+              disabled={status == "sudah" || semester == ""}
               id="dropzone-file"
               type="file"
               className="hidden"
@@ -213,7 +272,7 @@ export default function KhsMahasiswa() {
         </div>
         <div className="flex justify-center mt-5">
           <button
-            disabled={status === "sudah"}
+            disabled={status === "sudah" || semester == ""}
             type="submit"
             className="disabled:bg-violet-300 disabled:cursor-not-allowed mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
           >
