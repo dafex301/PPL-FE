@@ -63,6 +63,8 @@ export default function HomeMahasiswa({ provData }) {
     fetcher
   );
 
+
+
   // Fetch mahasiswa data
   const { data: dataMhs, error: errorMhs } = useSWR(
     `${process.env.BACKEND_API}/profil`,
@@ -111,6 +113,7 @@ export default function HomeMahasiswa({ provData }) {
       setPhone(dataMhs.phone);
     }
   }, [dataMhs]);
+  console.log(dataMhs);
 
   return (
     <>

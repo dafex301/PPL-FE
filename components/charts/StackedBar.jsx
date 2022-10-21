@@ -6,17 +6,9 @@ export default class ApexChart extends React.Component {
     super(props);
 
     this.state = {
-      series: [
-        {
-          name: "Sudah",
-          data: this.props.dataLulus,
-        },
-        {
-          name: "Belum",
-          data: [13, 23, 80, 100, 100],
-        },
-      ],
-      options: {
+      // initial nilai array series kosong
+      series: [],
+      options: { 
         colors: ["#22c461", "#ea4648"],
         chart: {
           type: "bar",
@@ -58,7 +50,7 @@ export default class ApexChart extends React.Component {
         },
         xaxis: {
           type: "year",
-          categories: ["2022", "2021", "2020", "2019", "2018"],
+          categories: this.props.tahun,
         },
         legend: {
           position: "bottom",
@@ -68,6 +60,46 @@ export default class ApexChart extends React.Component {
         },
       },
     };
+  }
+
+  // berjalan pada saat page pertama kali di load
+  componentDidMount() { 
+    if (this.props.dataLulus && this.props.dataBelum) {
+      // membuat state data sudah sesuai dengan props
+      this.setState((state, props) => {
+        return {series: [{
+          name: "Sudah",
+          data: props.dataLulus,
+        },
+        {
+          name: "Belum",
+          data: props.dataBelum,
+        },]};
+      }
+      );
+    }
+  }
+
+  // berjalan setiap kali update/webpage di refresh
+  componentDidUpdate(previousProps){
+    // kondisi ini diberikan agar tidak terjadi infinite loop atau sebagai break steatment
+    if(previousProps.dataLulus !== this.props.dataLulus && previousProps.dataBelum !== this.props.dataBelum){
+      if (this.props.dataLulus && this.props.dataBelum) {
+        // membuat state data sudah sesuai dengan props
+        this.setState((state, props) => {
+          return {series: [{
+            name: "Sudah",
+            data: props.dataLulus,
+          },
+          {
+            name: "Belum",
+            data: props.dataBelum,
+          },]};
+        }
+        );
+      }
+    }
+    
   }
 
   render() {
