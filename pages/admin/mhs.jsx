@@ -94,6 +94,9 @@ export default function MahasiswaAdmin() {
                     Angkatan
                   </th>
                   <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                    Dosen Wali
+                  </th>
+                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Status
                   </th>
                   <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
@@ -123,6 +126,11 @@ export default function MahasiswaAdmin() {
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div class="text-sm leading-5 text-gray-900">
                           {mhs.angkatan}
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div class="text-sm leading-5 text-gray-900">
+                          {/* {mhs.kodeWali.name} */}
                         </div>
                       </td>
                       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
