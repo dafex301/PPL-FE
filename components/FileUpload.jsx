@@ -35,7 +35,7 @@ export default function FileUpload(props) {
             </p>
           </div>
           <input
-            disabled={props.status == "sudah"}
+            disabled={props.status == "sudah" || props.semester == ""}
             id="dropzone-file"
             type="file"
             className="hidden"
