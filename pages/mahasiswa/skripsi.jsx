@@ -34,6 +34,7 @@ export default function SkripsiMahasiswa() {
   // Success message state
   const [success, setSuccess] = useState(null);
   const [validFile, setValidFile] = useState(true);
+  const [message, setMessage] = useState(null);
 
   // Fetch data if it's already exist, refetch after change page
   const { data, error } = useSWR(
@@ -82,7 +83,9 @@ export default function SkripsiMahasiswa() {
       }
     } else {
       setSuccess(false);
+      setMessage("Semua input harus diisi");
     }
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -120,7 +123,7 @@ export default function SkripsiMahasiswa() {
       </Head>
 
       {/* Message */}
-      <SubmitMessage success={success} name={"skripsi"} />
+      <SubmitMessage message={message} success={success} name={"skripsi"} />
       {/* End of Message */}
 
       <form encType="multipart/form-data">

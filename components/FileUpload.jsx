@@ -5,7 +5,7 @@ export default function FileUpload(props) {
         <label
           htmlFor="dropzone-file"
           className={
-            props.status === "sudah"
+            props.status === "sudah" || props.semester === ""
               ? "flex flex-col items-center justify-center w-full h-64 border rounded-xl hover:bg-gray-100 "
               : "flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 hover:border-violet-500"
           }

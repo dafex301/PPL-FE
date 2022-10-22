@@ -11,12 +11,18 @@ export default function SubmitMessage(props) {
       )}
 
       {/* Error Message */}
-      {!props.success && props.success !== null && (
+      {props.success === false && (
         <div
           className="mx-5 p-4 mt-5 border border-red-500 text-md text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
           role="alert"
         >
-          <span className="font-medium">Gagal</span> mengupdate {props.name}
+          {props.message ? (
+            <p className="font-medium">{props.message}</p>
+          ) : (
+            <p>
+              <span className="font-medium">Gagal</span> mengupdate {props.name}
+            </p>
+          )}
         </div>
       )}
     </>

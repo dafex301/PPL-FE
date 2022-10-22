@@ -41,6 +41,7 @@ export default function PklMahasiswa() {
   // Success message state
   const [success, setSuccess] = useState(null);
   const [validFile, setValidFile] = useState(true);
+  const [message, setMessage] = useState(null);
 
   // Handle Submit POST type of multipart/form-data
   const handleSubmit = async (e) => {
@@ -79,7 +80,9 @@ export default function PklMahasiswa() {
       }
     } else {
       setSuccess(false);
+      setMessage("Semua input harus diisi");
     }
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -110,7 +113,7 @@ export default function PklMahasiswa() {
         <title>PKL Mahasiswa</title>
       </Head>
 
-      <SubmitMessage success={success} name={"pkl"} />
+      <SubmitMessage message={message} success={success} name={"pkl"} />
       <form>
         <div className="flex">
           <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data PKL</h2>

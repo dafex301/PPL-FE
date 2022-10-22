@@ -23,6 +23,7 @@ const fetcherWithToken = (...args) =>
   }).then((res) => res.json());
 
 export default function KhsMahasiswa() {
+  // Fetch data
   const { data, error } = useSWR(
     `${process.env.BACKEND_API}/khs`,
     fetcherWithToken
@@ -44,6 +45,7 @@ export default function KhsMahasiswa() {
   // Success message state
   const [success, setSuccess] = useState(null);
   const [validFile, setValidFile] = useState(true);
+  const [message, setMessage] = useState(null);
 
   // Handle Submit POST type of multipart/form-data
   const handleSubmit = async (e) => {
@@ -90,9 +92,12 @@ export default function KhsMahasiswa() {
       }
     } else {
       setSuccess(false);
+      setMessage("Semua input harus diisi");
     }
+    window.scrollTo(0, 0);
   };
 
+  // Update data if data is exist
   useEffect(() => {
     if (data) {
       const khs = data.find((item) => item.semester_aktif == semester);
@@ -114,6 +119,7 @@ export default function KhsMahasiswa() {
     }
   }, [data, semester]);
 
+  // Handle file upload
   useEffect(() => {
     if (file) {
       // Check if the file.name ended with .pdf
@@ -132,7 +138,7 @@ export default function KhsMahasiswa() {
       <Head>
         <title>KHS Mahasiswa</title>
       </Head>
-      <SubmitMessage success={success} name={"khs"} />
+      <SubmitMessage success={success} name={"khs"} message={message} />
       <form>
         <div className="flex">
           <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data KHS</h2>
@@ -235,7 +241,11 @@ export default function KhsMahasiswa() {
           validFile={validFile}
           semester={semester}
         />
-        <SaveFormButton status={status} handleSubmit={handleSubmit} />
+        <SaveFormButton
+          semester={semester}
+          status={status}
+          handleSubmit={handleSubmit}
+        />
         {status === "sudah" && (
           <p className="text-green-600 ml-2 text-center">
             *Data sudah diverifikasi, tidak dapat diubah
