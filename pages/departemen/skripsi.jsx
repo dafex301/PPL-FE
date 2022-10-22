@@ -5,6 +5,7 @@ import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 import useSWR from "swr";
 import { getCookie } from "cookies-next";
+import TabelRekap from "../../components/TableRekap";
 const token = getCookie("accessToken");
 
 // fetcher function with token
@@ -72,21 +73,24 @@ export default function SkripsiDosen() {
       variasiTahun.sort();   
       setTahun(variasiTahun);
 
-            
+      // array jumlah mahasiswa belum skripsi per tahun
       let dataPerTahunBelum = [];
+      // array jumlah mahasiswa sudah skripsi per tahun
       let dataPerTahunSudah = [];
+      // intialisasi nilai array dengan 0
       for(let i=0;i<variasiTahun.length;i++){
         dataPerTahunBelum.push(0);
         dataPerTahunSudah.push(0);
       } 
 
+      // menghitung frekuensi jumlah yang sudah dan belum skripsi setiap tahun nya
       for (let i = 0; i < rekapData.length; i++) {
           for(let j=0;j<variasiTahun.length;j++){ 
             if (rekapData[i].status_konfirmasi === "belum" && rekapData[i].angkatan === variasiTahun[j]) dataPerTahunBelum[j]++;
             else if (rekapData[i].status_konfirmasi === "sudah" && rekapData[i].angkatan === variasiTahun[j]) dataPerTahunSudah[j]++;
         }
       }
-      // console.log(dataPerTahunSudah);
+      // mengset data untuk ditampilkan
       setDataSudah(dataPerTahunSudah);
       setDataBelum(dataPerTahunBelum);
 
@@ -157,92 +161,7 @@ export default function SkripsiDosen() {
       {/* End of Boxes */}
 
       {/* Table */}
-      {rekapData ? (
-        <div class="flex flex-col items-center mt-4">
-          <div class="py-2 my-2 overflow-x-auto w-full px-6">
-            <div class="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-              <table class="min-w-full">
-                <thead>
-                  <tr>
-                    <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                      Nama
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                      NIM
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                      Angkatan
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                      Status
-                    </th>
-                    <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                {/* show data in table body with access to status.name */}
-                {/* iterasi data pada rekap data */}
-                <tbody class="bg-white">
-                  {rekapData.map((el, idx) => {
-                    return (
-                      <tr key={idx}>
-                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <div class="flex items-center">
-                            <div class="ml-4">
-                              <div class="text-sm leading-5 font-medium text-gray-900">
-                                {el.nama}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <div class="text-sm leading-5 text-gray-900">
-                            {el.nim}
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <div class="text-sm leading-5 text-gray-900">
-                            {el.angkatan}
-                          </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <span
-                            class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              el.status_konfirmasi === "belum"
-                                ? "bg-red-300 text-red-900"
-                                : "bg-green-300 text-green-900"
-                            }`}
-                          >
-                            {el.status_konfirmasi}
-                          </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                          <span
-                            class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full `}
-                          >
-                            Detail
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <br />
-            <br />
-            {/* <Pagination
-            items={5}
-            currentPage={currentPage}
-            pageSize={pageSize}
-            onPageChange={handlePageChange} 
-          /> */}
-          </div>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <TabelRekap rekapData={rekapData} />
     </>
   );
 }
