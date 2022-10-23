@@ -139,10 +139,9 @@ export default class ApexChart extends React.Component {
     // kondisi ini diberikan agar tidak terjadi infinite loop atau sebagai break steatment
     if (
       previousProps.dataLulus !== this.props.dataLulus &&
-      previousProps.dataBelum !== this.props.dataBelum &&
-      previousProps.tahun !== this.props.tahun
+      previousProps.dataBelum !== this.props.dataBelum
     ) {
-      if (this.props.dataLulus && this.props.dataBelum && this.props.tahun) {
+      if (this.props.dataLulus && this.props.dataBelum) {
         // membuat state data sudah sesuai dengan props
         this.setState((state, props) => {
           return {

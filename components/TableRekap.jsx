@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import titlecase from "../utils/functions/titlecase";
 
 export default function TabelRekap({ rekapData }) {
   const [data, setData] = useState([]);
@@ -38,7 +39,7 @@ export default function TabelRekap({ rekapData }) {
             <tbody class="bg-white">
               {data.map((el, idx) => {
                 return (
-                  <tr key={idx + Math.floor(Math.random) * 1000}>
+                  <tr key={data.nim}>
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div class="flex items-center">
                         <div class="ml-4">
@@ -66,7 +67,7 @@ export default function TabelRekap({ rekapData }) {
                             : "bg-green-300 text-green-900"
                         }`}
                       >
-                        {el.status_konfirmasi}
+                        {titlecase(el.status_konfirmasi)}
                       </span>
                     </td>
                     <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">

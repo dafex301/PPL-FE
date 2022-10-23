@@ -3,7 +3,6 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
-// import StackedBar from "../../components/charts/StackedBar";
 
 const StackedBar = dynamic(() => import("../../components/charts/StackedBar"), {
   ssr: false,

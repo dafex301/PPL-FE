@@ -89,7 +89,7 @@ export default function IrsMahasiswa(props) {
       const irs = data.find((item) => item.semester == semester);
       if (irs) {
         setSks(irs.sks);
-        setStatus(irs.status);
+        setStatus(irs.status_konfirmasi);
         setFileName(irs.file);
       } else {
         setSks("");
@@ -156,6 +156,7 @@ export default function IrsMahasiswa(props) {
             className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={sks}
             onChange={(e) => setSks(e.target.value)}
+            disabled={status === "sudah"}
           />
         </div>
         <div className="flex justify-start ml-16 mt-5">

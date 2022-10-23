@@ -6,21 +6,18 @@ import { getCookie } from "cookies-next";
 import useSWR from "swr";
 import anya from "../../public/anya.jpeg";
 
-
 const token = getCookie("accessToken");
 
 export default function GenerateAdmin() {
-  const fetcher = async (url, headers) => await fetch(url, { 'method': 'GET', headers }).then((res) => res.json());
-
+  const fetcher = async (url, headers) =>
+    await fetch(url, { method: "GET", headers }).then((res) => res.json());
 
   const dosen_url = `${process.env.BACKEND_API}/list-dosen`;
   const headers = {
     "x-access-token": token,
-  }
+  };
 
   const { data: dosen } = useSWR([dosen_url, headers], fetcher);
-
-
 
   const axios = require("axios").default;
 
@@ -33,11 +30,10 @@ export default function GenerateAdmin() {
   const [success, setSuccess] = useState("");
 
   if (!dosen) {
-    return (<h1>Loading...</h1>);
+    return <h1>Loading...</h1>;
   }
 
   console.log(dosen);
-
 
   const handleGenerate = (e) => {
     // Generate account to BACKEND_API/generate
@@ -194,7 +190,9 @@ export default function GenerateAdmin() {
             >
               {/* show dosen  */}
               {dosen.map((dosen) => (
-                <option key={dosen._id} value={dosen._id}>{dosen.kodeWali} - {dosen.name}</option>
+                <option key={dosen._id} value={dosen._id}>
+                  {dosen.name} - {dosen.nip}
+                </option>
               ))}
             </select>
             <div className="flex justify-center mt-5">

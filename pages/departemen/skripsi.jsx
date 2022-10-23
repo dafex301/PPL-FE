@@ -1,10 +1,9 @@
 import RekapStatistik from "../../components/charts/RekapStatistik";
 
 export default function DataPKL() {
-
   return (
     <>
-     <RekapStatistik API={"http://localhost:8080/all-skripsi"} />
+      <RekapStatistik API={`${process.env.BACKEND_API}/all-skripsi`} />
     </>
   );
 }

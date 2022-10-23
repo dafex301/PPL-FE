@@ -7,7 +7,7 @@ export default function MenuTopLeft(props) {
   // When get props.name, set the name to props.name
   useEffect(() => {
     setName(props.name);
-  }, [props.name]);
+  }, [props]);
 
   return (
     <div className="bg-white rounded-lg shadow-lg">
