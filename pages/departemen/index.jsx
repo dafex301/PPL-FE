@@ -13,20 +13,18 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function HomeDepartemen() {
-  const [nama,setName] = useState("");
+  const [nama, setName] = useState("");
   const { data: rekapData, errorKab } = useSWR(
     "http://localhost:8080/all-skripsi",
     fetcher
   );
   console.log(rekapData);
-  if(rekapData){
-    return <p>{rekapData[0].nama}</p>
-  }
+  // if(rekapData){
+  //   return <p>{rekapData[0].nama}</p>
+  // }
   return (
     <>
-      <Head>
-
-      </Head>
+      <Head></Head>
     </>
   );
 }

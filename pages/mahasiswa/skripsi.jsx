@@ -207,6 +207,7 @@ export default function SkripsiMahasiswa() {
           filename={filename}
           setFile={setFile}
           validFile={validFile}
+          filetype={"pdf"}
         />
         <SaveFormButton status={status} handleSubmit={handleSubmit} />
         {status === "sudah" && (

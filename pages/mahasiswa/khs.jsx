@@ -240,6 +240,7 @@ export default function KhsMahasiswa() {
           setFile={setFile}
           validFile={validFile}
           semester={semester}
+          filetype={"pdf"}
         />
         <SaveFormButton
           semester={semester}

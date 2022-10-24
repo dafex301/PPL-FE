@@ -31,7 +31,7 @@ export default function IrsMahasiswa(props) {
   const { mutate } = useSWRConfig();
 
   // Input State
-  const [semester, setSemester] = useState("");
+  const [semester_aktif, setSemesterAktif] = useState("");
   const [sks, setSks] = useState("");
   const [status, setStatus] = useState("belum");
 
@@ -49,10 +49,10 @@ export default function IrsMahasiswa(props) {
     e.preventDefault();
 
     // Check if all input is filled
-    if (semester && sks && filename) {
+    if (semester_aktif && sks && filename) {
       // Create form data
       const formData = new FormData();
-      formData.append("semester", semester);
+      formData.append("semester_aktif", semester_aktif);
       formData.append("sks", sks);
       if (file) {
         formData.append("file", file);
@@ -86,7 +86,7 @@ export default function IrsMahasiswa(props) {
   // Update data if data is exist
   useEffect(() => {
     if (data) {
-      const irs = data.find((item) => item.semester == semester);
+      const irs = data.find((item) => item.semester_aktif == semester_aktif);
       if (irs) {
         setSks(irs.sks);
         setStatus(irs.status_konfirmasi);
@@ -97,7 +97,7 @@ export default function IrsMahasiswa(props) {
         setFileName("");
       }
     }
-  }, [data, semester]);
+  }, [data, semester_aktif]);
 
   // Handle file upload
   useEffect(() => {
@@ -127,11 +127,11 @@ export default function IrsMahasiswa(props) {
         <div className="flex justify-start mx-16 mt-2">
           <select
             id="semester"
-            name="semester"
+            name="semester_aktif"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
-            value={semester}
-            onChange={(e) => setSemester(e.target.value)}
+            value={semester_aktif}
+            onChange={(e) => setSemesterAktif(e.target.value)}
           >
             {/* Loop from index 1 to 14 */}
             <option value="" disabled>
@@ -167,10 +167,11 @@ export default function IrsMahasiswa(props) {
           filename={filename}
           setFile={setFile}
           validFile={validFile}
-          semester={semester}
+          semester={semester_aktif}
+          filetype={"pdf"}
         />
         <SaveFormButton
-          semester={semester}
+          semester={semester_aktif}
           status={status}
           handleSubmit={handleSubmit}
         />

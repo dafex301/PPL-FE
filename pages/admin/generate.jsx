@@ -1,10 +1,16 @@
-// Import navbar
+// Import next/react components
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import useSWR from "swr";
+
+// Import components
+import FileUpload from "../../components/FileUpload";
+
+// Import assets
 import anya from "../../public/anya.jpeg";
+import Link from "next/link";
 
 const token = getCookie("accessToken");
 
@@ -29,11 +35,23 @@ export default function GenerateAdmin() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  if (!dosen) {
-    return <h1>Loading...</h1>;
-  }
+  // File state
+  const [filename, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+  const [validFile, setValidFile] = useState(true);
 
-  console.log(dosen);
+  // Handle file upload
+  useEffect(() => {
+    if (file) {
+      if (file.name.split(".").pop() !== "csv") {
+        setFile(null);
+        setValidFile(false);
+      } else {
+        setFileName(file.name);
+        setValidFile(true);
+      }
+    }
+  }, [file]);
 
   const handleGenerate = (e) => {
     // Generate account to BACKEND_API/generate
@@ -73,6 +91,44 @@ export default function GenerateAdmin() {
         setError("Gagal generate akun!");
         setSuccess("");
       });
+  };
+
+  const handleGenerateBatch = async (e) => {
+    // Generate batch account to BACKEND_API/generate-batch
+    // Set the request header to x-access-token with token
+    // Set the request body to file
+    // If success, show success message
+    // If failed, show error message
+    if (file) {
+      e.preventDefault();
+      setSuccess("");
+      setError("");
+      const formData = new FormData();
+      formData.append("file", file);
+      // Fetch with POST method
+      try {
+        const res = await fetch(`${process.env.BACKEND_API}/batch-generate`, {
+          method: "POST",
+          headers: {
+            "x-access-token": token,
+          },
+          body: formData,
+        });
+        const data = await res.json();
+        if (data.status === "success") {
+          setSuccess("Berhasil generate akun!");
+          setError("");
+          setFile(null);
+          setFileName("");
+        } else {
+          setError("Gagal generate akun!");
+          setSuccess("");
+        }
+      } catch (error) {
+        setError("Gagal generate akun!");
+        setSuccess("");
+      }
+    }
   };
 
   return (
@@ -188,12 +244,14 @@ export default function GenerateAdmin() {
               value={kodeWali}
               onChange={(e) => setKodeWali(e.target.value)}
             >
+              <option value={""}>Pilih Dosen</option>
               {/* show dosen  */}
-              {dosen.map((dosen) => (
-                <option key={dosen._id} value={dosen._id}>
-                  {dosen.name} - {dosen.nip}
-                </option>
-              ))}
+              {dosen &&
+                dosen.map((dosen) => (
+                  <option key={dosen._id} value={dosen._id}>
+                    {dosen.name} - {dosen.nip}
+                  </option>
+                ))}
             </select>
             <div className="flex justify-center mt-5">
               <button
@@ -207,6 +265,42 @@ export default function GenerateAdmin() {
           </div>
         </div>
       </form>
+      <div className="mx-5 my-5">
+        <div className="flex items-center mt-5">
+          <div className="w-full mr-5 bg-gray-300 h-0.5"></div>
+          <div className="text-gray-500">atau</div>
+          <div className="w-full ml-5 bg-gray-300 h-0.5"></div>
+        </div>
+        <div className="flex items-center justify-between">
+          <h2 className="text-left font-bold text-2xl my-2">
+            Generate Akun Batch
+          </h2>
+          <Link href="">
+            <a className="text-violet-700 hover:text-violet-900">
+              Download Template
+            </a>
+          </Link>
+        </div>
+        <FileUpload
+          filename={filename}
+          setFile={setFile}
+          validFile={validFile}
+          filetype={"csv"}
+        />
+        <div className="flex justify-center mt-5">
+          <button
+            type="button"
+            className={
+              filename
+                ? "bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full"
+                : "bg-gray-300 text-white font-bold py-2 px-4 rounded-full cursor-not-allowed"
+            }
+            onClick={handleGenerateBatch}
+          >
+            Generate
+          </button>
+        </div>
+      </div>
     </>
   );
 }
