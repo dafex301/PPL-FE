@@ -6,6 +6,7 @@ import { paginate } from "../../utils/functions/paginate";
 import useSWR from "swr";
 import { getCookie } from "cookies-next";
 import TabelRekap from "../TableRekap";
+import TotalNum from "./TotalNum";
 const token = getCookie("accessToken");
 
 // fetcher function with token
@@ -17,6 +18,9 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 const StackedBar = dynamic(() => import("./StackedBar"), {
+  ssr: false,
+});
+const PieChart = dynamic(() => import("../../components/charts/PieChart"), {
   ssr: false,
 });
 
@@ -32,11 +36,11 @@ years.sort((a, b) => a - b);
 // Convert to string
 const yearsString = years.map((year) => year.toString());
 
-export default function RekapStatistik({ API }) {
+export default function RekapStatistik({ API,label }) {
   const [selected, setSelected] = useState(true);
   const [selected2, setSelected2] = useState(true);
+  // angkatan yang mau dicara
   const [angkatan, setAngkatan] = useState("");
-
   // jumlah sudah skripsi
   const [sudahSkripsi, setSudahSkripsi] = useState(0);
   // jumlah belum skripsi
@@ -55,7 +59,7 @@ export default function RekapStatistik({ API }) {
     if (rekapData) {
       let sudah = 0;
       let belum = 0;
-
+      console.log(API);
       let dataSdh = [0, 0, 0, 0, 0];
       let dataBlm = [0, 0, 0, 0, 0];
 
@@ -78,61 +82,8 @@ export default function RekapStatistik({ API }) {
       setBelumSkripsi(belum);
       setDataSudah(dataSdh);
       setDataBelum(dataBlm);
-      // // menghitung jumlah yang sudah dan belum skripsi
-      // for (let i = 0; i < rekapData.length; i++) {
-      //   if (rekapData[i].status_konfirmasi === "belum") countBlm++;
-      //   else if (rekapData[i].status_konfirmasi === "sudah") countSdh++;
-      // }
-      // setSudahSkripsi(countSdh);
-      // setBelumSkripsi(countBlm);
-
-      // // mehitung banyak variasi tahun
-      // let tahun = new Set();
-      // let variasiTahun = [];
-
-      // rekapData.forEach((element) => {
-      //   if (!tahun.has(element.angkatan)) {
-      //     tahun.add(element.angkatan);
-      //     variasiTahun.push(element.angkatan);
-      //   }
-      // });
-      // // set tahun berdasarkan
-      // variasiTahun.sort();
-      // // Only get latest 5 years
-      // variasiTahun = variasiTahun.slice(variasiTahun.length - 5);
-      // setTahun(variasiTahun);
-
-      // // array jumlah mahasiswa belum skripsi per tahun
-      // let dataPerTahunBelum = [];
-      // // array jumlah mahasiswa sudah skripsi per tahun
-      // let dataPerTahunSudah = [];
-      // // intialisasi nilai array dengan 0
-      // for (let i = 0; i < variasiTahun.length; i++) {
-      //   dataPerTahunBelum.push(0);
-      //   dataPerTahunSudah.push(0);
-      // }
-
-      // // menghitung frekuensi jumlah yang sudah dan belum skripsi setiap tahun nya
-      // console.log(rekapData);
-      // for (let i = 0; i < rekapData.length; i++) {
-      //   for (let j = 0; j < variasiTahun.length; j++) {
-      //     if (
-      //       rekapData[i].status_konfirmasi === "belum" &&
-      //       rekapData[i].angkatan === variasiTahun[j]
-      //     )
-      //       dataPerTahunBelum[j]++;
-      //     else if (
-      //       rekapData[i].status_konfirmasi === "sudah" &&
-      //       rekapData[i].angkatan === variasiTahun[j]
-      //     )
-      //       dataPerTahunSudah[j]++;
-      //   }
-      // }
-      // // mengset data untuk ditampilkan
-      // setDataSudah(dataPerTahunSudah);
-      // setDataBelum(dataPerTahunBelum);
     }
-  }, [rekapData, API]);
+  }, [rekapData, API, angkatan]);
 
   const selectedStyle =
     "bg-green-500 hover:bg-green-700 text-white flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
@@ -173,28 +124,36 @@ export default function RekapStatistik({ API }) {
       {/* End of Header */}
 
       {/* Bar */}
-      <StackedBar dataLulus={dataSudah} tahun={tahun} dataBelum={dataBelum} />
+      {angkatan === "" ? (
+        <StackedBar dataLulus={dataSudah} tahun={tahun} dataBelum={dataBelum} />
+      ) : (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <br />
+          <PieChart
+            dataLulus={dataSudah}
+            angkatan={angkatan}
+            dataBelum={dataBelum}
+       
+          />
+          <br />
+        </div>
+      )}
       {/* End of Bar */}
 
       {/* Boxes */}
-      <div className="grid grid-cols-2 mx-8 my-3 gap-8 transition-all duration-300 ease-in-out">
-        <div
-          onClick={() => setSelected(!selected)}
-          className={selected ? selectedStyle : unselectedStyle}
-        >
-          <div className="">Total Mahasiswa Sudah PKL</div>
-          <div className="text-8xl font-bold my-3">{sudahSkripsi}</div>
-          <div>Mahasiswa</div>
-        </div>
-        <div
-          onClick={() => setSelected2(!selected2)}
-          className={selected2 ? selectedStyle2 : unselectedStyle}
-        >
-          <div className="">Total Mahasiswa Belum PKL</div>
-          <div className="text-8xl font-bold my-3">{belumSkripsi}</div>
-          <div>Mahasiswa</div>
-        </div>
-      </div>
+      <TotalNum
+        belumSkripsi={
+          angkatan === ""
+            ? belumSkripsi
+            : dataBelum[yearsString.indexOf(angkatan)]
+        }
+        sudahSkripsi={
+          angkatan === ""
+            ? sudahSkripsi
+            : dataSudah[yearsString.indexOf(angkatan)]
+        }
+        label={label}
+      />
       {/* End of Boxes */}
 
       {/* Table */}
