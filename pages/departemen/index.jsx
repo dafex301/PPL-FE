@@ -18,12 +18,18 @@ const fetcher = (...args) =>
   });
 
 export default function HomeDepartemen() {
+  const [nama, setName] = useState("");
+  const { data: rekapData, errorKab } = useSWR(
+    "http://localhost:8080/all-skripsi",
+    fetcher
+  );
+  console.log(rekapData);
+  // if(rekapData){
+  //   return <p>{rekapData[0].nama}</p>
+  // }
   return (
     <>
-      <Head>
-
-      </Head>
-      <PieChart />
+      <Head></Head>
     </>
   );
 }

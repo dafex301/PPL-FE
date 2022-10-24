@@ -65,9 +65,9 @@ export default function PklMahasiswa() {
             "x-access-token": token,
           },
         });
-        const json = await res.json();
-        if (json.success) {
+        if (res.status === 200) {
           setSuccess(true);
+
           // Run SWR optimistic update
           mutate(`${process.env.BACKEND_API}/pkl`, {
             semester: semester,
@@ -175,6 +175,7 @@ export default function PklMahasiswa() {
           filename={filename}
           setFile={setFile}
           validFile={validFile}
+          filetype={"pdf"}
         />
         <SaveFormButton status={status} handleSubmit={handleSubmit} />
         {status === "sudah" && (

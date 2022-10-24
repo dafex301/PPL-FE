@@ -31,7 +31,13 @@ export default function FileUpload(props) {
               </span>
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              {props.filename ? "" : "PDF up to 10MB"}
+              {props.filename
+                ? ""
+                : props.filetype == "pdf"
+                ? "PDF up to 10MB"
+                : props.filetype == "csv"
+                ? "CSV up to 10MB"
+                : ""}
             </p>
           </div>
           <input
@@ -40,7 +46,13 @@ export default function FileUpload(props) {
             type="file"
             className="hidden"
             onChange={(e) => props.setFile(e.target.files[0])}
-            accept={"application/pdf"}
+            accept={
+              props.filetype == "pdf"
+                ? "application/pdf"
+                : props.filetype == "csv"
+                ? ".csv"
+                : ""
+            }
           />
         </label>
       </div>
