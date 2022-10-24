@@ -63,6 +63,8 @@ export default function HomeMahasiswa({ provData }) {
     fetcher
   );
 
+
+
   // Fetch mahasiswa data
   const { data: dataMhs, error: errorMhs } = useSWR(
     `${process.env.BACKEND_API}/profil`,
@@ -111,6 +113,7 @@ export default function HomeMahasiswa({ provData }) {
       setPhone(dataMhs.phone);
     }
   }, [dataMhs]);
+  console.log(dataMhs);
 
   return (
     <>
@@ -227,7 +230,6 @@ export default function HomeMahasiswa({ provData }) {
             id="provinsi"
             name="provinsi"
             className=" w-full mb-5 h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
-            defaultValue={""}
             value={provinsi}
           >
             <option value="">Pilih Provinsi</option>
@@ -245,7 +247,6 @@ export default function HomeMahasiswa({ provData }) {
             id="kabupaten"
             name="kabupaten"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:shadow-outline"
-            defaultValue={""}
             value={kabupaten}
             onChange={(e) => setKabupaten(e.target.value)}
           >

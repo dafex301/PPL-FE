@@ -1,11 +1,9 @@
-import Head from "next/head";
+import RekapStatistik from "../../components/charts/RekapStatistik";
 
 export default function DataPKL() {
   return (
     <>
-      <Head>
-        <title>Data PKL</title>
-      </Head>
+      <RekapStatistik API={`${process.env.BACKEND_API}/all-pkl`} />
     </>
   );
 }

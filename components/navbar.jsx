@@ -9,6 +9,7 @@ import { useState } from "react";
 
 // Import logout function
 import logout from "../utils/functions/logout";
+import Link from "next/link";
 
 export default function Navbar() {
   // Use state profilePopUp
@@ -37,12 +38,14 @@ export default function Navbar() {
         }`}
         onMouseLeave={() => setProfilePopUp(false)}
       >
-        <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800 rounded-t-xl">
-          Profile
-        </div>
-        <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800">
-          Settings
-        </div>
+        <Link href="/">
+          <a>
+            <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-gray-800 rounded-t-xl">
+              Profile
+            </div>
+          </a>
+        </Link>
+
         <button onClick={logout} className="w-full">
           <div className="p-2 px-4 hover:bg-gray-100 cursor-pointer text-left text-gray-800 rounded-b-xl">
             Logout

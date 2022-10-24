@@ -31,15 +31,15 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </DashboardMahasiswa>
       ) : route.pathname.includes("/admin") ? (
-        <DashboardAdmin>
+        <DashboardAdmin token={decoded}>
           <Component {...pageProps} />
         </DashboardAdmin>
       ) : route.pathname.includes("/dosen") ? (
-        <DashboardDosen>
+        <DashboardDosen token={decoded}>
           <Component {...pageProps} />
         </DashboardDosen>
       ) : route.pathname.includes("/departemen") ? (
-        <DashboardDepartemen>
+        <DashboardDepartemen token={decoded}>
           <Component {...pageProps} />
         </DashboardDepartemen>
       ) : (

@@ -21,7 +21,7 @@ export default function Login(params) {
       })
       .then((response) => {
         setCookie("accessToken", response.data.accessToken, {
-          maxAge: 60 * 60,
+          maxAge: 60 * 60 * 12,
         });
         window.location.href = `/${response.data.roles}`;
       })

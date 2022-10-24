@@ -1,11 +1,119 @@
+// Next and React Component
 import Head from "next/head";
+import { useEffect, useState } from "react";
+
+// Import another library
+import { getCookie } from "cookies-next";
+import useSWR, { useSWRConfig } from "swr";
+
+// Components
+import FileUpload from "../../components/FileUpload";
+import SubmitMessage from "../../components/SubmitMessage";
+import SaveFormButton from "../../components/SaveFormButton";
+
+// Get token from cookies
+const token = getCookie("accessToken");
+
+// Fetcher with header x-access-token
+const fetcherWithToken = (...args) =>
+  fetch(...args, {
+    headers: {
+      "x-access-token": token,
+    },
+  }).then((res) => res.json());
 
 export default function PklMahasiswa() {
+  const { data, error } = useSWR(
+    `${process.env.BACKEND_API}/pkl`,
+    fetcherWithToken
+  );
+  const { mutate } = useSWRConfig();
+
+  // Input State
+  const [semester, setSemester] = useState("");
+  const [nilai, setNilai] = useState("");
+  const [status, setStatus] = useState("belum");
+
+  // File state
+  const [filename, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+
+  // Success message state
+  const [success, setSuccess] = useState(null);
+  const [validFile, setValidFile] = useState(true);
+  const [message, setMessage] = useState(null);
+
+  // Handle Submit POST type of multipart/form-data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if all input is filled
+    if (semester && nilai && filename) {
+      let formData = new FormData();
+      formData.append("semester", semester);
+      formData.append("nilai", nilai);
+
+      if (file) {
+        formData.append("file", file);
+      }
+
+      try {
+        const res = await fetch(`${process.env.BACKEND_API}/pkl`, {
+          method: "POST",
+          body: formData,
+          headers: {
+            "x-access-token": token,
+          },
+        });
+        if (res.status === 200) {
+          setSuccess(true);
+
+          // Run SWR optimistic update
+          mutate(`${process.env.BACKEND_API}/pkl`, {
+            semester: semester,
+            nilai: nilai,
+            file: filename,
+          });
+        }
+      } catch (err) {
+        setSuccess(false);
+      }
+    } else {
+      setSuccess(false);
+      setMessage("Semua input harus diisi");
+    }
+    window.scrollTo(0, 0);
+  };
+
+  useEffect(() => {
+    if (data) {
+      setSemester(data.semester);
+      setNilai(data.nilai);
+      setStatus(data.status_konfirmasi);
+      setFileName(data.file);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (file) {
+      // Check if the file.name ended with .pdf
+      if (file.name.split(".").pop() !== "pdf") {
+        setFile(null);
+        setValidFile(false);
+      } else {
+        setFileName(file.name);
+        setValidFile(true);
+      }
+    }
+  }, [file]);
+
   return (
     <>
       <Head>
         <title>PKL Mahasiswa</title>
       </Head>
+
+      <SubmitMessage message={message} success={success} name={"pkl"} />
       <form>
         <div className="flex">
           <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data PKL</h2>
@@ -18,9 +126,11 @@ export default function PklMahasiswa() {
           <select
             id="semester_aktif"
             name="semester_aktif"
+            disabled={status === "sudah"}
+            value={semester}
+            onChange={(e) => setSemester(e.target.value)}
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
-            defaultValue={""}
           >
             {/* Loop from index 1 to 14 */}
             <option value="" disabled>
@@ -39,65 +149,40 @@ export default function PklMahasiswa() {
         </div>
         <div className="flex justify-start mx-16 mt-2">
           <select
+            disabled={status === "sudah"}
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
             id="pkl"
             name="pkl"
-            defaultValue={""}
+            value={nilai}
+            onChange={(e) => setNilai(e.target.value)}
           >
             <option value="" disabled>
               Pilih Nilai PKL
             </option>
-            <option value="">A</option>
-            <option value="">B</option>
-            <option value="">C</option>
-            <option value="">D</option>
-            <option value="">E</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
           </select>
         </div>
         <div className="flex justify-start ml-16 mt-5">
           <label htmlFor="dropzone-file">Scan Berita Acara</label>
         </div>
-        <div className="flex justify-start mx-16 mt-2">
-          {/* dropzone file */}
-          <label
-            htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 "
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg
-                className="w-10 h-10 mb-3 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                ></path>
-              </svg>
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                PDF, PNG, or JPG up to 10MB
-              </p>
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label>
-        </div>
-        <div className="flex justify-center mt-5">
-          <button
-            type="submit"
-            className="mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-600"
-          >
-            Simpan
-          </button>
-        </div>
+        <FileUpload
+          status={status}
+          filename={filename}
+          setFile={setFile}
+          validFile={validFile}
+          filetype={"pdf"}
+        />
+        <SaveFormButton status={status} handleSubmit={handleSubmit} />
+        {status === "sudah" && (
+          <p className="text-green-600 ml-2 text-center">
+            *Data sudah diverifikasi, tidak dapat diubah
+          </p>
+        )}
       </form>
     </>
   );

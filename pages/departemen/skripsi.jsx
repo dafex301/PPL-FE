@@ -1,11 +1,9 @@
-import Head from "next/head";
+import RekapStatistik from "../../components/charts/RekapStatistik";
 
-export default function HomeDosen() {
+export default function DataPKL() {
   return (
     <>
-      <Head>
-        <title>Data Skripsi</title>
-      </Head>
+      <RekapStatistik API={`${process.env.BACKEND_API}/all-skripsi`} />
     </>
   );
 }

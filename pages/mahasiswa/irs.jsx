@@ -1,11 +1,123 @@
+// Next and React Component
 import Head from "next/head";
+import { useEffect, useState } from "react";
+
+// Import another library
+import { getCookie } from "cookies-next";
+import useSWR, { useSWRConfig } from "swr";
+
+// Components
+import FileUpload from "../../components/FileUpload";
+import SubmitMessage from "../../components/SubmitMessage";
+import SaveFormButton from "../../components/SaveFormButton";
+
+// Get token from cookies
+const token = getCookie("accessToken");
+
+// Fetcher with header x-access-token
+const fetcherWithToken = (...args) =>
+  fetch(...args, {
+    headers: {
+      "x-access-token": token,
+    },
+  }).then((res) => res.json());
 
 export default function IrsMahasiswa(props) {
+  // Fetch data
+  const { data, error } = useSWR(
+    `${process.env.BACKEND_API}/irs`,
+    fetcherWithToken
+  );
+  const { mutate } = useSWRConfig();
+
+  // Input State
+  const [semester_aktif, setSemesterAktif] = useState("");
+  const [sks, setSks] = useState("");
+  const [status, setStatus] = useState("belum");
+
+  // File State
+  const [filename, setFileName] = useState("");
+  const [file, setFile] = useState(null);
+
+  // Success message state
+  const [success, setSuccess] = useState(null);
+  const [validFile, setValidFile] = useState(true);
+  const [message, setMessage] = useState(null);
+
+  // Handle submit POST type of multipart/form-data
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if all input is filled
+    if (semester_aktif && sks && filename) {
+      // Create form data
+      const formData = new FormData();
+      formData.append("semester_aktif", semester_aktif);
+      formData.append("sks", sks);
+      if (file) {
+        formData.append("file", file);
+      }
+
+      try {
+        const res = await fetch(`${process.env.BACKEND_API}/irs`, {
+          method: "POST",
+          headers: {
+            "x-access-token": token,
+          },
+          body: formData,
+        });
+        const json = await res.json();
+
+        if (json) {
+          mutate(`${process.env.BACKEND_API}/irs`);
+          setSuccess(true);
+        }
+      } catch (err) {
+        console.log(err);
+        setSuccess(false);
+      }
+    } else {
+      setSuccess(false);
+      setMessage("Semua input harus diisi");
+    }
+    window.scrollTo(0, 0);
+  };
+
+  // Update data if data is exist
+  useEffect(() => {
+    if (data) {
+      const irs = data.find((item) => item.semester_aktif == semester_aktif);
+      if (irs) {
+        setSks(irs.sks);
+        setStatus(irs.status_konfirmasi);
+        setFileName(irs.file);
+      } else {
+        setSks("");
+        setStatus("belum");
+        setFileName("");
+      }
+    }
+  }, [data, semester_aktif]);
+
+  // Handle file upload
+  useEffect(() => {
+    if (file) {
+      if (file.name.split(".").pop() !== "pdf") {
+        setFile(null);
+        setValidFile(false);
+      } else {
+        setFileName(file.name);
+        setValidFile(true);
+      }
+    }
+  }, [file]);
+
   return (
     <>
       <Head>
         <title>IRS Mahasiswa</title>
       </Head>
+      <SubmitMessage success={success} name={"irs"} message={message} />
       <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data IRS</h2>
       <form>
         <div className="flex justify-start ml-16 mt-5">
@@ -15,10 +127,11 @@ export default function IrsMahasiswa(props) {
         <div className="flex justify-start mx-16 mt-2">
           <select
             id="semester"
-            name="semester"
+            name="semester_aktif"
             className="w-full h-10 px-3 text-base bg-white placeholder-gray-600 border rounded-lg focus:outline-gray-500"
             placeholder="Semester"
-            defaultValue={""}
+            value={semester_aktif}
+            onChange={(e) => setSemesterAktif(e.target.value)}
           >
             {/* Loop from index 1 to 14 */}
             <option value="" disabled>
@@ -41,51 +154,32 @@ export default function IrsMahasiswa(props) {
             type="number"
             max={24}
             className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
+            value={sks}
+            onChange={(e) => setSks(e.target.value)}
+            disabled={status === "sudah"}
           />
         </div>
         <div className="flex justify-start ml-16 mt-5">
           <p>Scan IRS</p>
         </div>
-        <div className="flex justify-start mx-16 mt-2">
-          {/* dropzone file */}
-          <label
-            htmlFor="dropzone-file"
-            className="flex flex-col items-center justify-center w-full h-64 border rounded-xl cursor-pointer hover:bg-gray-100 "
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg
-                className="w-10 h-10 mb-3 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                ></path>
-              </svg>
-              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span> or drag
-                and drop
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                PDF, PNG, or JPG up to 10MB
-              </p>
-            </div>
-            <input id="dropzone-file" type="file" className="hidden" />
-          </label>
-        </div>
-        <div className="flex justify-center mt-5">
-          <button
-            type="submit"
-            className="mb-2 px-10 h-10 text-white transition-colors duration-150 bg-violet-500 rounded-full shadow-lg focus:shadow-outline hover:bg-violet-700"
-          >
-            Simpan
-          </button>
-        </div>
+        <FileUpload
+          status={status}
+          filename={filename}
+          setFile={setFile}
+          validFile={validFile}
+          semester={semester_aktif}
+          filetype={"pdf"}
+        />
+        <SaveFormButton
+          semester={semester_aktif}
+          status={status}
+          handleSubmit={handleSubmit}
+        />
+        {status === "sudah" && (
+          <p className="text-green-600 ml-2 text-center">
+            *Data sudah diverifikasi, tidak dapat diubah
+          </p>
+        )}
       </form>
     </>
   );
