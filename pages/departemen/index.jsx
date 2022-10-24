@@ -24,9 +24,6 @@ export default function HomeDepartemen() {
     fetcher
   );
   console.log(rekapData);
-  // if(rekapData){
-  //   return <p>{rekapData[0].nama}</p>
-  // }
   return (
     <>
       <Head></Head>
