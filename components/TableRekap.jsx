@@ -44,7 +44,7 @@ export default function TabelRekap({ rekapData }) {
                       <div class="flex items-center">
                         <div class="ml-4">
                           <div class="text-sm leading-5 font-medium text-gray-900">
-                            {el.nama}
+                            {el.name}
                           </div>
                         </div>
                       </div>
