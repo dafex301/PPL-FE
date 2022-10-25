@@ -80,92 +80,92 @@ export default function SkripsiDosen() {
       {/* End of Boxes */}
 
       {/* Table */}
-      <div class="flex flex-col items-center mt-4">
-        <div class="py-2 my-2 overflow-x-auto w-full px-6">
-          <div class="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-            <table class="min-w-full">
+      <div className="flex flex-col items-center mt-4">
+        <div className="py-2 my-2 overflow-x-auto w-full px-6">
+          <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+            <table className="min-w-full">
               <thead>
                 <tr>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Nama
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     NIM
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Angkatan
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Status
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Aksi
                   </th>
                 </tr>
               </thead>
               {/* show data in table body with access to status.name */}
-              <tbody class="bg-white">
+              <tbody className="bg-white">
                 <tr>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="flex items-center">
+                      <div className="ml-4">
+                        <div className="text-sm leading-5 font-medium text-gray-900">
                           Fahrel Gibran Alghany
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="text-sm leading-5 text-gray-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="text-sm leading-5 text-gray-900">
                       24060120130106
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="text-sm leading-5 text-gray-900">2020</div>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="text-sm leading-5 text-gray-900">2020</div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                     <span
-                      class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-300 text-green-900`}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-300 text-green-900`}
                     >
                       Sudah
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                     <span
-                      class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full `}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full `}
                     >
                       Detail
                     </span>
                   </td>
                 </tr>
                 <tr>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="flex items-center">
-                      <div class="ml-4">
-                        <div class="text-sm leading-5 font-medium text-gray-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="flex items-center">
+                      <div className="ml-4">
+                        <div className="text-sm leading-5 font-medium text-gray-900">
                           Rifan Fatoni
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="text-sm leading-5 text-gray-900">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="text-sm leading-5 text-gray-900">
                       24060120130099
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div class="text-sm leading-5 text-gray-900">2020</div>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="text-sm leading-5 text-gray-900">2020</div>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                     <span
-                      class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-300 text-red-900`}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-300 text-red-900`}
                     >
                       Gagal
                     </span>
                   </td>
-                  <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                     <span
-                      class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full `}
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full `}
                     >
                       Detail
                     </span>

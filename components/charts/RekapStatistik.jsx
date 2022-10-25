@@ -6,7 +6,18 @@ import { paginate } from "../../utils/functions/paginate";
 import useSWR from "swr";
 import { getCookie } from "cookies-next";
 import TabelRekap from "../TableRekap";
+import Search from "../Search";
 const token = getCookie("accessToken");
+
+// Styling
+const selectedStyle =
+  "bg-green-500 hover:bg-green-700 text-white flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
+
+const selectedStyle2 =
+  "bg-red-500 hover:bg-red-700 text-white flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
+
+const unselectedStyle =
+  "bg-gray-100 hover:bg-gray-200 flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
 
 // fetcher function with token
 const fetcher = (...args) =>
@@ -33,6 +44,10 @@ years.sort((a, b) => a - b);
 const yearsString = years.map((year) => year.toString());
 
 export default function RekapStatistik({ API }) {
+  // fetch data dari back-end
+  const { data: rekapData, errorKab } = useSWR(API, fetcher);
+
+  // State
   const [selected, setSelected] = useState(true);
   const [selected2, setSelected2] = useState(true);
   const [angkatan, setAngkatan] = useState("");
@@ -47,8 +62,21 @@ export default function RekapStatistik({ API }) {
   const [dataSudah, setDataSudah] = useState([0, 0, 0, 0, 0]);
   // array data yang belum skripsi per tahun
   const [dataBelum, setDataBelum] = useState([0, 0, 0, 0, 0]);
-  // fetch data dari back-end
-  const { data: rekapData, errorKab } = useSWR(API, fetcher);
+
+  // Search data
+  const [search, setSearch] = useState("");
+  const [kategori, setKategori] = useState("nama");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleKategori = (e) => {
+    setKategori(e.target.value);
+  };
+
+  // Table data
+  const [data, setData] = useState([]);
 
   // hitung yang belum dan sudah skripsi
   useEffect(() => {
@@ -78,70 +106,44 @@ export default function RekapStatistik({ API }) {
       setBelumSkripsi(belum);
       setDataSudah(dataSdh);
       setDataBelum(dataBlm);
-      // // menghitung jumlah yang sudah dan belum skripsi
-      // for (let i = 0; i < rekapData.length; i++) {
-      //   if (rekapData[i].status_konfirmasi === "belum") countBlm++;
-      //   else if (rekapData[i].status_konfirmasi === "sudah") countSdh++;
-      // }
-      // setSudahSkripsi(countSdh);
-      // setBelumSkripsi(countBlm);
-
-      // // mehitung banyak variasi tahun
-      // let tahun = new Set();
-      // let variasiTahun = [];
-
-      // rekapData.forEach((element) => {
-      //   if (!tahun.has(element.angkatan)) {
-      //     tahun.add(element.angkatan);
-      //     variasiTahun.push(element.angkatan);
-      //   }
-      // });
-      // // set tahun berdasarkan
-      // variasiTahun.sort();
-      // // Only get latest 5 years
-      // variasiTahun = variasiTahun.slice(variasiTahun.length - 5);
-      // setTahun(variasiTahun);
-
-      // // array jumlah mahasiswa belum skripsi per tahun
-      // let dataPerTahunBelum = [];
-      // // array jumlah mahasiswa sudah skripsi per tahun
-      // let dataPerTahunSudah = [];
-      // // intialisasi nilai array dengan 0
-      // for (let i = 0; i < variasiTahun.length; i++) {
-      //   dataPerTahunBelum.push(0);
-      //   dataPerTahunSudah.push(0);
-      // }
-
-      // // menghitung frekuensi jumlah yang sudah dan belum skripsi setiap tahun nya
-      // console.log(rekapData);
-      // for (let i = 0; i < rekapData.length; i++) {
-      //   for (let j = 0; j < variasiTahun.length; j++) {
-      //     if (
-      //       rekapData[i].status_konfirmasi === "belum" &&
-      //       rekapData[i].angkatan === variasiTahun[j]
-      //     )
-      //       dataPerTahunBelum[j]++;
-      //     else if (
-      //       rekapData[i].status_konfirmasi === "sudah" &&
-      //       rekapData[i].angkatan === variasiTahun[j]
-      //     )
-      //       dataPerTahunSudah[j]++;
-      //   }
-      // }
-      // // mengset data untuk ditampilkan
-      // setDataSudah(dataPerTahunSudah);
-      // setDataBelum(dataPerTahunBelum);
+      setData(rekapData);
     }
   }, [rekapData, API]);
 
-  const selectedStyle =
-    "bg-green-500 hover:bg-green-700 text-white flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
-
-  const selectedStyle2 =
-    "bg-red-500 hover:bg-red-700 text-white flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
-
-  const unselectedStyle =
-    "bg-gray-100 hover:bg-gray-200 flex flex-col items-center justify-center p-5 rounded-2xl cursor-pointer transition duration-100 ease-in-out";
+  // Search data and angkatan
+  useEffect(() => {
+    if (rekapData) {
+      let sudah = 0;
+      let belum = 0;
+      let filtered = rekapData;
+      if (angkatan) {
+        filtered = filtered.filter((item) =>
+          item.angkatan.toLowerCase().includes(angkatan.toLowerCase())
+        );
+      }
+      filtered.forEach((data) => {
+        if (data.status_konfirmasi == "sudah") {
+          sudah++;
+        } else {
+          belum++;
+        }
+      });
+      if (search) {
+        if (kategori == "nama") {
+          filtered = filtered.filter((item) =>
+            item.name.toLowerCase().includes(search.toLowerCase())
+          );
+        } else {
+          filtered = filtered.filter((item) => {
+            item.nim.toLowerCase().includes(search.toLowerCase());
+          });
+        }
+      }
+      setData(filtered);
+      setSudahSkripsi(sudah);
+      setBelumSkripsi(belum);
+    }
+  }, [angkatan, kategori, rekapData, search]);
 
   return (
     <>
@@ -197,8 +199,18 @@ export default function RekapStatistik({ API }) {
       </div>
       {/* End of Boxes */}
 
+      {/* Search */}
+      <Search
+        setSearch={handleSearch}
+        setKategori={handleKategori}
+        kategori={kategori}
+        listKategori={["Nama", "NIM"]}
+      />
+      {/* End of Search */}
+
       {/* Table */}
-      <TabelRekap rekapData={rekapData} />
+      <TabelRekap rekapData={data} />
+      {/* End of Table */}
     </>
   );
 }
