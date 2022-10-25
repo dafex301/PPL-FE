@@ -7,7 +7,6 @@ import useSWR from "swr";
 import { getCookie } from "cookies-next";
 import TabelRekap from "../TableRekap";
 import Search from "../Search";
-import TotalNum from "./TotalNum";
 const token = getCookie("accessToken");
 
 // Styling
@@ -31,9 +30,6 @@ const fetcher = (...args) =>
 const StackedBar = dynamic(() => import("./StackedBar"), {
   ssr: false,
 });
-const PieChart = dynamic(() => import("../../components/charts/PieChart"), {
-  ssr: false,
-});
 
 // Get the current year
 const currentYear = new Date().getFullYear();
@@ -47,13 +43,15 @@ years.sort((a, b) => a - b);
 // Convert to string
 const yearsString = years.map((year) => year.toString());
 
-export default function RekapStatistik({ API,label }) {
-const { data: rekapData, errorKab } = useSWR(API, fetcher);
+export default function RekapStatistik({ API }) {
+  // fetch data dari back-end
+  const { data: rekapData, errorKab } = useSWR(API, fetcher);
 
+  // State
   const [selected, setSelected] = useState(true);
   const [selected2, setSelected2] = useState(true);
-  // angkatan yang mau dicara
   const [angkatan, setAngkatan] = useState("");
+
   // jumlah sudah skripsi
   const [sudahSkripsi, setSudahSkripsi] = useState(0);
   // jumlah belum skripsi
@@ -85,6 +83,7 @@ const { data: rekapData, errorKab } = useSWR(API, fetcher);
     if (rekapData) {
       let sudah = 0;
       let belum = 0;
+
       let dataSdh = [0, 0, 0, 0, 0];
       let dataBlm = [0, 0, 0, 0, 0];
 
@@ -109,7 +108,7 @@ const { data: rekapData, errorKab } = useSWR(API, fetcher);
       setDataBelum(dataBlm);
       setData(rekapData);
     }
-  }, [rekapData, API, angkatan]);
+  }, [rekapData, API]);
 
   // Search data and angkatan
   useEffect(() => {
@@ -176,36 +175,28 @@ const { data: rekapData, errorKab } = useSWR(API, fetcher);
       {/* End of Header */}
 
       {/* Bar */}
-      {angkatan === "" ? (
-        <StackedBar dataLulus={dataSudah} tahun={tahun} dataBelum={dataBelum} />
-      ) : (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <br />
-          <PieChart
-            dataLulus={dataSudah}
-            angkatan={angkatan}
-            dataBelum={dataBelum}
-       
-          />
-          <br />
-        </div>
-      )}
+      <StackedBar dataLulus={dataSudah} tahun={tahun} dataBelum={dataBelum} />
       {/* End of Bar */}
 
       {/* Boxes */}
-      <TotalNum
-        belumSkripsi={
-          angkatan === ""
-            ? belumSkripsi
-            : dataBelum[yearsString.indexOf(angkatan)]
-        }
-        sudahSkripsi={
-          angkatan === ""
-            ? sudahSkripsi
-            : dataSudah[yearsString.indexOf(angkatan)]
-        }
-        label={label}
-      />
+      <div className="grid grid-cols-2 mx-8 my-3 gap-8 transition-all duration-300 ease-in-out">
+        <div
+          onClick={() => setSelected(!selected)}
+          className={selected ? selectedStyle : unselectedStyle}
+        >
+          <div className="">Total Mahasiswa Sudah PKL</div>
+          <div className="text-8xl font-bold my-3">{sudahSkripsi}</div>
+          <div>Mahasiswa</div>
+        </div>
+        <div
+          onClick={() => setSelected2(!selected2)}
+          className={selected2 ? selectedStyle2 : unselectedStyle}
+        >
+          <div className="">Total Mahasiswa Belum PKL</div>
+          <div className="text-8xl font-bold my-3">{belumSkripsi}</div>
+          <div>Mahasiswa</div>
+        </div>
+      </div>
       {/* End of Boxes */}
 
       {/* Search */}
