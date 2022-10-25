@@ -1,17 +1,16 @@
-import Head from 'next/head';
+import Head from "next/head";
 import { useState, useEffect } from "react";
-import { getCookie } from 'cookies-next';
-import useSWR from 'swr';
-import Pagination from '../../components/pagination';
+import { getCookie } from "cookies-next";
+import useSWR from "swr";
+import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 
-
-const token = getCookie('accessToken');
+const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
 const fetcher = (...args) =>
   fetch(...args, {
     headers: {
-      'x-access-token': token,
+      "x-access-token": token,
     },
   }).then((res) => res.json());
 
@@ -19,7 +18,6 @@ export default function DataMahasiswa() {
   const [posts, setposts] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const pageSize = 8;
-
 
   const { data: mahasiswa, error } = useSWR(
     `${process.env.BACKEND_API}/list-mahasiswa`,
@@ -39,74 +37,73 @@ export default function DataMahasiswa() {
 
   const mahasiswaPosts = paginate(posts, currentPage, pageSize);
 
-
-
   return (
     <>
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
-      <div class="flex flex-col items-center mt-4">
-        <div class="py-2 my-2 overflow-x-auto w-full px-6">
-          <div class="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
-            <table class="min-w-full">
+      <div className="flex flex-col items-center mt-4">
+        <div className="py-2 my-2 overflow-x-auto w-full px-6">
+          <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
+            <table className="min-w-full">
               <thead>
                 <tr>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Nama
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     NIM
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Angkatan
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Status
                   </th>
-                  <th class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                     Aksi
                   </th>
                 </tr>
               </thead>
               {/* show data in table body with access to status.name */}
-              <tbody class="bg-white">
+              <tbody className="bg-white">
                 {mahasiswaPosts &&
                   mahasiswaPosts.map((mhs) => (
-                    <tr tr key={mhs._id} >
-                      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <div class="flex items-center">
-                          <div class="ml-4">
-                            <div class="text-sm leading-5 font-medium text-gray-900">
+                    <tr tr key={mhs._id}>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="flex items-center">
+                          <div className="ml-4">
+                            <div className="text-sm leading-5 font-medium text-gray-900">
                               {mhs.name}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <div class="text-sm leading-5 text-gray-900">
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="text-sm leading-5 text-gray-900">
                           {mhs.nim}
                         </div>
                       </td>
-                      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <div class="text-sm leading-5 text-gray-900">
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="text-sm leading-5 text-gray-900">
                           {mhs.angkatan}
                         </div>
                       </td>
-                      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <span
-                          class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${mhs.status.name === 'Aktif' || mhs.status.name === 'Lulus'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                            }`}
+                          className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            mhs.status === "Aktif" || mhs.status === "Lulus"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
                         >
-                          {mhs.status.name}
+                          {mhs.status}
                         </span>
                       </td>
-                      <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
+                      <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
                         <a
                           href="#"
-                          class="text-indigo-600 hover:text-indigo-900"
+                          className="text-indigo-600 hover:text-indigo-900"
                         >
                           Edit
                         </a>
@@ -118,7 +115,12 @@ export default function DataMahasiswa() {
           </div>
           <br />
           <br />
-          <Pagination items={posts.length} currentPage={currentPage} pageSize={pageSize} onPageChange={handlePageChange} />
+          <Pagination
+            items={posts.length}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </>

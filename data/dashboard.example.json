@@ -1,0 +1,19 @@
+{
+  "status": {
+    "aktif": 100,
+    "cuti": 4,
+    "mangkir": 5,
+    "do": 10,
+    "undur_diri": 5,
+    "lulus": 10,
+    "meninggal_dunia": 1
+  },
+  "pkl": {
+    "lulus": 42,
+    "belum": 10
+  },
+  "skripsi": {
+    "lulus": 10,
+    "belum": 2
+  }
+}
