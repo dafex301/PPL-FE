@@ -47,8 +47,8 @@ years.sort((a, b) => a - b);
 // Convert to string
 const yearsString = years.map((year) => year.toString());
 
-export default function RekapStatistik({ API,label }) {
-const { data: rekapData, errorKab } = useSWR(API, fetcher);
+export default function RekapStatistik({ API, label }) {
+  const { data: rekapData, errorKab } = useSWR(API, fetcher);
 
   const [selected, setSelected] = useState(true);
   const [selected2, setSelected2] = useState(true);
@@ -135,9 +135,9 @@ const { data: rekapData, errorKab } = useSWR(API, fetcher);
             item.name.toLowerCase().includes(search.toLowerCase())
           );
         } else {
-          filtered = filtered.filter((item) => {
-            item.nim.toLowerCase().includes(search.toLowerCase());
-          });
+          filtered = filtered.filter((item) =>
+            item.nim.toLowerCase().includes(search.toLowerCase())
+          );
         }
       }
       setData(filtered);
@@ -185,7 +185,6 @@ const { data: rekapData, errorKab } = useSWR(API, fetcher);
             dataLulus={dataSudah}
             angkatan={angkatan}
             dataBelum={dataBelum}
-       
           />
           <br />
         </div>
