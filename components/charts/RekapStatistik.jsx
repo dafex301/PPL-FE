@@ -59,7 +59,6 @@ export default function RekapStatistik({ API,label }) {
     if (rekapData) {
       let sudah = 0;
       let belum = 0;
-      console.log(API);
       let dataSdh = [0, 0, 0, 0, 0];
       let dataBlm = [0, 0, 0, 0, 0];
 
