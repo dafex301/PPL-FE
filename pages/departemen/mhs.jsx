@@ -15,8 +15,13 @@ const fetcher = (...args) =>
     },
   }).then((res) => res.json());
 
-export default function MahasiswaAdmin() {
-  // Get data
+const currentYear = new Date().getFullYear();
+
+export default function DataMahasiswa() {
+  const [posts, setposts] = useState([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const pageSize = 8;
+
   const { data: mahasiswa, error } = useSWR(
     `${process.env.BACKEND_API}/list-mahasiswa`,
     fetcher
@@ -69,7 +74,29 @@ export default function MahasiswaAdmin() {
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
-      <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Mahasiswa</h2>
+      {/* Header */}
+      <div className="flex items-center mx-8 justify-between">
+        <h2 className="text-left font-bold text-2xl">Data Mahasiswa</h2>
+
+        <div className="">
+          <label htmlFor="angkatan">Angkatan:</label>
+          <select
+            onChange={(e) => {
+              setAngkatan(e.target.value);
+            }}
+            id="angkatan"
+            className="cursor-pointer ml-1"
+          >
+            <option value="">Semua</option>
+            {[...Array(5)].map((_, i) => (
+              <option key={currentYear - i} value={currentYear - i}>
+                {currentYear - i}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {/* End of Header */}
       <div className="flex flex-col items-center mt-4">
         {/* Search */}
         <Search

@@ -70,7 +70,7 @@ export default function MahasiswaAdmin() {
         <title>Data Mahasiswa</title>
       </Head>
       <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Mahasiswa</h2>
-      <div className="flex flex-col items-center mt-4">
+      <div className="mx-5 mt-4">
         {/* Search */}
         <Search
           setSearch={handleSearch}
@@ -78,7 +78,9 @@ export default function MahasiswaAdmin() {
           kategori={kategori}
           listKategori={["Nama", "NIM"]}
         />
-        {/* End of Search */}
+      </div>
+      {/* End of Search */}
+      <div className="flex flex-col items-center mt-4">
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
             <table className="min-w-full">

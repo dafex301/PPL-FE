@@ -40,19 +40,28 @@ export default function AccountAdmin() {
   // useEffect for setposts
   useEffect(() => {
     if (user) {
+      // Sort data by user.roles.name
+      const sortedUser = user.sort((a, b) => {
+        if (a.roles.name < b.roles.name) {
+          return -1;
+        }
+        if (a.roles.name > b.roles.name) {
+          return 1;
+        }
+        return 0;
+      });
+
       if (search) {
         setcurrentPage(1);
         if (kategori === "username") {
           setposts(
-            user.filter((user) =>
+            sortedUser.filter((user) =>
               user.username.toLowerCase().includes(search.toLowerCase())
             )
           );
-        } else {
-          // TODO: Kalo udah bener rolenya
         }
       } else {
-        setposts(user);
+        setposts(sortedUser);
       }
     }
   }, [kategori, search, user]);
@@ -69,13 +78,15 @@ export default function AccountAdmin() {
         <title>List Akun</title>
       </Head>
       <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Akun</h2>
-      <div className="flex flex-col items-center mt-4">
+      <div className="mx-5 mt-4">
         <Search
           setSearch={handleSearch}
           setKategori={handleKategori}
           kategori={kategori}
-          listKategori={["Username", "Role"]}
+          listKategori={["Username"]}
         />
+      </div>
+      <div className="flex flex-col items-center">
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
             <table className="min-w-full">

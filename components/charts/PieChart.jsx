@@ -53,8 +53,8 @@ export default class ApexChart extends React.Component {
         let dataBelum = props.dataBelum;
         let jumlahBelum = dataBelum[yearsString.indexOf(props.angkatan)];
         return {
-          series: [jumlahBelum, jumlahLulus], 
-        }; 
+          series: [jumlahBelum, jumlahLulus],
+        };
       });
       console.log(this.props.angkatan);
     }
@@ -62,9 +62,7 @@ export default class ApexChart extends React.Component {
 
   // berjalan setiap kali update/webpage di refresh
   componentDidUpdate(previousProps) {
-    if (
-      previousProps.angkatan !== this.props.angkatan
-    ) {
+    if (previousProps.angkatan !== this.props.angkatan) {
       if (this.props.dataLulus && this.props.dataBelum && this.props.angkatan) {
         this.setState((state, props) => {
           let dataLulus = props.dataLulus;
@@ -87,7 +85,7 @@ export default class ApexChart extends React.Component {
           options={this.state.options}
           series={this.state.series}
           type="pie"
-          width={380}
+          width={489}
         />
       </div>
     );
