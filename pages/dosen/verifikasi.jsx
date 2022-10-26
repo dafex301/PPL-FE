@@ -100,7 +100,6 @@ export default function Verifikasi() {
 
   // Handle konfirmasi
   const konfirmasiIrs = (irs) => {
-    // Put method on /verifikasi/irs/:nim/:semester
     fetch(
       `${process.env.BACKEND_API}/verifikasi/irs/${irs.nim}/${irs.semester_aktif}`,
       {
@@ -119,6 +118,32 @@ export default function Verifikasi() {
           mutate(`${process.env.BACKEND_API}/verifikasi/irs`);
         } else {
           alert("IRS gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const konfirmasiKhs = (khs) => {
+    // POST method on /verifikasi/khs/:nim/:semester
+    fetch(
+      `${process.env.BACKEND_API}/verifikasi/khs/${khs.nim}/${khs.semester_aktif}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          alert("KHS berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/khs`);
+        } else {
+          alert("KHS gagal dikonfirmasi");
         }
       })
       .catch((err) => {
@@ -373,7 +398,10 @@ export default function Verifikasi() {
                       <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
                         Detail
                       </div>
-                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => konfirmasiKhs(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Konfirmasi
                       </div>
                     </td>
