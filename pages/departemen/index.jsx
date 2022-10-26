@@ -23,7 +23,6 @@ export default function HomeDepartemen() {
     "http://localhost:8080/all-skripsi",
     fetcher
   );
-  console.log(rekapData);
   return (
     <>
       <Head></Head>
