@@ -176,19 +176,23 @@ export default function RekapStatistik({ API, label }) {
       {/* End of Header */}
 
       {/* Bar */}
-      {angkatan === "" ? (
-        <StackedBar dataLulus={dataSudah} tahun={tahun} dataBelum={dataBelum} />
-      ) : (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <br />
-          <PieChart
+      <div className="mx-5">
+        {angkatan === "" ? (
+          <StackedBar
             dataLulus={dataSudah}
-            angkatan={angkatan}
+            tahun={tahun}
             dataBelum={dataBelum}
           />
-          <br />
-        </div>
-      )}
+        ) : (
+          <div className="flex justify-center">
+            <PieChart
+              dataLulus={dataSudah}
+              angkatan={angkatan}
+              dataBelum={dataBelum}
+            />
+          </div>
+        )}
+      </div>
       {/* End of Bar */}
 
       {/* Boxes */}
@@ -208,12 +212,15 @@ export default function RekapStatistik({ API, label }) {
       {/* End of Boxes */}
 
       {/* Search */}
-      <Search
-        setSearch={handleSearch}
-        setKategori={handleKategori}
-        kategori={kategori}
-        listKategori={["Nama", "NIM"]}
-      />
+      <div className="mx-8">
+        <Search
+          setSearch={handleSearch}
+          setKategori={handleKategori}
+          kategori={kategori}
+          listKategori={["Nama", "NIM"]}
+        />
+      </div>
+
       {/* End of Search */}
 
       {/* Table */}

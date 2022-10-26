@@ -14,6 +14,8 @@ const fetcher = (...args) =>
     },
   }).then((res) => res.json());
 
+const currentYear = new Date().getFullYear();
+
 export default function DataMahasiswa() {
   const [posts, setposts] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
@@ -42,6 +44,29 @@ export default function DataMahasiswa() {
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
+      {/* Header */}
+      <div className="flex items-center mx-8 justify-between">
+        <h2 className="text-left font-bold text-2xl">Data Mahasiswa</h2>
+
+        <div className="">
+          <label htmlFor="angkatan">Angkatan:</label>
+          <select
+            onChange={(e) => {
+              setAngkatan(e.target.value);
+            }}
+            id="angkatan"
+            className="cursor-pointer ml-1"
+          >
+            <option value="">Semua</option>
+            {[...Array(5)].map((_, i) => (
+              <option key={currentYear - i} value={currentYear - i}>
+                {currentYear - i}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {/* End of Header */}
       <div className="flex flex-col items-center mt-4">
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">

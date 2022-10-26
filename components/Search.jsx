@@ -9,7 +9,7 @@ export default function Search({
       <div className=" w-full flex">
         <select
           id="kategori"
-          className="border border-gray-400 rounded-l-lg p-2 text-sm ml-5"
+          className="border border-gray-400 rounded-l-lg p-2 text-sm"
           onChange={setKategori}
         >
           {listKategori.map((kategori) => (
@@ -20,7 +20,7 @@ export default function Search({
         </select>
         <input
           type={kategori === "nim" ? "number" : "text"}
-          className="border border-gray-400 border-l-0 rounded-r-lg p-2 w-full mr-5"
+          className="border border-gray-400 border-l-0 rounded-r-lg p-2 w-full"
           placeholder="Cari Mahasiswa"
           onChange={setSearch}
         />
