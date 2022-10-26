@@ -217,7 +217,7 @@ export default function RekapStatistik({ API, label }) {
           setSearch={handleSearch}
           setKategori={handleKategori}
           kategori={kategori}
-          listKategori={["Nama", "NIM"]}
+          listKategori={["Nama", "NIM"]} 
         />
       </div>
 
