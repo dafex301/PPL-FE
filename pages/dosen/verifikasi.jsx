@@ -37,7 +37,7 @@ export default function Verifikasi() {
 
   // Get PKL data
   const { data: dataPkl, error: errorPkl } = useSWR(
-    `${process.env.BACKEND_API}/rekap/pkl`,
+    `${process.env.BACKEND_API}/verifikasi/pkl`,
     fetcher
   );
 
@@ -101,7 +101,6 @@ export default function Verifikasi() {
     if (irs && dataIrs) {
       setData(dataIrs);
     } else if (pkl && dataPkl) {
-      console.log(dataPkl);
       setData(dataPkl);
     } else if (skripsi && dataSkripsi) {
       setData(dataSkripsi);
@@ -305,7 +304,7 @@ export default function Verifikasi() {
             <tbody className="bg-white">
               {dataPkl &&
                 data.map((item) => (
-                  <tr key={item.irs_id}>
+                  <tr key={item.nim}>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex items-center">
                         <div className="ml-4">
@@ -381,7 +380,7 @@ export default function Verifikasi() {
             <tbody className="bg-white">
               {dataPkl &&
                 data.map((item) => (
-                  <tr key={item.irs_id}>
+                  <tr key={item.nim}>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex items-center">
                         <div className="ml-4">
