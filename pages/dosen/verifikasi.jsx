@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { getCookie } from "cookies-next";
 
+// Import functions
+import { searchData } from "../../utils/functions/searchData";
+
 // Import Components
 import Card from "../../components/Card";
 import Search from "../../components/Search";
@@ -18,9 +21,6 @@ const fetcher = (...args) =>
       "x-access-token": token,
     },
   }).then((res) => res.json());
-
-// Search function
-const search = () => {};
 
 export default function Verifikasi() {
   // Get IRS data
@@ -101,6 +101,7 @@ export default function Verifikasi() {
     if (irs && dataIrs) {
       setData(dataIrs);
     } else if (pkl && dataPkl) {
+      console.log(dataPkl);
       setData(dataPkl);
     } else if (skripsi && dataSkripsi) {
       setData(dataSkripsi);
@@ -110,53 +111,13 @@ export default function Verifikasi() {
   // Search the data
   useEffect(() => {
     if (irs && dataIrs) {
-      if (kategori === "nama") {
-        const filtered = dataIrs.filter((item) => {
-          return item.name.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      } else {
-        const filtered = dataIrs.filter((item) => {
-          return item.nim.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      }
+      setData(searchData(dataIrs, kategori, search));
     } else if (khs && dataKhs) {
-      if (kategori === "nama") {
-        const filtered = dataKhs.filter((item) => {
-          return item.name.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      } else {
-        const filtered = dataKhs.filter((item) => {
-          return item.nim.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      }
+      setData(searchData(dataKhs, kategori, search));
     } else if (pkl && dataPkl) {
-      if (kategori === "nama") {
-        const filtered = dataPkl.filter((item) => {
-          return item.name.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      } else {
-        const filtered = dataPkl.filter((item) => {
-          return item.nim.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      }
+      setData(searchData(dataPkl, kategori, search));
     } else if (skripsi && dataSkripsi) {
-      if (kategori === "nama") {
-        const filtered = dataSkripsi.filter((item) => {
-          return item.name.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      } else {
-        const filtered = dataSkripsi.filter((item) => {
-          return item.nim.toLowerCase().includes(search.toLowerCase());
-        });
-        setData(filtered);
-      }
+      setData(searchData(dataSkripsi, kategori, search));
     }
   }, [
     search,
@@ -170,6 +131,7 @@ export default function Verifikasi() {
     skripsi,
     dataSkripsi,
   ]);
+
   return (
     <>
       <Head>
@@ -314,6 +276,79 @@ export default function Verifikasi() {
           </table>
         )}
         {/* End of Table IRS */}
+
+        {/* Table PKL */}
+        {pkl && (
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Nama
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  NIM
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Angkatan
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Semester
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  SKS
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {dataPkl &&
+                data.map((item) => (
+                  <tr key={item.irs_id}>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="flex items-center">
+                        <div className="ml-4">
+                          <div className="text-sm leading-5 font-medium text-gray-900">
+                            {item.name}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.nim}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.angkatan}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.semester_aktif}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.sks}
+                      </div>
+                    </td>
+                    <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                        Detail
+                      </div>
+                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                        Konfirmasi
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
+        {/* End of Table PKL */}
       </div>
     </>
   );
