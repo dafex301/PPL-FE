@@ -8,6 +8,9 @@ import { getCookie } from "cookies-next";
 import Card from "../../components/Card";
 import Search from "../../components/Search";
 
+// Other data
+const currentYear = new Date().getFullYear();
+
 const token = getCookie("accessToken");
 const fetcher = (...args) =>
   fetch(...args, {
@@ -15,6 +18,9 @@ const fetcher = (...args) =>
       "x-access-token": token,
     },
   }).then((res) => res.json());
+
+// Search function
+const search = () => {};
 
 export default function Verifikasi() {
   // Get IRS data
@@ -24,10 +30,10 @@ export default function Verifikasi() {
   );
 
   // Get KHS data
-  // const { data: dataKhs, error: errorKhs } = useSWR(
-  //   `${process.env.BACKEND_API}/verifikasi/khs`,
-  //   fetcher
-  // );
+  const { data: dataKhs, error: errorKhs } = useSWR(
+    `${process.env.BACKEND_API}/verifikasi/irs`,
+    fetcher
+  );
 
   // Get PKL data
   const { data: dataPkl, error: errorPkl } = useSWR(
@@ -90,20 +96,80 @@ export default function Verifikasi() {
     setSkripsi(true);
   };
 
-  // Set the data
+  // Set the initial data
   useEffect(() => {
-    if (irs) {
+    if (irs && dataIrs) {
       setData(dataIrs);
-    } else if (pkl) {
+    } else if (pkl && dataPkl) {
       setData(dataPkl);
-    } else if (skripsi) {
+    } else if (skripsi && dataSkripsi) {
       setData(dataSkripsi);
     }
   }, [irs, pkl, skripsi, dataIrs, dataPkl, dataSkripsi]);
 
-  // Other data
-  const currentYear = new Date().getFullYear();
-
+  // Search the data
+  useEffect(() => {
+    if (irs && dataIrs) {
+      if (kategori === "nama") {
+        const filtered = dataIrs.filter((item) => {
+          return item.name.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      } else {
+        const filtered = dataIrs.filter((item) => {
+          return item.nim.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      }
+    } else if (khs && dataKhs) {
+      if (kategori === "nama") {
+        const filtered = dataKhs.filter((item) => {
+          return item.name.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      } else {
+        const filtered = dataKhs.filter((item) => {
+          return item.nim.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      }
+    } else if (pkl && dataPkl) {
+      if (kategori === "nama") {
+        const filtered = dataPkl.filter((item) => {
+          return item.name.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      } else {
+        const filtered = dataPkl.filter((item) => {
+          return item.nim.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      }
+    } else if (skripsi && dataSkripsi) {
+      if (kategori === "nama") {
+        const filtered = dataSkripsi.filter((item) => {
+          return item.name.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      } else {
+        const filtered = dataSkripsi.filter((item) => {
+          return item.nim.toLowerCase().includes(search.toLowerCase());
+        });
+        setData(filtered);
+      }
+    }
+  }, [
+    search,
+    kategori,
+    irs,
+    dataIrs,
+    khs,
+    dataKhs,
+    pkl,
+    dataPkl,
+    skripsi,
+    dataSkripsi,
+  ]);
   return (
     <>
       <Head>
@@ -141,28 +207,28 @@ export default function Verifikasi() {
             color="cyan"
             status={irs}
             handleStatus={openIrs}
-            data={10}
+            data={dataIrs ? dataIrs.length : 0}
           />
           <Card
             name="KHS"
             color="sky"
             status={khs}
             handleStatus={openKhs}
-            data={21}
+            data={dataKhs ? dataKhs.length : 0}
           />
           <Card
             name="PKL"
             color="blue"
             status={pkl}
             handleStatus={openPkl}
-            data={5}
+            data={dataPkl ? dataPkl.length : 0}
           />
           <Card
             name="Skripsi"
             color="indigo"
             status={skripsi}
             handleStatus={openSkripsi}
-            data={2}
+            data={dataSkripsi ? dataSkripsi.length : 0}
           />
         </div>
         {/* End of Cards */}
