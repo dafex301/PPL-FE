@@ -37,13 +37,13 @@ export default function Verifikasi() {
 
   // Get PKL data
   const { data: dataPkl, error: errorPkl } = useSWR(
-    `${process.env.BACKEND_API}/verifikasi/pkl`,
+    `${process.env.BACKEND_API}/rekap/pkl`,
     fetcher
   );
 
   // Get Skripsi data
   const { data: dataSkripsi, error: errorSkripsi } = useSWR(
-    `${process.env.BACKEND_API}/verifikasi/skripsi`,
+    `${process.env.BACKEND_API}/rekap/skripsi`,
     fetcher
   );
 
@@ -295,7 +295,7 @@ export default function Verifikasi() {
                   Semester
                 </th>
                 <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                  SKS
+                  Nilai
                 </th>
                 <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                   Aksi
@@ -327,12 +327,12 @@ export default function Verifikasi() {
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="text-sm leading-5 text-gray-900">
-                        {item.semester_aktif}
+                        {item.semester}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="text-sm leading-5 text-gray-900">
-                        {item.sks}
+                        {item.nilai}
                       </div>
                     </td>
                     <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -349,6 +349,82 @@ export default function Verifikasi() {
           </table>
         )}
         {/* End of Table PKL */}
+
+        {/* Table Skripsi */}
+        {skripsi && (
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Nama
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  NIM
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Angkatan
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Semester
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Nilai
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Tanggal
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {dataPkl &&
+                data.map((item) => (
+                  <tr key={item.irs_id}>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="flex items-center">
+                        <div className="ml-4">
+                          <div className="text-sm leading-5 font-medium text-gray-900">
+                            {item.name}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.nim}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.angkatan}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.semester}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.nilai}
+                      </div>
+                    </td>
+                    <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                        Detail
+                      </div>
+                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                        Konfirmasi
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
+        {/* End of Table Skripsi */}
       </div>
     </>
   );
