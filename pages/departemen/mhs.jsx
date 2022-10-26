@@ -4,6 +4,7 @@ import { getCookie } from "cookies-next";
 import useSWR from "swr";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
+import Search from "../../components/Search";
 
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
@@ -14,26 +15,52 @@ const fetcher = (...args) =>
     },
   }).then((res) => res.json());
 
-export default function DataMahasiswa() {
-  const [posts, setposts] = useState([]);
-  const [currentPage, setcurrentPage] = useState(1);
-  const pageSize = 8;
-
+export default function MahasiswaAdmin() {
+  // Get data
   const { data: mahasiswa, error } = useSWR(
     `${process.env.BACKEND_API}/list-mahasiswa`,
     fetcher
   );
 
-  // useEffect for setposts
-  useEffect(() => {
-    if (mahasiswa) {
-      setposts(mahasiswa);
-    }
-  }, [mahasiswa]);
-
+  // Pagination
+  const [posts, setposts] = useState([]);
+  const [currentPage, setcurrentPage] = useState(1);
+  const pageSize = 8;
   const handlePageChange = (page) => {
     setcurrentPage(page);
   };
+
+  // Search
+  const [search, setSearch] = useState("");
+  const [kategori, setKategori] = useState("nama");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleKategori = (e) => {
+    setKategori(e.target.value);
+  };
+
+  // useEffect for setposts
+  useEffect(() => {
+    if (mahasiswa) {
+      if (search) {
+        setcurrentPage(1);
+        if (kategori === "nama") {
+          setposts(
+            mahasiswa.filter((mhs) =>
+              mhs.name.toLowerCase().includes(search.toLowerCase())
+            )
+          );
+        } else {
+          setposts(mahasiswa.filter((mhs) => mhs.nim.includes(search)));
+        }
+      } else {
+        setposts(mahasiswa);
+      }
+    }
+  }, [kategori, mahasiswa, search]);
 
   const mahasiswaPosts = paginate(posts, currentPage, pageSize);
 
@@ -42,7 +69,16 @@ export default function DataMahasiswa() {
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
+      <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Mahasiswa</h2>
       <div className="flex flex-col items-center mt-4">
+        {/* Search */}
+        <Search
+          setSearch={handleSearch}
+          setKategori={handleKategori}
+          kategori={kategori}
+          listKategori={["Nama", "NIM"]}
+        />
+        {/* End of Search */}
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
             <table className="min-w-full">
@@ -90,15 +126,16 @@ export default function DataMahasiswa() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                        <span
+                        {/* <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            mhs.status === "Aktif" || mhs.status === "Lulus"
+                            mhs.status.name === "Aktif" ||
+                            mhs.status.name === "Lulus"
                               ? "bg-green-100 text-green-800"
                               : "bg-red-100 text-red-800"
                           }`}
                         >
-                          {mhs.status}
-                        </span>
+                          {mhs.status.name}
+                        </span> */}
                       </td>
                       <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
                         <a
