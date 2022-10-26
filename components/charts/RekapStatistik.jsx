@@ -47,7 +47,7 @@ years.sort((a, b) => a - b);
 // Convert to string
 const yearsString = years.map((year) => year.toString());
 
-export default function RekapStatistik({ API, label }) {
+export default function RekapStatistik({ API, label, title }) {
   const { data: rekapData, errorKab } = useSWR(API, fetcher);
 
   const [selected, setSelected] = useState(true);
@@ -149,11 +149,11 @@ export default function RekapStatistik({ API, label }) {
   return (
     <>
       <Head>
-        <title>Data Skripsi</title>
+        <title>Data {label}</title>
       </Head>
       {/* Header */}
       <div className="flex items-center mx-8 justify-between">
-        <h2 className="text-left font-bold text-2xl">Data Skripsi</h2>
+        <h2 className="text-left font-bold text-2xl">Data {label}</h2>
 
         <div className="">
           <label htmlFor="angkatan">Angkatan:</label>
@@ -217,7 +217,7 @@ export default function RekapStatistik({ API, label }) {
           setSearch={handleSearch}
           setKategori={handleKategori}
           kategori={kategori}
-          listKategori={["Nama", "NIM"]} 
+          listKategori={["Nama", "NIM"]}
         />
       </div>
 

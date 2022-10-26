@@ -33,7 +33,6 @@ export default function HomeDosen() {
     fetcher
   );
   console.log(rekapData);
-  console.log(dataStatus);
 
   useEffect(() => {
     if (rekapData) {
@@ -64,7 +63,7 @@ export default function HomeDosen() {
             className={
               rekapData && rekapData.status.aktif
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-green-500 hover:bg-green-400`
-                : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-500 hover:bg-gray-400`
+                : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400 `
             }
           >
             <div className="text-3xl font-bold">
@@ -111,8 +110,8 @@ export default function HomeDosen() {
           <div
             className={
               rekapData && rekapData.status.undur_diri
-                ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-pink-500 hover:bg-pink-400`
-                : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400`
+                ? `rounded-xl col-span-3 col-start-2 text-center p-4 text-white drop-shadow-lg bg-pink-500 hover:bg-pink-400`
+                : `rounded-xl col-span-3 col-start-2 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
@@ -146,6 +145,10 @@ export default function HomeDosen() {
           </div>
         </div>
         {/* End of Cards Status Mahasiswa */}
+
+        {/* Card PKL */}
+
+        {/* End of Card PKL */}
       </div>
     </>
   );
