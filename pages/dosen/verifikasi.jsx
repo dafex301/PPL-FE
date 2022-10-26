@@ -151,6 +151,29 @@ export default function Verifikasi() {
       });
   };
 
+  const konfirmasiSkripsi = (skripsi) => {
+    // POST method on /verifikasi/skripsi/:nim
+    fetch(`${process.env.BACKEND_API}/verifikasi/skripsi/${skripsi.nim}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          alert("Skripsi berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/skripsi`);
+        } else {
+          alert("Skripsi gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   // Set the initial data
   useEffect(() => {
     if (irs && dataIrs) {
@@ -556,7 +579,10 @@ export default function Verifikasi() {
                       <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
                         Detail
                       </div>
-                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => konfirmasiSkripsi(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Konfirmasi
                       </div>
                     </td>
