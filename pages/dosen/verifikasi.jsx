@@ -151,6 +151,29 @@ export default function Verifikasi() {
       });
   };
 
+  const konfirmasiPkl = (pkl) => {
+    // POST method on /verifikasi/pkl/:nim
+    fetch(`${process.env.BACKEND_API}/verifikasi/pkl/${pkl.nim}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          alert("PKL berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/pkl`);
+        } else {
+          alert("PKL gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const konfirmasiSkripsi = (skripsi) => {
     // POST method on /verifikasi/skripsi/:nim
     fetch(`${process.env.BACKEND_API}/verifikasi/skripsi/${skripsi.nim}`, {
@@ -497,7 +520,10 @@ export default function Verifikasi() {
                       <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
                         Detail
                       </div>
-                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => konfirmasiPkl(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Konfirmasi
                       </div>
                     </td>
