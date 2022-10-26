@@ -51,7 +51,7 @@ export default class ApexChart extends React.Component {
       <div id="chart">
         <ReactApexChart
           options={this.state.options}
-          series={this.state.series}
+          series={this.props.data}
           type="donut"
           width={500}
         />

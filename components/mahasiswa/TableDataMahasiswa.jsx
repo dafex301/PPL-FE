@@ -5,7 +5,7 @@ import useSWR from "swr";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 import Search from "../../components/Search";
-import Link from "next/Link";
+import Link from "next/link";
 
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
