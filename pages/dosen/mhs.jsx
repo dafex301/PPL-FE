@@ -1,15 +1,9 @@
-import Head from "next/head";
-import Link from "next/link";
+import TableDataMahasiswa from "../../components/mahasiswa/TableDataMahasiswa";
 
-export default function MhsDosen() {
+export default function DataPKL() {
   return (
-    <>
-      <Head>
-        <title>Data Mahasiswa</title>
-      </Head>
-      <Link href="/dosen/mhs/24060120130106">
-        <a>Detail Mahasiswa</a>
-      </Link>
+    <> 
+      <TableDataMahasiswa API={`${process.env.BACKEND_API}/mahasiswa-dosen`} />
     </>
   );
 }

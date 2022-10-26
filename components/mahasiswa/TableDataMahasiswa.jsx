@@ -15,16 +15,15 @@ const fetcher = (...args) =>
     },
   }).then((res) => res.json());
 
-export default function MahasiswaAdmin() {
-  // Get data
-  const { data: mahasiswa, error } = useSWR(
-    `${process.env.BACKEND_API}/list-mahasiswa`,
-    fetcher
-  );
+const currentYear = new Date().getFullYear();
+
+export default function TableDataMahasiswa({ API }) {
+  const { data: mahasiswa, error } = useSWR(API, fetcher);
 
   // Pagination
   const [posts, setposts] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
+  const [angkatan, setAngkatan] = useState("");
   const pageSize = 8;
   const handlePageChange = (page) => {
     setcurrentPage(page);
@@ -62,6 +61,18 @@ export default function MahasiswaAdmin() {
     }
   }, [kategori, mahasiswa, search]);
 
+  useEffect(() => {
+    if (angkatan) {
+      let filtered = mahasiswa;
+      if (angkatan !== "#") {
+        filtered = filtered.filter((item) =>
+          item.angkatan.toLowerCase().includes(angkatan.toLowerCase())
+        );
+      }
+      setposts(filtered);
+    }
+  }, [angkatan, mahasiswa]);
+
   const mahasiswaPosts = paginate(posts, currentPage, pageSize);
 
   return (
@@ -69,18 +80,38 @@ export default function MahasiswaAdmin() {
       <Head>
         <title>Data Mahasiswa</title>
       </Head>
-      <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data Mahasiswa</h2>
-      <div className="mx-5 mt-4">
+      {/* Header */}
+      <div className="flex items-center mx-8 justify-between">
+        <h2 className="text-left font-bold text-2xl">Data Mahasiswa</h2>
+
+        <div className="">
+          <label htmlFor="angkatan">Angkatan:</label>
+          <select
+            onChange={(e) => {
+              setAngkatan(e.target.value);
+            }}
+            id="angkatan"
+            className="cursor-pointer ml-1"
+          >
+            <option value="#">Semua</option>
+            {[...Array(5)].map((_, i) => (
+              <option key={currentYear - i} value={currentYear - i}>
+                {currentYear - i}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {/* End of Header */}
+      <div className="flex flex-col items-center mt-4">
         {/* Search */}
-        <Search
+        {/* <Search
           setSearch={handleSearch}
           setKategori={handleKategori}
           kategori={kategori}
           listKategori={["Nama", "NIM"]}
-        />
-      </div>
-      {/* End of Search */}
-      <div className="flex flex-col items-center mt-4">
+        /> */}
+        {/* End of Search */}
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
             <table className="min-w-full">
