@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { getCookie } from "cookies-next";
 import { useState, useEffect } from "react";
 const token = getCookie("accessToken");
+import dynamic from "next/dynamic";
 
 // fetcher function with token
 const fetcher = (...args) =>
@@ -12,6 +13,10 @@ const fetcher = (...args) =>
     },
   }).then((res) => res.json());
 
+  const PieChart = dynamic(() => import("../../components/charts/PieChart"), {
+    ssr: false,
+  });
+
 export default function HomeDepartemen() {
   const [nama, setName] = useState("");
   const { data: rekapData, errorKab } = useSWR(
@@ -19,9 +24,6 @@ export default function HomeDepartemen() {
     fetcher
   );
   console.log(rekapData);
-  // if(rekapData){
-  //   return <p>{rekapData[0].nama}</p>
-  // }
   return (
     <>
       <Head></Head>

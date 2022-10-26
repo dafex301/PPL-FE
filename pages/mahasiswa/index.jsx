@@ -63,8 +63,6 @@ export default function HomeMahasiswa({ provData }) {
     fetcher
   );
 
-
-
   // Fetch mahasiswa data
   const { data: dataMhs, error: errorMhs } = useSWR(
     `${process.env.BACKEND_API}/profil`,
@@ -124,20 +122,20 @@ export default function HomeMahasiswa({ provData }) {
       {/* Success Messsage */}
       {success && (
         <div
-          class="mx-12 p-4 mt-5 mb-7 border border-green-500 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+          className="mx-12 p-4 mt-5 mb-7 border border-green-500 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
           role="alert"
         >
-          <span class="font-medium">Berhasil</span> mengupdate profil
+          <span className="font-medium">Berhasil</span> mengupdate profil
         </div>
       )}
 
       {/* Error Message */}
       {!success && success !== null && (
         <div
-          class="mx-12 p-4 mt-5 mb-7 border border-red-500 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+          className="mx-12 p-4 mt-5 mb-7 border border-red-500 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
           role="alert"
         >
-          <span class="font-medium">Gagal</span> mengupdate profil
+          <span className="font-medium">Gagal</span> mengupdate profil
         </div>
       )}
       <div className="grid grid-cols-4 mx-12 my-5">

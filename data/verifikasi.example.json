@@ -1,5 +1,58 @@
-{
-  "nama": "Fahrel Gibran Alghany",
-  "nim": "24060120130106",
-  "jenis": "irs"
-}
+// Data IRS
+[
+  {
+    "nama": "Fahrel",
+    "semester_aktif": 1,
+    "sks": 21,
+    "status_konfirmasi": "belum",
+    "file": "uploads\\irs\\16670.pdf"
+  },
+  {
+    "nama": "Fahrel",
+    "semester_aktif": 2,
+    "sks": 21,
+    "status_konfirmasi": "belum",
+    "file": "uploads\\irs\\1212.pdf"
+  },
+  {
+    "nama": "Gibran",
+    "semester_aktif": 1,
+    "sks": 21,
+    "status_konfirmasi": "belum",
+    "file": "uploads\\irs\\1212.pdf"
+  }
+]
+
+// Data KHS
+[
+  {
+    "nama": "Fahrel",
+    "semester_aktif": 1,
+    "sks": 21,
+    "sks_kumulatif": 21,
+    "ip": 3.9,
+    "ip_kumulatif": 3.9,
+    "status_konfirmasi": "belum",
+    "file": "uploads\\irs\\16670.pdf"
+  },
+  {
+    "nama": "Fahrel",
+    "semester_aktif": 2,
+    "sks": 21,
+    "sks_kumulatif": 42,
+    "ip": 3.9,
+    "ip_kumulatif": 3.9,
+    "status_konfirmasi": "belum",
+    "file": "uploads\\irs\\16670.pdf"
+  },
+  {
+    "nama": "Gibran",
+    "semester_aktif": 1,
+    "sks": 21,
+    "sks_kumulatif": 21,
+    "ip": 3.9,
+    "ip_kumulatif": 3.9,
+    "status_konfirmasi": "belum",
+    "file": "uploads\\irs\\16670.pdf"
+  },
+]
