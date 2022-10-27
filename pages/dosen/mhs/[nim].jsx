@@ -2,22 +2,53 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import useSWR from "swr";
+import { getCookie } from "cookies-next";
+const token = getCookie("accessToken");
 
 // Asset
 import anya from "../../../public/anya.jpeg";
 
 // Component
 import Modal from "../../../components/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// fetcher function with token
+const fetcher = (...args) =>
+  fetch(...args, {
+    headers: {
+      "x-access-token": token,
+    },
+  }).then((res) => res.json());
 
 export default function DetailMhs() {
-  let [isOpen, setIsOpen] = useState(false);
+  // nilai NIM dari paramter
   const router = useRouter();
   const { nim } = router.query;
 
+  // state 
+  const [name,setName] = useState("");
+  const [angkatan,setAngkatan] = useState(0);   
+
+
+  // API ke backend
+  const API = `${process.env.BACKEND_API}/dosen/mahasiswa/${nim}`;
+  // fetch data using nim from paramter
+  const { data: dataMhs, errorKab } = useSWR(`${process.env.BACKEND_API}/dosen/mahasiswa/${nim}`, fetcher);
+
+  let [isOpen, setIsOpen] = useState(false);
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if(dataMhs){
+      setName(dataMhs.name);
+      setAngkatan(parseInt(dataMhs.angkatan));
+    }
+  },[dataMhs])
+
+
 
   return (
     <>
@@ -47,7 +78,7 @@ export default function DetailMhs() {
             type="text"
             id="nama"
             name="nama"
-            value="Anya Forger"
+            value={name}
             disabled
           />
           <label htmlFor="nim" className="block">
@@ -58,7 +89,7 @@ export default function DetailMhs() {
             type="number"
             id="nim"
             name="nim"
-            value="24060120110001"
+            value={nim}
             disabled
           />
           <label htmlFor="angkatan" className="block">
@@ -69,7 +100,7 @@ export default function DetailMhs() {
             type="number"
             id="angkatan"
             name="angkatan"
-            value={2020}
+            value={angkatan}
             disabled
           />
         </div>

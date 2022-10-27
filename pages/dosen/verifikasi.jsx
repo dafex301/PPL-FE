@@ -1,7 +1,7 @@
 // Next Components
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { getCookie } from "cookies-next";
 
 // Import functions
@@ -23,6 +23,8 @@ const fetcher = (...args) =>
   }).then((res) => res.json());
 
 export default function Verifikasi() {
+  const { mutate } = useSWRConfig();
+
   // Get IRS data
   const { data: dataIrs, error: errorIrs } = useSWR(
     `${process.env.BACKEND_API}/verifikasi/irs`,
@@ -31,7 +33,7 @@ export default function Verifikasi() {
 
   // Get KHS data
   const { data: dataKhs, error: errorKhs } = useSWR(
-    `${process.env.BACKEND_API}/verifikasi/irs`,
+    `${process.env.BACKEND_API}/verifikasi/khs`,
     fetcher
   );
 
@@ -43,7 +45,7 @@ export default function Verifikasi() {
 
   // Get Skripsi data
   const { data: dataSkripsi, error: errorSkripsi } = useSWR(
-    `${process.env.BACKEND_API}/rekap/skripsi`,
+    `${process.env.BACKEND_API}/verifikasi/skripsi`,
     fetcher
   );
 
@@ -94,6 +96,105 @@ export default function Verifikasi() {
     setKhs(false);
     setPkl(false);
     setSkripsi(true);
+  };
+
+  // Handle konfirmasi
+  const konfirmasiIrs = (irs) => {
+    fetch(
+      `${process.env.BACKEND_API}/verifikasi/irs/${irs.nim}/${irs.semester_aktif}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          // TODO: Make a better alert
+          alert("IRS berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/irs`);
+        } else {
+          alert("IRS gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const konfirmasiKhs = (khs) => {
+    // POST method on /verifikasi/khs/:nim/:semester
+    fetch(
+      `${process.env.BACKEND_API}/verifikasi/khs/${khs.nim}/${khs.semester_aktif}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          alert("KHS berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/khs`);
+        } else {
+          alert("KHS gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const konfirmasiPkl = (pkl) => {
+    // POST method on /verifikasi/pkl/:nim
+    fetch(`${process.env.BACKEND_API}/verifikasi/pkl/${pkl.nim}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          alert("PKL berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/pkl`);
+        } else {
+          alert("PKL gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const konfirmasiSkripsi = (skripsi) => {
+    // POST method on /verifikasi/skripsi/:nim
+    fetch(`${process.env.BACKEND_API}/verifikasi/skripsi/${skripsi.nim}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == "OK") {
+          alert("Skripsi berhasil dikonfirmasi");
+          mutate(`${process.env.BACKEND_API}/verifikasi/skripsi`);
+        } else {
+          alert("Skripsi gagal dikonfirmasi");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // Set the initial data
@@ -265,7 +366,10 @@ export default function Verifikasi() {
                       <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
                         Detail
                       </div>
-                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => konfirmasiIrs(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Konfirmasi
                       </div>
                     </td>
@@ -275,6 +379,84 @@ export default function Verifikasi() {
           </table>
         )}
         {/* End of Table IRS */}
+
+        {/* Table KHS */}
+        {khs && (
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Nama
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  NIM
+                </th>
+
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Semester
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  SKS (Kumulatif)
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  IP (Kumulatif)
+                </th>
+                <th className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                  Aksi
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {dataKhs &&
+                data.map((item) => (
+                  <tr key={item.id_khs}>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="flex items-center">
+                        <div className="ml-4">
+                          <div className="text-sm leading-5 font-medium text-gray-900">
+                            {item.name}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.nim}
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.semester_aktif}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.sks} ({item.sks_kumulatif})
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {item.ip} ({item.ipk})
+                      </div>
+                    </td>
+                    <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                        Detail
+                      </div>
+                      <div
+                        onClick={() => konfirmasiKhs(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
+                        Konfirmasi
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
+        {/* End of Table KHS */}
 
         {/* Table PKL */}
         {pkl && (
@@ -304,7 +486,7 @@ export default function Verifikasi() {
             <tbody className="bg-white">
               {dataPkl &&
                 data.map((item) => (
-                  <tr key={item.nim}>
+                  <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex items-center">
                         <div className="ml-4">
@@ -338,7 +520,10 @@ export default function Verifikasi() {
                       <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
                         Detail
                       </div>
-                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => konfirmasiPkl(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Konfirmasi
                       </div>
                     </td>
@@ -378,9 +563,9 @@ export default function Verifikasi() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {dataPkl &&
+              {dataSkripsi &&
                 data.map((item) => (
-                  <tr key={item.nim}>
+                  <tr key={item.id}>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex items-center">
                         <div className="ml-4">
@@ -410,11 +595,20 @@ export default function Verifikasi() {
                         {item.nilai}
                       </div>
                     </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="text-sm leading-5 text-gray-900">
+                        {/* Convert item.tanggal to date */}
+                        {item.tanggal}
+                      </div>
+                    </td>
                     <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
                         Detail
                       </div>
-                      <div className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => konfirmasiSkripsi(item)}
+                        className="text-sm leading-5 text-white bg-green-500 hover:bg-green-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Konfirmasi
                       </div>
                     </td>

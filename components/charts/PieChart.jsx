@@ -56,7 +56,6 @@ export default class ApexChart extends React.Component {
           series: [jumlahBelum, jumlahLulus],
         };
       });
-      console.log(this.props.angkatan);
     }
   }
 
@@ -73,7 +72,6 @@ export default class ApexChart extends React.Component {
             series: [jumlahBelum, jumlahLulus],
           };
         });
-        console.log(this.props.angkatan);
       }
     }
   }
