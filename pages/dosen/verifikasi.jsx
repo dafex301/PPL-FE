@@ -197,6 +197,88 @@ export default function Verifikasi() {
       });
   };
 
+  // Handle download
+  const downloadIrs = (irs) => {
+    // GET method on /irs/:nim/:semester
+    fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.semester_aktif}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadKhs = (khs) => {
+    fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.semester_aktif}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadPkl = (pkl) => {
+    fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadSkripsi = (skripsi) => {
+    fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   // Set the initial data
   useEffect(() => {
     if (irs && dataIrs) {
@@ -363,7 +445,10 @@ export default function Verifikasi() {
                       </div>
                     </td>
                     <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => downloadIrs(item)}
+                        className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Detail
                       </div>
                       <div
@@ -441,7 +526,10 @@ export default function Verifikasi() {
                       </div>
                     </td>
                     <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => downloadKhs(item)}
+                        className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Detail
                       </div>
                       <div
@@ -517,7 +605,10 @@ export default function Verifikasi() {
                       </div>
                     </td>
                     <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => downloadPkl(item)}
+                        className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Detail
                       </div>
                       <div
@@ -602,7 +693,10 @@ export default function Verifikasi() {
                       </div>
                     </td>
                     <td className="px-6 flex gap-2 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full">
+                      <div
+                        onClick={() => downloadSkripsi(item)}
+                        className="text-sm leading-5 text-white bg-blue-500 hover:bg-blue-700 cursor-pointer px-2 py-1 rounded-full"
+                      >
                         Detail
                       </div>
                       <div
