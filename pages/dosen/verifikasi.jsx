@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { getCookie } from "cookies-next";
+import Modal from "../../components/ModalPdf"
 
 // Import functions
 import { searchData } from "../../utils/functions/searchData";
@@ -30,6 +31,7 @@ export default function Verifikasi() {
     `${process.env.BACKEND_API}/verifikasi/irs`,
     fetcher
   );
+  console.log(dataIrs)
 
   // Get KHS data
   const { data: dataKhs, error: errorKhs } = useSWR(
@@ -56,6 +58,8 @@ export default function Verifikasi() {
   const [pkl, setPkl] = useState(false);
   const [skripsi, setSkripsi] = useState(false);
   const [data, setData] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [pdf, setPdf] = useState("");
 
   // Search
   const [search, setSearch] = useState("");
@@ -197,6 +201,11 @@ export default function Verifikasi() {
       });
   };
 
+  // Handle preview
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
   // Handle download
   const downloadIrs = (irs) => {
     // GET method on /irs/:nim/:semester
@@ -212,7 +221,8 @@ export default function Verifikasi() {
         // Download and open PDF in new tab
         const file = new Blob([blob], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
       })
       .catch((err) => {
         console.log(err);
@@ -232,7 +242,8 @@ export default function Verifikasi() {
         // Download and open PDF in new tab
         const file = new Blob([blob], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
       })
       .catch((err) => {
         console.log(err);
@@ -252,7 +263,8 @@ export default function Verifikasi() {
         // Download and open PDF in new tab
         const file = new Blob([blob], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
       })
       .catch((err) => {
         console.log(err);
@@ -272,7 +284,8 @@ export default function Verifikasi() {
         // Download and open PDF in new tab
         const file = new Blob([blob], { type: "application/pdf" });
         const fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
       })
       .catch((err) => {
         console.log(err);
@@ -314,11 +327,14 @@ export default function Verifikasi() {
     dataSkripsi,
   ]);
 
+  console.log(pdf);
+
   return (
     <>
       <Head>
         <title>Verifikasi Berkas</title>
       </Head>
+      <Modal open={isOpen} url={pdf} handleModal={handleModal} />
       <div className="mx-8 flex flex-col gap-5">
         {/* Header */}
         <div className="flex items-center justify-between">
