@@ -6,7 +6,7 @@ import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 import Search from "../../components/Search";
 import Link from "next/link";
-
+ 
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
 const fetcher = (...args) =>
@@ -18,7 +18,7 @@ const fetcher = (...args) =>
 
 const currentYear = new Date().getFullYear();
 
-export default function TableDataMahasiswa({ API }) {
+export default function TableDataMahasiswa({ API,role }) {
   const { data: mahasiswa, error } = useSWR(API, fetcher);
 
   // Pagination
@@ -175,7 +175,7 @@ export default function TableDataMahasiswa({ API }) {
                           href="#"
                           className="text-indigo-600 hover:text-indigo-900"
                         >
-                          <Link href={`/dosen/mhs/${mhs.nim}`}>
+                          <Link href={`/${role}/mhs/${mhs.nim}`}>
                             <a>Detail</a>
                           </Link>
                         </a>

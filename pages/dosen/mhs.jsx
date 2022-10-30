@@ -3,7 +3,7 @@ import TableDataMahasiswa from "../../components/mahasiswa/TableDataMahasiswa";
 export default function DataPKL() {
   return (
     <> 
-      <TableDataMahasiswa API={`${process.env.BACKEND_API}/mahasiswa-dosen`} />
+      <TableDataMahasiswa role={'dosen'} API={`${process.env.BACKEND_API}/mahasiswa-dosen`} />
     </>
   );
 }
