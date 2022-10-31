@@ -87,7 +87,7 @@ export default function DetailPage({ API, role, nim }) {
   const classIRS =
     "py-4 w-10/12 rounded-xl hover:bg-violet-700 cursor-pointer shadow-lg bg-violet-500 text-white text-center text-2xl";
   const classDisable =
-    "py-4 w-10/12 rounded-xl cursor-not-allowed shadow-lg bg-violet-900 text-white text-center text-2xl";
+    "py-4 w-10/12 rounded-xl cursor-not-allowed shadow-lg bg-gray-300 text-white text-center text-2xl";
 
   return (
     <>
@@ -197,7 +197,7 @@ export default function DetailPage({ API, role, nim }) {
             <p>Sudah lulus skripsi</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-4 h-4 rounded-sm bg-violet-900 " />
+            <div className="w-4 h-4 rounded-sm bg-gray-300 " />
             <p>Belum diisikan</p>
           </div>
         </div>
