@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -6,6 +7,20 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { getCookie } from "cookies-next";
 const token = getCookie("accessToken");
+import Modal from "./ModalPdf";
+
+
+export default function BasicTabs({
+  sem,
+  nim,
+  sks,
+  sksk,
+  ip,
+  ipk,
+  npkl,
+  nskripsi,
+  tglSkripsi,
+}) {
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -55,7 +70,8 @@ const downloadIrs = (irs) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
@@ -75,7 +91,8 @@ const downloadKhs = (khs) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
@@ -95,7 +112,8 @@ const downloadPkl = (pkl) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
@@ -115,18 +133,25 @@ const downloadSkripsi = (skripsi) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
+ // Handle preview
+ const handleModal = () => {
+  setIsOpen(!isOpen);
+};
 
-export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,tglSkripsi }) {
+
   const [value, setValue] = React.useState(0);
   const [nilaiP, setNilaiP] = React.useState(0);
   const [nilaiS, setNilaiS] = React.useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [pdf, setPdf] = useState("");
 
   // const [nskripsi,setNskripsi] = React.useState(0);
 
@@ -140,92 +165,99 @@ export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          textColor="secondary"
-          indicatorColor="secondary"
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          variant="fullWidth"
-        >
-          <Tab label="IRS" {...a11yProps(0)} />
-          <Tab label="KHS" {...a11yProps(1)} />
-          {nilaiP !== "-" ? <Tab label="PKL" {...a11yProps(2)} /> : ""}
-          {nilaiS !== "-" ? <Tab label="Skripsi" {...a11yProps(2)} /> : ""}
-        </Tabs>
-      </Box>
-      <TabPanel value={value} index={0}>
-        <div className="">
-          <div className="flex justify-end w-full text-xl">{sem}</div>
-          <div className="h-28 mb-7 flex-col flex justify-center items-center">
-            <h3 className="text-md">Total SKS</h3>
-            <h1 className="text-3xl font-bold">{sks} SKS</h1>
-          </div>
-          <button
-           onClick={() => downloadIrs({nim,sem})} 
-           className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
-            Detail
-          </button>
-        </div>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <div className="">
-          <div className="text-right text-xl">{sem}</div>
-          <div className="h-28 mb-7 text-lg">
-            <p>
-              SKS Semester: <span className="font-bold">{sks}</span>
-            </p>
-            <p>
-              IP Semester: <span className="font-bold">{ip}</span>
-            </p>
-            <p>
-              SKS Kumulatif: <span className="font-bold">{sksk}</span>
-            </p>
-            <p>
-              IP Kumulatif: <span className="font-bold">{ipk}</span>
-            </p>
-          </div>
-          <button
-           onClick={() => downloadKhs({nim,sem})}
-          className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
-            Detail
-          </button>
-        </div>
-      </TabPanel>
-      {nilaiS === "-" ? (
-        <TabPanel value={value} index={2}>
+    <>
+      <Modal open={isOpen} url={pdf} handleModal={handleModal} />
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            textColor="secondary"
+            indicatorColor="secondary"
+            value={value}
+            onChange={handleChange}
+            aria-label="basic tabs example"
+            variant="fullWidth"
+          >
+            <Tab label="IRS" {...a11yProps(0)} />
+            <Tab label="KHS" {...a11yProps(1)} />
+            {nilaiP !== "-" ? <Tab label="PKL" {...a11yProps(2)} /> : ""}
+            {nilaiS !== "-" ? <Tab label="Skripsi" {...a11yProps(2)} /> : ""}
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
           <div className="">
             <div className="flex justify-end w-full text-xl">{sem}</div>
             <div className="h-28 mb-7 flex-col flex justify-center items-center">
-              <h3 className="text-md">Nilai PKL</h3>
-              <h1 className="text-3xl font-bold">{nilaiP}</h1>
+              <h3 className="text-md">Total SKS</h3>
+              <h1 className="text-3xl font-bold">{sks} SKS</h1>
             </div>
             <button
-            onClick={() => downloadPkl({nim})}
-            className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
+              onClick={() => downloadIrs({ nim, sem })}
+              className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700"
+            >
               Detail
             </button>
           </div>
         </TabPanel>
-      ) : (
-        <TabPanel value={value} index={2}>
+        <TabPanel value={value} index={1}>
           <div className="">
-            <div className="flex justify-end w-full text-xl">{sem}</div>
-            <div className="h-28 mb-7 flex-col flex justify-center items-center">
-              <h3 className="text-md">Nilai Skripsi</h3>
-              <h1 className="text-3xl font-bold">{nilaiS}</h1>
-              <p className="text-sm">{tglSkripsi}</p>
+            <div className="text-right text-xl">{sem}</div>
+            <div className="h-28 mb-7 text-lg">
+              <p>
+                SKS Semester: <span className="font-bold">{sks}</span>
+              </p>
+              <p>
+                IP Semester: <span className="font-bold">{ip}</span>
+              </p>
+              <p>
+                SKS Kumulatif: <span className="font-bold">{sksk}</span>
+              </p>
+              <p>
+                IP Kumulatif: <span className="font-bold">{ipk}</span>
+              </p>
             </div>
-            <button 
-            onClick={() => downloadSkripsi({nim})}
-            className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
+            <button
+              onClick={() => downloadKhs({ nim, sem })}
+              className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700"
+            >
               Detail
             </button>
           </div>
         </TabPanel>
-      )}
-    </Box>
+        {nilaiS === "-" ? (
+          <TabPanel value={value} index={2}>
+            <div className="">
+              <div className="flex justify-end w-full text-xl">{sem}</div>
+              <div className="h-28 mb-7 flex-col flex justify-center items-center">
+                <h3 className="text-md">Nilai PKL</h3>
+                <h1 className="text-3xl font-bold">{nilaiP}</h1>
+              </div>
+              <button
+                onClick={() => downloadPkl({ nim })}
+                className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700"
+              >
+                Detail
+              </button>
+            </div>
+          </TabPanel>
+        ) : (
+          <TabPanel value={value} index={2}>
+            <div className="">
+              <div className="flex justify-end w-full text-xl">{sem}</div>
+              <div className="h-28 mb-7 flex-col flex justify-center items-center">
+                <h3 className="text-md">Nilai Skripsi</h3>
+                <h1 className="text-3xl font-bold">{nilaiS}</h1>
+                <p className="text-sm">{tglSkripsi}</p>
+              </div>
+              <button
+                onClick={() => downloadSkripsi({ nim })}
+                className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700"
+              >
+                Detail
+              </button>
+            </div>
+          </TabPanel>
+        )}
+      </Box>
+    </>
   );
 }
