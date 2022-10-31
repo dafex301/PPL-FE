@@ -4,6 +4,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Modal from "./ModalPdf";
+
 import { getCookie } from "cookies-next";
 const token = getCookie("accessToken");
 
@@ -41,7 +43,102 @@ function a11yProps(index) {
 }
 
 // Handle download
-const downloadIrs = (irs) => {
+// const downloadIrs = (irs) => {
+//   // GET method on /irs/:nim/:semester
+//   fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.sem}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "x-access-token": token,
+//     },
+//   })
+//     .then((res) => res.blob())
+//     .then((blob) => {
+//       // Download and open PDF in new tab
+//       const file = new Blob([blob], { type: "application/pdf" });
+//       const fileURL = URL.createObjectURL(file);
+//       window.open(fileURL);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+// const downloadKhs = (khs) => {
+//   fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.sem}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "x-access-token": token,
+//     },
+//   })
+//     .then((res) => res.blob())
+//     .then((blob) => {
+//       // Download and open PDF in new tab
+//       const file = new Blob([blob], { type: "application/pdf" });
+//       const fileURL = URL.createObjectURL(file);
+//       window.open(fileURL);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+// const downloadPkl = (pkl) => {
+//   fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "x-access-token": token,
+//     },
+//   })
+//     .then((res) => res.blob())
+//     .then((blob) => {
+//       // Download and open PDF in new tab
+//       const file = new Blob([blob], { type: "application/pdf" });
+//       const fileURL = URL.createObjectURL(file);
+//       window.open(fileURL);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+// const downloadSkripsi = (skripsi) => {
+//   fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "x-access-token": token,
+//     },
+//   })
+//     .then((res) => res.blob())
+//     .then((blob) => {
+//       // Download and open PDF in new tab
+//       const file = new Blob([blob], { type: "application/pdf" });
+//       const fileURL = URL.createObjectURL(file);
+//       window.open(fileURL);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// };
+
+
+
+export default function BasicTabs({ sem, nim, sks, sksk, ip, ipk, npkl, nskripsi, tglSkripsi }) {
+  const [value, setValue] = React.useState(0);
+  const [nilaiP, setNilaiP] = React.useState(0);
+  const [nilaiS, setNilaiS] = React.useState(0);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [pdf, setPdf] = React.useState("");
+
+  const handleModal = () => {
+    setIsOpen(!isOpen);
+  };
+  
+  // Handle download
+  const downloadIrs = (irs) => {
   // GET method on /irs/:nim/:semester
   fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.sem}`, {
     method: "GET",
@@ -55,7 +152,8 @@ const downloadIrs = (irs) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
@@ -75,7 +173,8 @@ const downloadKhs = (khs) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
@@ -95,7 +194,8 @@ const downloadPkl = (pkl) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
@@ -115,18 +215,14 @@ const downloadSkripsi = (skripsi) => {
       // Download and open PDF in new tab
       const file = new Blob([blob], { type: "application/pdf" });
       const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      setIsOpen(!isOpen);
+      setPdf(fileURL);
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-
-export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,tglSkripsi }) {
-  const [value, setValue] = React.useState(0);
-  const [nilaiP, setNilaiP] = React.useState(0);
-  const [nilaiS, setNilaiS] = React.useState(0);
 
   // const [nskripsi,setNskripsi] = React.useState(0);
 
@@ -142,6 +238,7 @@ export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Modal open={isOpen} url={pdf} handleModal={handleModal} />
         <Tabs
           textColor="secondary"
           indicatorColor="secondary"
@@ -164,8 +261,8 @@ export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,
             <h1 className="text-3xl font-bold">{sks} SKS</h1>
           </div>
           <button
-           onClick={() => downloadIrs({nim,sem})} 
-           className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
+            onClick={() => downloadIrs({ nim, sem })}
+            className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
             Detail
           </button>
         </div>
@@ -188,8 +285,8 @@ export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,
             </p>
           </div>
           <button
-           onClick={() => downloadKhs({nim,sem})}
-          className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
+            onClick={() => downloadKhs({ nim, sem })}
+            className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
             Detail
           </button>
         </div>
@@ -203,8 +300,8 @@ export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,
               <h1 className="text-3xl font-bold">{nilaiP}</h1>
             </div>
             <button
-            onClick={() => downloadPkl({nim})}
-            className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
+              onClick={() => downloadPkl({ nim })}
+              className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
               Detail
             </button>
           </div>
@@ -218,9 +315,9 @@ export default function BasicTabs({ sem,nim, sks, sksk, ip, ipk, npkl, nskripsi,
               <h1 className="text-3xl font-bold">{nilaiS}</h1>
               <p className="text-sm">{tglSkripsi}</p>
             </div>
-            <button 
-            onClick={() => downloadSkripsi({nim})}
-            className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
+            <button
+              onClick={() => downloadSkripsi({ nim })}
+              className="block text-center w-1/2 mx-auto text-white rounded-full p-1 bg-violet-500 hover:bg-violet-700">
               Detail
             </button>
           </div>

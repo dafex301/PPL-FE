@@ -76,7 +76,7 @@ export default function ModalPdf(props) {
                 <Fade in={props.open}>
                     <Box sx={style}>
                         <div className="text-lg rounded-lg">
-                            <iframe src={props.url} width="500" height="600" allow="autoplay"></iframe>
+                            <iframe src={props.url} width="650" height="600" allow="autoplay"></iframe>
                         </div>
                     </Box>
                 </Fade>
