@@ -54,7 +54,7 @@ export default function SpringModal(props) {
         aria-labelledby="spring-modal-title"
         aria-describedby="spring-modal-description"
         open={props.open}
-        onClose={props.handleModal}
+        onClose={() => props.handleModal(props.sema)}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -62,9 +62,19 @@ export default function SpringModal(props) {
         }}
       >
         <Fade in={props.open}>
-          <Box sx={style}>
+          <Box sx={style} style={{width:"22%"}}>
             <div className="text-lg rounded-lg">
-              <Tabs />
+              <Tabs
+                sem={props.sema}
+                sks={props.sks}
+                sksk={props.sksk}
+                ip={props.ip}
+                ipk={props.ipk}
+                npkl={props.npkl}
+                nskripsi={props.nskripsi}
+                tglSkripsi={props.tglSkripsi}
+                nim={props.nim}
+              />
             </div>
           </Box>
         </Fade>
