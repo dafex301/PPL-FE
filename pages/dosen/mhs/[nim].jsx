@@ -27,8 +27,10 @@ export default function DetailMhs() {
   const { nim } = router.query;
 
   // state 
-  const [name,setName] = useState("");
-  const [angkatan,setAngkatan] = useState(0);   
+  const [name, setName] = useState("");
+  const [angkatan, setAngkatan] = useState(0);
+  const [pdf, setPdf] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
 
   // API ke backend
@@ -36,17 +38,101 @@ export default function DetailMhs() {
   // fetch data using nim from paramter
   const { data: dataMhs, errorKab } = useSWR(`${process.env.BACKEND_API}/dosen/mahasiswa/${nim}`, fetcher);
 
-  let [isOpen, setIsOpen] = useState(false);
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
 
   useEffect(() => {
-    if(dataMhs){
+    if (dataMhs) {
       setName(dataMhs.name);
       setAngkatan(parseInt(dataMhs.angkatan));
     }
-  },[dataMhs])
+  }, [dataMhs]);
+
+  const downloadIrs = (irs) => {
+    // GET method on /irs/:nim/:semester
+    fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.semester_aktif}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadKhs = (khs) => {
+    fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.semester_aktif}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadPkl = (pkl) => {
+    fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const downloadSkripsi = (skripsi) => {
+    fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    })
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
 
 
