@@ -12,6 +12,9 @@ import FileUpload from "../../components/FileUpload";
 import anya from "../../public/anya.jpeg";
 import Link from "next/link";
 
+// Import titlecase
+import titleCase from "../../utils/functions/titleCase";
+
 const token = getCookie("accessToken");
 
 export default function GenerateAdmin() {
@@ -114,8 +117,7 @@ export default function GenerateAdmin() {
           },
           body: formData,
         });
-        const data = await res.json();
-        if (data.status === "success") {
+        if (res.status === 200) {
           setSuccess("Berhasil generate akun!");
           setError("");
           setFile(null);
@@ -223,7 +225,7 @@ export default function GenerateAdmin() {
               id="status"
               className="border-b-2 mb-5 py-1 focus:outline-none focus:border-gray-500 w-full "
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(titleCase(e.target.value))}
             >
               <option value="Aktif">Aktif</option>
               <option value="Cuti">Cuti</option>
