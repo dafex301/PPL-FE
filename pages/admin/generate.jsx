@@ -277,8 +277,11 @@ export default function GenerateAdmin() {
           <h2 className="text-left font-bold text-2xl my-2">
             Generate Akun Batch
           </h2>
-          <Link href="">
-            <a className="text-violet-700 hover:text-violet-900">
+          <Link href="https://drive.google.com/drive/u/0/folders/1URpQcC5Y7fAU9I6dcibFyJc49YpHk5Eh">
+            <a
+              className="text-violet-700 hover:text-violet-900"
+              target={"_blank"}
+            >
               Download Template
             </a>
           </Link>
