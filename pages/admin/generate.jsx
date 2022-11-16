@@ -12,6 +12,9 @@ import FileUpload from "../../components/FileUpload";
 import anya from "../../public/anya.jpeg";
 import Link from "next/link";
 
+// Import titlecase
+import titleCase from "../../utils/functions/titleCase";
+
 const token = getCookie("accessToken");
 
 export default function GenerateAdmin() {
@@ -114,8 +117,7 @@ export default function GenerateAdmin() {
           },
           body: formData,
         });
-        const data = await res.json();
-        if (data.status === "success") {
+        if (res.status === 200) {
           setSuccess("Berhasil generate akun!");
           setError("");
           setFile(null);
@@ -223,7 +225,7 @@ export default function GenerateAdmin() {
               id="status"
               className="border-b-2 mb-5 py-1 focus:outline-none focus:border-gray-500 w-full "
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(titleCase(e.target.value))}
             >
               <option value="Aktif">Aktif</option>
               <option value="Cuti">Cuti</option>
@@ -275,8 +277,11 @@ export default function GenerateAdmin() {
           <h2 className="text-left font-bold text-2xl my-2">
             Generate Akun Batch
           </h2>
-          <Link href="">
-            <a className="text-violet-700 hover:text-violet-900">
+          <Link href="https://drive.google.com/drive/u/0/folders/1URpQcC5Y7fAU9I6dcibFyJc49YpHk5Eh">
+            <a
+              className="text-violet-700 hover:text-violet-900"
+              target={"_blank"}
+            >
               Download Template
             </a>
           </Link>
