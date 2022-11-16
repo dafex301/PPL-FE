@@ -14,6 +14,9 @@ import axios from "axios";
 // Get token from cookies
 const token = getCookie("accessToken");
 
+const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+const phoneRegex = /^(\+62|62|0)8[1-9]{1}[0-9]{7,9}$/g;
+
 // Fetching Provinsi
 export async function getStaticProps() {
   const prov = await fetch("http://localhost:8080/api/provinsi");
@@ -76,24 +79,28 @@ export default function HomeMahasiswa({ provData }) {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    // PUT data to /profil with header x-access-token with axios
-    const res = await axios.put(
-      `${process.env.BACKEND_API}/profil`,
-      {
-        alamat,
-        kodeKab: kabupaten,
-        email,
-        phone,
-      },
-      {
-        headers: {
-          "x-access-token": token,
+
+    if (emailRegex.test(email) && phoneRegex.test(phone)) {
+      const res = await axios.put(
+        `${process.env.BACKEND_API}/profil`,
+        {
+          alamat,
+          kodeKab: kabupaten,
+          email,
+          phone,
         },
+        {
+          headers: {
+            "x-access-token": token,
+          },
+        }
+      );
+      // If success, set success to true, else false
+      if (res.status === 200) {
+        setSuccess(true);
+      } else {
+        setSuccess(false);
       }
-    );
-    // If success, set success to true, else false
-    if (res.status === 200) {
-      setSuccess(true);
     } else {
       setSuccess(false);
     }
