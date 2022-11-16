@@ -79,6 +79,7 @@ export default function RekapStatistik({ API, label, title }) {
 
   // Table data
   const [data, setData] = useState([]);
+  
 
   // hitung yang belum dan sudah skripsi
   useEffect(() => {

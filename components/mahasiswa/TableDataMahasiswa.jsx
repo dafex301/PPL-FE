@@ -6,7 +6,7 @@ import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 import Search from "../../components/Search";
 import Link from "next/link";
- 
+
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
 const fetcher = (...args) =>
@@ -18,7 +18,7 @@ const fetcher = (...args) =>
 
 const currentYear = new Date().getFullYear();
 
-export default function TableDataMahasiswa({ API,role }) {
+export default function TableDataMahasiswa({ API, role }) {
   const { data: mahasiswa, error } = useSWR(API, fetcher);
 
   // Pagination
@@ -104,14 +104,16 @@ export default function TableDataMahasiswa({ API,role }) {
         </div>
       </div>
       {/* End of Header */}
-      <div className="flex flex-col items-center mt-4">
-        {/* Search */}
-        {/* <Search
+      <div className="mt-4 mx-5">
+        <Search
           setSearch={handleSearch}
           setKategori={handleKategori}
           kategori={kategori}
           listKategori={["Nama", "NIM"]}
-        /> */}
+        />
+      </div>
+      <div className="flex flex-col items-center">
+        {/* Search */}
         {/* End of Search */}
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
