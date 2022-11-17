@@ -48,6 +48,12 @@ export default function IrsMahasiswa(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (sks < 0 || sks > 24) {
+      setSuccess(false);
+      setMessage("SKS harus di antara 1 - 24!");
+      return;
+    }
+
     // Check if all input is filled
     if (semester_aktif && sks && filename) {
       // Create form data
@@ -85,6 +91,7 @@ export default function IrsMahasiswa(props) {
 
   // Update data if data is exist
   useEffect(() => {
+    setValidFile(true);
     if (data) {
       const irs = data.find((item) => item.semester_aktif == semester_aktif);
       if (irs) {

@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { getCookie } from "cookies-next";
-import Modal from "../../components/ModalPdf"
+import Modal from "../../components/ModalPdf";
 
 // Import functions
 import { searchData } from "../../utils/functions/searchData";
@@ -31,7 +31,6 @@ export default function Verifikasi() {
     `${process.env.BACKEND_API}/verifikasi/irs`,
     fetcher
   );
-  console.log(dataIrs)
 
   // Get KHS data
   const { data: dataKhs, error: errorKhs } = useSWR(
@@ -104,6 +103,10 @@ export default function Verifikasi() {
 
   // Handle konfirmasi
   const konfirmasiIrs = (irs) => {
+    // Confirm dialog
+    if (!confirm("Apakah anda yakin?")) {
+      return;
+    }
     fetch(
       `${process.env.BACKEND_API}/verifikasi/irs/${irs.nim}/${irs.semester_aktif}`,
       {
@@ -117,7 +120,6 @@ export default function Verifikasi() {
       .then((res) => res.json())
       .then((data) => {
         if (data.message == "OK") {
-          // TODO: Make a better alert
           alert("IRS berhasil dikonfirmasi");
           mutate(`${process.env.BACKEND_API}/verifikasi/irs`);
         } else {
@@ -130,6 +132,9 @@ export default function Verifikasi() {
   };
 
   const konfirmasiKhs = (khs) => {
+    if (!confirm("Apakah anda yakin?")) {
+      return;
+    }
     // POST method on /verifikasi/khs/:nim/:semester
     fetch(
       `${process.env.BACKEND_API}/verifikasi/khs/${khs.nim}/${khs.semester_aktif}`,
@@ -156,6 +161,9 @@ export default function Verifikasi() {
   };
 
   const konfirmasiPkl = (pkl) => {
+    if (!confirm("Apakah anda yakin?")) {
+      return;
+    }
     // POST method on /verifikasi/pkl/:nim
     fetch(`${process.env.BACKEND_API}/verifikasi/pkl/${pkl.nim}`, {
       method: "POST",
@@ -179,6 +187,9 @@ export default function Verifikasi() {
   };
 
   const konfirmasiSkripsi = (skripsi) => {
+    if (!confirm("Apakah anda yakin?")) {
+      return;
+    }
     // POST method on /verifikasi/skripsi/:nim
     fetch(`${process.env.BACKEND_API}/verifikasi/skripsi/${skripsi.nim}`, {
       method: "POST",

@@ -51,6 +51,30 @@ export default function KhsMahasiswa() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (sksSemester > 24 || sksSemester < 0) {
+      setSuccess(false);
+      setMessage("SKS Semester harus di antara 1 - 24!");
+      return;
+    }
+
+    if (sksKumulatif > 160 || sksKumulatif < 0) {
+      setSuccess(false);
+      setMessage("SKS Kumulatif harus di antara 1 - 160!");
+      return;
+    }
+
+    if (ipSemester > 4 || ipSemester < 0) {
+      setSuccess(false);
+      setMessage("IP Semester harus di antara 0 - 4!");
+      return;
+    }
+
+    if (ipKumulatif > 4 || ipKumulatif < 0) {
+      setSuccess(false);
+      setMessage("IP Kumulatif harus di antara 0 - 4!");
+      return;
+    }
+
     // Check if all input is filled
     if (
       semester &&
