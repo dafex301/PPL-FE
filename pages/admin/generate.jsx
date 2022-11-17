@@ -34,7 +34,7 @@ export default function GenerateAdmin() {
   const [nim, setNim] = useState("");
   const [angkatan, setAngkatan] = useState("");
   const [kodeWali, setKodeWali] = useState("");
-  const [status, setStatus] = useState("aktif");
+  const [status, setStatus] = useState("Aktif");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -65,6 +65,25 @@ export default function GenerateAdmin() {
     e.preventDefault();
     setSuccess("");
     setError("");
+
+    // Empty input check
+    if (name === "" || nim === "" || angkatan === "" || kodeWali === "") {
+      setError("Semua input harus diisi");
+      return;
+    }
+
+    // NIM length check
+    if (nim.length !== 14) {
+      setError("NIM harus 14 digit");
+      return;
+    }
+
+    // Angkatan length check
+    if (angkatan.length !== 4) {
+      setError("Angkatan harus 4 digit");
+      return;
+    }
+
     axios
       .post(
         `${process.env.BACKEND_API}/generate`,
@@ -91,7 +110,7 @@ export default function GenerateAdmin() {
         setStatus("Aktif");
       })
       .catch((error) => {
-        setError("Gagal generate akun!");
+        setError(error.response.data.message);
         setSuccess("");
       });
   };
@@ -123,11 +142,11 @@ export default function GenerateAdmin() {
           setFile(null);
           setFileName("");
         } else {
-          setError("Gagal generate akun!");
+          setError(res.json().message);
           setSuccess("");
         }
       } catch (error) {
-        setError("Gagal generate akun!");
+        setError(error);
         setSuccess("");
       }
     }
