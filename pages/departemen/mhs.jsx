@@ -1,3 +1,4 @@
+import DonutChart from "../../components/charts/DonutChart";
 import TableDataMahasiswa from "../../components/mahasiswa/TableDataMahasiswa";
 
 export default function DataPKL() {

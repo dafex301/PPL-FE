@@ -9,8 +9,6 @@ import Modal from "./ModalPdf";
 
 import { getCookie } from "cookies-next";
 const token = getCookie("accessToken");
-import Modal from "./ModalPdf";
-
 
 export default function BasicTabs({
   sem,
@@ -23,125 +21,121 @@ export default function BasicTabs({
   nskripsi,
   tglSkripsi,
 }) {
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
   };
-}
 
-// Handle download
-// const downloadIrs = (irs) => {
-//   // GET method on /irs/:nim/:semester
-//   fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.sem}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-access-token": token,
-//     },
-//   })
-//     .then((res) => res.blob())
-//     .then((blob) => {
-//       // Download and open PDF in new tab
-//       const file = new Blob([blob], { type: "application/pdf" });
-//       const fileURL = URL.createObjectURL(file);
-//       window.open(fileURL);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
+    };
+  }
 
-// const downloadKhs = (khs) => {
-//   fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.sem}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-access-token": token,
-//     },
-//   })
-//     .then((res) => res.blob())
-//     .then((blob) => {
-//       // Download and open PDF in new tab
-//       const file = new Blob([blob], { type: "application/pdf" });
-//       const fileURL = URL.createObjectURL(file);
-//       window.open(fileURL);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+  // Handle download
+  // const downloadIrs = (irs) => {
+  //   // GET method on /irs/:nim/:semester
+  //   fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.sem}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "x-access-token": token,
+  //     },
+  //   })
+  //     .then((res) => res.blob())
+  //     .then((blob) => {
+  //       // Download and open PDF in new tab
+  //       const file = new Blob([blob], { type: "application/pdf" });
+  //       const fileURL = URL.createObjectURL(file);
+  //       window.open(fileURL);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-// const downloadPkl = (pkl) => {
-//   fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-access-token": token,
-//     },
-//   })
-//     .then((res) => res.blob())
-//     .then((blob) => {
-//       // Download and open PDF in new tab
-//       const file = new Blob([blob], { type: "application/pdf" });
-//       const fileURL = URL.createObjectURL(file);
-//       window.open(fileURL);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+  // const downloadKhs = (khs) => {
+  //   fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.sem}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "x-access-token": token,
+  //     },
+  //   })
+  //     .then((res) => res.blob())
+  //     .then((blob) => {
+  //       // Download and open PDF in new tab
+  //       const file = new Blob([blob], { type: "application/pdf" });
+  //       const fileURL = URL.createObjectURL(file);
+  //       window.open(fileURL);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-// const downloadSkripsi = (skripsi) => {
-//   fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-access-token": token,
-//     },
-//   })
-//     .then((res) => res.blob())
-//     .then((blob) => {
-//       // Download and open PDF in new tab
-//       const file = new Blob([blob], { type: "application/pdf" });
-//       const fileURL = URL.createObjectURL(file);
-//       window.open(fileURL);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+  // const downloadPkl = (pkl) => {
+  //   fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "x-access-token": token,
+  //     },
+  //   })
+  //     .then((res) => res.blob())
+  //     .then((blob) => {
+  //       // Download and open PDF in new tab
+  //       const file = new Blob([blob], { type: "application/pdf" });
+  //       const fileURL = URL.createObjectURL(file);
+  //       window.open(fileURL);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
+  // const downloadSkripsi = (skripsi) => {
+  //   fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "x-access-token": token,
+  //     },
+  //   })
+  //     .then((res) => res.blob())
+  //     .then((blob) => {
+  //       // Download and open PDF in new tab
+  //       const file = new Blob([blob], { type: "application/pdf" });
+  //       const fileURL = URL.createObjectURL(file);
+  //       window.open(fileURL);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
-
-export default function BasicTabs({ sem, nim, sks, sksk, ip, ipk, npkl, nskripsi, tglSkripsi }) {
   const [value, setValue] = React.useState(0);
   const [nilaiP, setNilaiP] = React.useState(0);
   const [nilaiS, setNilaiS] = React.useState(0);
@@ -151,104 +145,92 @@ export default function BasicTabs({ sem, nim, sks, sksk, ip, ipk, npkl, nskripsi
   const handleModal = () => {
     setIsOpen(!isOpen);
   };
-  
+
   // Handle download
   const downloadIrs = (irs) => {
-  // GET method on /irs/:nim/:semester
-  fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.sem}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token,
-    },
-  })
-    .then((res) => res.blob())
-    .then((blob) => {
-      // Download and open PDF in new tab
-      const file = new Blob([blob], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      setIsOpen(!isOpen);
-      setPdf(fileURL);
+    // GET method on /irs/:nim/:semester
+    fetch(`${process.env.BACKEND_API}/irs/${irs.nim}/${irs.sem}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
     })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-const downloadKhs = (khs) => {
-  fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.sem}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token,
-    },
-  })
-    .then((res) => res.blob())
-    .then((blob) => {
-      // Download and open PDF in new tab
-      const file = new Blob([blob], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      setIsOpen(!isOpen);
-      setPdf(fileURL);
+  const downloadKhs = (khs) => {
+    fetch(`${process.env.BACKEND_API}/khs/${khs.nim}/${khs.sem}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
     })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-const downloadPkl = (pkl) => {
-  fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token,
-    },
-  })
-    .then((res) => res.blob())
-    .then((blob) => {
-      // Download and open PDF in new tab
-      const file = new Blob([blob], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      setIsOpen(!isOpen);
-      setPdf(fileURL);
+  const downloadPkl = (pkl) => {
+    fetch(`${process.env.BACKEND_API}/pkl/${pkl.nim}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
     })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-const downloadSkripsi = (skripsi) => {
-  fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token,
-    },
-  })
-    .then((res) => res.blob())
-    .then((blob) => {
-      // Download and open PDF in new tab
-      const file = new Blob([blob], { type: "application/pdf" });
-      const fileURL = URL.createObjectURL(file);
-      setIsOpen(!isOpen);
-      setPdf(fileURL);
+  const downloadSkripsi = (skripsi) => {
+    fetch(`${process.env.BACKEND_API}/skripsi/${skripsi.nim}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
     })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
- // Handle preview
- const handleModal = () => {
-  setIsOpen(!isOpen);
-};
-
-
-  const [value, setValue] = React.useState(0);
-  const [nilaiP, setNilaiP] = React.useState(0);
-  const [nilaiS, setNilaiS] = React.useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [pdf, setPdf] = useState("");
+      .then((res) => res.blob())
+      .then((blob) => {
+        // Download and open PDF in new tab
+        const file = new Blob([blob], { type: "application/pdf" });
+        const fileURL = URL.createObjectURL(file);
+        setIsOpen(!isOpen);
+        setPdf(fileURL);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // const [nskripsi,setNskripsi] = React.useState(0);
 

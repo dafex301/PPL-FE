@@ -6,6 +6,7 @@ import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 import Search from "../../components/Search";
 import Link from "next/link";
+import DonutChart from "../charts/DonutChart";
 
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
@@ -103,7 +104,13 @@ export default function TableDataMahasiswa({ API, role }) {
           </select>
         </div>
       </div>
+      <br />
+      <DonutChart
+        API={`${process.env.BACKEND_API}/rekap/${role}`}
+        label={""}
+      />
       {/* End of Header */}
+      {/* Search */}
       <div className="mt-4 mx-5">
         <Search
           setSearch={handleSearch}
@@ -112,9 +119,9 @@ export default function TableDataMahasiswa({ API, role }) {
           listKategori={["Nama", "NIM"]}
         />
       </div>
+      {/* End of Search */}
+      {/* table */}
       <div className="flex flex-col items-center">
-        {/* Search */}
-        {/* End of Search */}
         <div className="py-2 my-2 overflow-x-auto w-full px-6">
           <div className="inline-block w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
             <table className="min-w-full">
