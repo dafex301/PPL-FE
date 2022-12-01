@@ -106,8 +106,10 @@ export default function TableDataMahasiswa({ API, role }) {
       </div>
       <br />
       <DonutChart
-        API={`${process.env.BACKEND_API}/rekap/${role}`}
+        API={angkatan === "" || angkatan === "#" ? `${process.env.BACKEND_API}/rekap/${role}` : `${process.env.BACKEND_API}/rekap/count/${role}`}
+        API2={`${process.env.BACKEND_API}/rekap/count/${role}`}
         label={""}
+        angkatan={angkatan}
       />
       {/* End of Header */}
       {/* Search */}

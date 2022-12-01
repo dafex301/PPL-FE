@@ -23,7 +23,7 @@ const fetcher = (...args) =>
     },
   }).then((res) => res.json());
 
-export default function DonutChart({API,label}) {
+export default function DonutChart({API,label,angkatan}) {
   // State
   const [dataStatus, setDataStatus] = useState([]);
 
@@ -36,9 +36,9 @@ export default function DonutChart({API,label}) {
 
   useEffect(() => {
     if (rekapData) {
-      setDataStatus(Object.values(rekapData.status));
+      angkatan === ''|| angkatan === '#' ? setDataStatus(Object.values(rekapData.status)) : setDataStatus(Object.values(rekapData[angkatan].status));
     }
-  }, [rekapData]);
+  }, [rekapData,angkatan]);
 
   return (
     <>
@@ -62,85 +62,85 @@ export default function DonutChart({API,label}) {
         <div className="grid grid-cols-12 gap-4 mt-5">
           <div
             className={
-              rekapData && rekapData.status.aktif
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.aktif : rekapData[angkatan].status.aktif)
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-green-500 hover:bg-green-400`
                 : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400 `
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.aktif : 0}
+              {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.aktif : rekapData[angkatan].status.aktif) : 0}
             </div>
             <div className="">Aktif</div>
           </div>
           <div
             className={
-              rekapData && rekapData.status.cuti
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.cuti : rekapData[angkatan].status.cuti)
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-yellow-500 hover:bg-yellow-400`
                 : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.cuti : 0}
+            {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.cuti : rekapData[angkatan].status.cuti) : 0}
             </div>
             <div>Cuti</div>
           </div>
           <div
             className={
-              rekapData && rekapData.status.mangkir
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.mangkir : rekapData[angkatan].status.mangkir)
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-orange-500 hover:bg-orange-400`
                 : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.mangkir : 0}
+            {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.mangkir : rekapData[angkatan].status.mangkir) : 0}
             </div>
             <div>Mangkir</div>
           </div>
           <div
             className={
-              rekapData && rekapData.status.do
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.do : rekapData[angkatan].status.do)
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-red-500 hover:bg-red-400`
                 : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.do : 0}
+            {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.do : rekapData[angkatan].status.do) : 0}
             </div>
             <div>Drop Out</div>
           </div>
           <div
             className={
-              rekapData && rekapData.status.undur_diri
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.undur_diri : rekapData[angkatan].status.undur_diri)
                 ? `rounded-xl col-span-3 col-start-2 text-center p-4 text-white drop-shadow-lg bg-pink-500 hover:bg-pink-400`
                 : `rounded-xl col-span-3 col-start-2 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.undur_diri : 0}
+            {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.undur_diri : rekapData[angkatan].status.undur_diri) : 0}
             </div>
             <div>Undur Diri</div>
           </div>
           <div
             className={
-              rekapData && rekapData.status.lulus
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.lulus : rekapData[angkatan].status.lulus)
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-purple-500 hover:bg-purple-400`
                 : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.lulus : 0}
+            {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.lulus : rekapData[angkatan].status.lulus) : 0}
             </div>
             <div>Lulus</div>
           </div>
           <div
             className={
-              rekapData && rekapData.status.meninggal_dunia
+              rekapData && (angkatan === '' || angkatan === '#' ? rekapData.status.meninggal_dunia : rekapData[angkatan].status.meninggal_dunia)
                 ? `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-indigo-500 hover:bg-indigo-400`
                 : `rounded-xl col-span-3 text-center p-4 text-white drop-shadow-lg bg-gray-400`
             }
           >
             <div className="text-3xl font-bold">
-              {rekapData ? rekapData.status.meninggal_dunia : 0}
+            {rekapData ? (angkatan === '' || angkatan === '#' ? rekapData.status.meninggal_dunia : rekapData[angkatan].status.meninggal_dunia) : 0}
             </div>
             <div>Meninggal Dunia</div>
           </div>
