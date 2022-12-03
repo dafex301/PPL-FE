@@ -66,6 +66,7 @@ export default function DetailPage({ API, role, nim }) {
 
   useEffect(() => {
     if (dataMhs) {
+      console.log(dataMhs);
       setName(dataMhs.name);
       setSemester(dataMhs.semester);
       setAngkatan(dataMhs.angkatan);

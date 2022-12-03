@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import titlecase from "../utils/functions/titlecase";
+import Link from "next/link";
 
-export default function TabelRekap({ rekapData }) {
+export default function TabelRekap({ rekapData, role }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -71,11 +72,14 @@ export default function TabelRekap({ rekapData }) {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full `}
+                      <a
+                        href="#"
+                        className="text-indigo-600 hover:text-indigo-900"
                       >
-                        Detail
-                      </span>
+                        <Link href={`/${role}/mhs/${el.nim}`}>
+                          <a>Detail</a>
+                        </Link>
+                      </a>
                     </td>
                   </tr>
                 );

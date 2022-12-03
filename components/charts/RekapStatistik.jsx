@@ -47,7 +47,7 @@ years.sort((a, b) => a - b);
 // Convert to string
 const yearsString = years.map((year) => year.toString());
 
-export default function RekapStatistik({ API, label, title }) {
+export default function RekapStatistik({ API, label, title, role }) {
   const { data: rekapData, errorKab } = useSWR(API, fetcher);
 
   const [selected, setSelected] = useState(true);
@@ -79,7 +79,6 @@ export default function RekapStatistik({ API, label, title }) {
 
   // Table data
   const [data, setData] = useState([]);
-  
 
   // hitung yang belum dan sudah skripsi
   useEffect(() => {
@@ -225,7 +224,7 @@ export default function RekapStatistik({ API, label, title }) {
       {/* End of Search */}
 
       {/* Table */}
-      <TabelRekap rekapData={data} />
+      <TabelRekap rekapData={data} role={role} />
       {/* End of Table */}
     </>
   );
