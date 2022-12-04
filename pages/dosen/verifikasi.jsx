@@ -123,10 +123,30 @@ export default function Verifikasi() {
       .then((res) => res.json())
       .then((data) => {
         if (data.message == "OK") {
-          alert("IRS berhasil dikonfirmasi");
+          // alert("IRS berhasil dikonfirmasi");
+          toast.info('IRS berhasil dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
           mutate(`${process.env.BACKEND_API}/verifikasi/irs`);
         } else {
-          alert("IRS gagal dikonfirmasi");
+          // alert("IRS gagal dikonfirmasi");
+          toast.info('IRS gagal dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         }
       })
       .catch((err) => {
@@ -152,10 +172,30 @@ export default function Verifikasi() {
       .then((res) => res.json())
       .then((data) => {
         if (data.message == "OK") {
-          alert("KHS berhasil dikonfirmasi");
+          // alert("KHS berhasil dikonfirmasi");
+          toast.info('KHS berhasil dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
           mutate(`${process.env.BACKEND_API}/verifikasi/khs`);
         } else {
-          alert("KHS gagal dikonfirmasi");
+          // alert("KHS gagal dikonfirmasi");
+          toast.info('KHS gagal dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         }
       })
       .catch((err) => {
@@ -178,10 +218,30 @@ export default function Verifikasi() {
       .then((res) => res.json())
       .then((data) => {
         if (data.message == "OK") {
-          alert("PKL berhasil dikonfirmasi");
+          // alert("PKL berhasil dikonfirmasi");
+          toast.info('PKL berhasil dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
           mutate(`${process.env.BACKEND_API}/verifikasi/pkl`);
         } else {
-          alert("PKL gagal dikonfirmasi");
+          // alert("PKL gagal dikonfirmasi");
+          toast.info('PKL gagal dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         }
       })
       .catch((err) => {
@@ -204,10 +264,30 @@ export default function Verifikasi() {
       .then((res) => res.json())
       .then((data) => {
         if (data.message == "OK") {
-          alert("Skripsi berhasil dikonfirmasi");
+          // alert("Skripsi berhasil dikonfirmasi");
+          toast.info('Skripsi berhasil dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
           mutate(`${process.env.BACKEND_API}/verifikasi/skripsi`);
         } else {
-          alert("Skripsi gagal dikonfirmasi");
+          // alert("Skripsi gagal dikonfirmasi");
+          toast.info('Skripsi gagal dikonfirmasi', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
         }
       })
       .catch((err) => {
@@ -739,7 +819,12 @@ export default function Verifikasi() {
                   </tr>
                 ))}
             </tbody>
-            <ToastContainer
+            
+          </table>
+        )}
+        {/* End of Table Skripsi */}
+      </div>
+      <ToastContainer
             position="top-right"
             autoClose={5000}
             hideProgressBar={false}
@@ -751,10 +836,6 @@ export default function Verifikasi() {
             pauseOnHover
             theme="light"
           />
-          </table>
-        )}
-        {/* End of Table Skripsi */}
-      </div>
     </>
   );
 }
