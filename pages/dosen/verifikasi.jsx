@@ -5,6 +5,9 @@ import useSWR, { useSWRConfig } from "swr";
 import { getCookie } from "cookies-next";
 import Modal from "../../components/ModalPdf";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // Import functions
 import { searchData } from "../../utils/functions/searchData";
 
@@ -736,6 +739,18 @@ export default function Verifikasi() {
                   </tr>
                 ))}
             </tbody>
+            <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           </table>
         )}
         {/* End of Table Skripsi */}

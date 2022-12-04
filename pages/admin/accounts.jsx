@@ -1,10 +1,15 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { getCookie } from "cookies-next";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Pagination from "../../components/pagination";
 import { paginate } from "../../utils/functions/paginate";
 import Search from "../../components/Search";
+import { Modal, Box, Typography } from "@mui/material";
+import ConfirmModal from "../../components/ConfirmModal";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const token = getCookie("accessToken");
 // Fetcher and set header x-access-token with token
@@ -22,20 +27,68 @@ export default function AccountAdmin() {
     fetcher
   );
 
+  const { mutate } = useSWRConfig();
+
   // Pagination
   const [posts, setposts] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
   const pageSize = 8;
 
+  const [success, setSuccess] = useState(null);
+
   //  Search
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("username");
+  const [clickId, setClickId] = useState("");
+
+  // modal handle
+  const [open, setOpen] = useState({ val: false, id: null });
+  const handleOpen = () => setOpen({ val: true, id: null });
+  const handleClose = () => setOpen({ val: false, id: null });
+
+  const [reset, setReset] = useState(false);
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
   const handleKategori = (e) => {
     setKategori(e.target.value);
   };
+
+  useEffect(() => {
+    console.log("tests");
+    if (reset) {
+      const formData = new FormData();
+      formData.append("id", open["id"]);
+
+      try {
+        fetch(`${process.env.BACKEND_API}/resetpassword`, {
+          method: "POST",
+          headers: {
+            "x-access-token": token,
+          },
+          body: formData,
+        });
+        console.log(open["id"]);
+        setReset(false);
+        setOpen({ val: false, id: null });
+        toast.info('Password Berhasil di Reset !', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+      } catch (err) {
+        console.log(err);
+        setSuccess(false);
+      }
+    }
+  }, [open, reset]);
+
 
   // useEffect for setposts
   useEffect(() => {
@@ -131,18 +184,28 @@ export default function AccountAdmin() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                        <a
-                          href="#"
+                        <button
+                          // href="#"
                           className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => {
+                            setOpen({ val: true, id: u._id });
+                            // setClickId(u._id);
+                            // handleSubmit(u._id);
+                          }}
                         >
                           Edit
-                        </a>
+                        </button>
                       </td>
                     </tr>
                   ))}
               </tbody>
             </table>
           </div>
+          <ConfirmModal
+            open={open["val"]}
+            handleClose={handleClose}
+            setReset={setReset}
+          />
           <br />
           <br />
           <Pagination
@@ -150,6 +213,18 @@ export default function AccountAdmin() {
             currentPage={currentPage}
             pageSize={pageSize}
             onPageChange={handlePageChange}
+          />
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
           />
         </div>
       </div>
