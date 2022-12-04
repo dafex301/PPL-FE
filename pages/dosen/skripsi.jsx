@@ -6,6 +6,7 @@ export default function DataPKL() {
       <RekapStatistik
         label={"Skripsi"}
         API={`${process.env.BACKEND_API}/rekap/skripsi`}
+        role={"dosen"}
       />
     </>
   );
