@@ -21,6 +21,20 @@ const fetcherWithToken = (...args) =>
   }).then((res) => res.json());
 
 export default function SkripsiMahasiswa() {
+  // Fetch mahasiswa data, if the data isn't complete yet, redirect to index
+  const { data: dataMhs, error: errorMhs } = useSWR(
+    `${process.env.BACKEND_API}/profil`,
+    fetcherWithToken
+  );
+
+  useEffect(() => {
+    if (dataMhs) {
+      if (!(dataMhs.phone && dataMhs.email && dataMhs.kodeKab)) {
+        window.location.href = "/mahasiswa";
+      }
+    }
+  });
+
   // Maintain state
   const [semester, setSemester] = useState("");
   const [nilai, setNilai] = useState("");

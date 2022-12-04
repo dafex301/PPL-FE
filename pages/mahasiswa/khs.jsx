@@ -23,6 +23,18 @@ const fetcherWithToken = (...args) =>
   }).then((res) => res.json());
 
 export default function KhsMahasiswa() {
+  // Fetch mahasiswa data, if the data isn't complete yet, redirect to index
+  const { data: dataMhs, error: errorMhs } = useSWR(
+    `${process.env.BACKEND_API}/profil`,
+    fetcherWithToken
+  );
+
+  useEffect(() => {
+    if (!(dataMhs && dataMhs.phone && dataMhs.email && dataMhs.kodeKab)) {
+      window.location.href = "/mahasiswa";
+    }
+  });
+
   // Fetch data
   const { data, error } = useSWR(
     `${process.env.BACKEND_API}/khs`,

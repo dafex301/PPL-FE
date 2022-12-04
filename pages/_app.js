@@ -22,11 +22,16 @@ function MyApp({ Component, pageProps }) {
     decoded = jwt.verify(token, process.env.SECRET_KEY);
   }
 
+  // Split the route.pathname
+  const routeSplit = route.pathname.split("/");
+
   return (
     <>
       {Component.name !== "Login" && Component.name !== "Error" && <Navbar />}
 
-      {route.pathname.includes("/mahasiswa") ? (
+      {routeSplit[1] === "mahasiswa" && !routeSplit[2] ? (
+        <Component {...pageProps} />
+      ) : routeSplit[1] === "mahasiswa" && routeSplit[2] ? (
         <DashboardMahasiswa token={decoded}>
           <Component {...pageProps} />
         </DashboardMahasiswa>
