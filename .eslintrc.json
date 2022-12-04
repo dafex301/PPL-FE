@@ -1,3 +1,11 @@
 {
-  "extends": "next/core-web-vitals"
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "babelOptions": {
+      "presets": [
+        "@babel/preset-react"
+      ]
+    },
+    "extends": "next/core-web-vitals"
+  }
 }

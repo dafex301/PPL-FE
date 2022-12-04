@@ -107,6 +107,9 @@ export default function PklMahasiswa() {
     }
   }, [file]);
 
+  console.log(file);
+
+
   return (
     <>
       <Head>

@@ -1,24 +1,24 @@
 // Next and React Component
-import Head from "next/head";
-import { useEffect, useState } from "react";
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
 
 // Import another library
-import { getCookie } from "cookies-next";
-import useSWR, { useSWRConfig } from "swr";
+import { getCookie } from 'cookies-next';
+import useSWR, { useSWRConfig } from 'swr';
 
 // Components
-import FileUpload from "../../components/FileUpload";
-import SubmitMessage from "../../components/SubmitMessage";
-import SaveFormButton from "../../components/SaveFormButton";
+import FileUpload from '../../components/FileUpload';
+import SubmitMessage from '../../components/SubmitMessage';
+import SaveFormButton from '../../components/SaveFormButton';
 
 // Get token from cookies
-const token = getCookie("accessToken");
+const token = getCookie('accessToken');
 
 // Fetcher with header x-access-token
 const fetcherWithToken = (...args) =>
   fetch(...args, {
     headers: {
-      "x-access-token": token,
+      'x-access-token': token,
     },
   }).then((res) => res.json());
 
@@ -31,12 +31,12 @@ export default function IrsMahasiswa(props) {
   const { mutate } = useSWRConfig();
 
   // Input State
-  const [semester_aktif, setSemesterAktif] = useState("");
-  const [sks, setSks] = useState("");
-  const [status, setStatus] = useState("belum");
+  const [semester_aktif, setSemesterAktif] = useState('');
+  const [sks, setSks] = useState('');
+  const [status, setStatus] = useState('belum');
 
   // File State
-  const [filename, setFileName] = useState("");
+  const [filename, setFileName] = useState('');
   const [file, setFile] = useState(null);
 
   // Success message state
@@ -50,7 +50,7 @@ export default function IrsMahasiswa(props) {
 
     if (sks < 0 || sks > 24) {
       setSuccess(false);
-      setMessage("SKS harus di antara 1 - 24!");
+      setMessage('SKS harus di antara 1 - 24!');
       return;
     }
 
@@ -58,17 +58,17 @@ export default function IrsMahasiswa(props) {
     if (semester_aktif && sks && filename) {
       // Create form data
       const formData = new FormData();
-      formData.append("semester_aktif", semester_aktif);
-      formData.append("sks", sks);
+      formData.append('semester_aktif', semester_aktif);
+      formData.append('sks', sks);
       if (file) {
-        formData.append("file", file);
+        formData.append('file', file);
       }
 
       try {
         const res = await fetch(`${process.env.BACKEND_API}/irs`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "x-access-token": token,
+            'x-access-token': token,
           },
           body: formData,
         });
@@ -84,7 +84,7 @@ export default function IrsMahasiswa(props) {
       }
     } else {
       setSuccess(false);
-      setMessage("Semua input harus diisi");
+      setMessage('Semua input harus diisi');
     }
     window.scrollTo(0, 0);
   };
@@ -99,9 +99,9 @@ export default function IrsMahasiswa(props) {
         setStatus(irs.status_konfirmasi);
         setFileName(irs.file);
       } else {
-        setSks("");
-        setStatus("belum");
-        setFileName("");
+        setSks('');
+        setStatus('belum');
+        setFileName('');
       }
     }
   }, [data, semester_aktif]);
@@ -109,7 +109,7 @@ export default function IrsMahasiswa(props) {
   // Handle file upload
   useEffect(() => {
     if (file) {
-      if (file.name.split(".").pop() !== "pdf") {
+      if (file.name.split('.').pop() !== 'pdf') {
         setFile(null);
         setValidFile(false);
       } else {
@@ -124,7 +124,7 @@ export default function IrsMahasiswa(props) {
       <Head>
         <title>IRS Mahasiswa</title>
       </Head>
-      <SubmitMessage success={success} name={"irs"} message={message} />
+      <SubmitMessage success={success} name={'irs'} message={message} />
       <h2 className="text-left font-bold text-2xl pl-5 pt-4">Data IRS</h2>
       <form>
         <div className="flex justify-start ml-16 mt-5">
@@ -163,7 +163,7 @@ export default function IrsMahasiswa(props) {
             className="w-full p-1 text-base border-b-2 focus:outline-none focus:border-gray-500 transition duration-500"
             value={sks}
             onChange={(e) => setSks(e.target.value)}
-            disabled={status === "sudah"}
+            disabled={status === 'sudah'}
           />
         </div>
         <div className="flex justify-start ml-16 mt-5">
@@ -175,14 +175,14 @@ export default function IrsMahasiswa(props) {
           setFile={setFile}
           validFile={validFile}
           semester={semester_aktif}
-          filetype={"pdf"}
+          filetype={'pdf'}
         />
         <SaveFormButton
           semester={semester_aktif}
           status={status}
           handleSubmit={handleSubmit}
         />
-        {status === "sudah" && (
+        {status === 'sudah' && (
           <p className="text-green-600 ml-2 text-center">
             *Data sudah diverifikasi, tidak dapat diubah
           </p>
