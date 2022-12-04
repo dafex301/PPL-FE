@@ -187,7 +187,7 @@ export default function DetailPage({ API, role, nim }) {
           <p>Keterangan</p>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-sm bg-violet-500 " />
-            <p>Sudah diisikan (IRS dan KHS)</p>
+            <p> Sudah di setujui dosen (IRS dan KHS)</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-sm bg-pink-500 " />
@@ -199,7 +199,7 @@ export default function DetailPage({ API, role, nim }) {
           </div>
           <div className="flex items-center gap-3">
             <div className="w-4 h-4 rounded-sm bg-gray-300 " />
-            <p>Belum diisikan</p>
+            <p>Belum mengisi / Belum disetujui Dosen</p>
           </div>
         </div>
       </div>
