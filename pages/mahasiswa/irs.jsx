@@ -2,6 +2,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
+
 // Import another library
 import { getCookie } from "cookies-next";
 import useSWR, { useSWRConfig } from "swr";
@@ -23,11 +24,18 @@ const fetcherWithToken = (...args) =>
   }).then((res) => res.json());
 
 export default function IrsMahasiswa(props) {
+  // Fetch mahasiswa data, if the data isn't complete yet, redirect to index
+  const { data: dataMhs, error: errorMhs } = useSWR(
+    `${process.env.BACKEND_API}/profil`,
+    fetcherWithToken
+  );
+
   // Fetch data
   const { data, error } = useSWR(
     `${process.env.BACKEND_API}/irs`,
     fetcherWithToken
   );
+
   const { mutate } = useSWRConfig();
 
   // Input State

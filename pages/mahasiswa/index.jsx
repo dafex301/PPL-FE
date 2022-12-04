@@ -8,7 +8,7 @@ import Head from "next/head";
 import anya from "../../public/anya.jpeg";
 
 // Import another library
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import axios from "axios";
 
 // Components
@@ -139,6 +139,13 @@ export default function HomeMahasiswa({ provData }) {
         dataMhs.kodeKab = kabupaten;
         dataMhs.email = email;
         dataMhs.phone = phone;
+
+        // Set new token from res.data
+        setCookie("accessToken", res.data, {
+          maxAge: 60 * 60 * 12,
+        });
+
+        
       } else {
         setSuccess(false);
       }

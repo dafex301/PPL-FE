@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { jwtVerify } from "jose";
-import verifyRole from "./utils/functions/verifyRole";
+import verify from "./utils/functions/verify";
 
 export async function middleware(req) {
   let res = NextResponse.next();
@@ -28,22 +28,42 @@ export async function middleware(req) {
 
   //   If route is /admin
   if (req.nextUrl.pathname.startsWith("/admin")) {
-    return await verifyRole(token, "admin", req);
+    return await verify(token, "admin", req);
+  }
+
+  // If route is /mahasiswa/irs
+  if (req.nextUrl.pathname.startsWith("/mahasiswa/irs")) {
+    return await verify(token, "mahasiswa", req, true);
+  }
+
+  // If route is /mahasiswa/khs
+  if (req.nextUrl.pathname.startsWith("/mahasiswa/khs")) {
+    return await verify(token, "mahasiswa", req, true);
+  }
+
+  // If route is /mahasiswa/pkl
+  if (req.nextUrl.pathname.startsWith("/mahasiswa/pkl")) {
+    return await verify(token, "mahasiswa", req, true);
+  }
+
+  // If route is /mahasiswa/skripsi
+  if (req.nextUrl.pathname.startsWith("/mahasiswa/skripsi")) {
+    return await verify(token, "mahasiswa", req, true);
   }
 
   //   If route is /mahasiswa
   if (req.nextUrl.pathname.startsWith("/mahasiswa")) {
-    return await verifyRole(token, "mahasiswa", req);
+    return await verify(token, "mahasiswa", req);
   }
 
   //   If route is /departemen
   if (req.nextUrl.pathname.startsWith("/departemen")) {
-    return await verifyRole(token, "departemen", req);
+    return await verify(token, "departemen", req);
   }
 
   //   If route is /dosen
   if (req.nextUrl.pathname.startsWith("/dosen")) {
-    return await verifyRole(token, "dosen", req);
+    return await verify(token, "dosen", req);
   }
 
   return res;
