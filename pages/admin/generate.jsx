@@ -84,6 +84,25 @@ export default function GenerateAdmin() {
       return;
     }
 
+    // Angkatan must be a number start from 2004 to year now
+    if (
+      isNaN(angkatan) ||
+      angkatan < 2004 ||
+      angkatan > new Date().getFullYear()
+    ) {
+      setError(
+        "Angkatan harus antara tahun 2004 dan " +
+          new Date().getFullYear().toString()
+      );
+      return;
+    }
+
+    // Name can't have a number
+    if (/\d/.test(name)) {
+      setError("Nama tidak boleh mengandung angka");
+      return;
+    }
+
     axios
       .post(
         `${process.env.BACKEND_API}/generate`,
